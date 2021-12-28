@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ToDoList.DataAccess.Models;
-
+﻿
 namespace ToDoList.Views
 {
     public class Options : IOptions

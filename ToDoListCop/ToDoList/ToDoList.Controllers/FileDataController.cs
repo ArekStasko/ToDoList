@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ToDoList.DataAccess;
+﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
 
@@ -11,7 +8,7 @@ namespace ToDoList.DataControllers
     {
         private int GetUserSelection()
         {
-            string selectedOption = Console.ReadLine();
+            string? selectedOption = Console.ReadLine();
             int optionNumber;
 
             while (!Int32.TryParse(selectedOption, out optionNumber))
@@ -102,7 +99,7 @@ namespace ToDoList.DataControllers
                 {
 
                     Console.WriteLine("Provide items category to find");
-                    string userInput = Console.ReadLine();
+                    string? userInput = Console.ReadLine();
 
                     IEnumerable<Item> searchedItems = GetItemsByCategory(userInput);
                     Console.Clear();

@@ -1,5 +1,4 @@
-﻿using System;
-using ToDoList.DataControllers;
+﻿using ToDoList.DataControllers;
 
 namespace ToDoList
 {

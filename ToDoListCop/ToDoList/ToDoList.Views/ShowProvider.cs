@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ToDoList.DataAccess.Models;
+﻿using ToDoList.DataAccess.Models;
 
 namespace ToDoList.Views
 {

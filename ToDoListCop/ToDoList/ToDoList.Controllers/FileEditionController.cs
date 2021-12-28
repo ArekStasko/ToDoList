@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ToDoList.DataAccess;
+﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
 
@@ -33,7 +30,7 @@ namespace ToDoList.DataControllers
         private void AddNewCategory()
         {
             Console.WriteLine("- Please insert new category name -");
-            string categoryName = Console.ReadLine();
+            string? categoryName = Console.ReadLine();
             while (String.IsNullOrEmpty(categoryName))
             {
                 Console.WriteLine("-Category can't be empty-");
@@ -55,7 +52,7 @@ namespace ToDoList.DataControllers
             for (int i = 0; i < itemQuery.Length; i++)
             {
                 Console.WriteLine($"Insert {itemQuery[i]}");
-                string providedData = Console.ReadLine();
+                string? providedData = Console.ReadLine();
 
                 while (String.IsNullOrEmpty(providedData))
                 {
@@ -115,7 +112,7 @@ namespace ToDoList.DataControllers
 
             Console.WriteLine("Please provide the category name to delete");
             Console.WriteLine("- This will delete all items with this category -");
-            string userInput = Console.ReadLine();
+            string? userInput = Console.ReadLine();
 
             var dataProvider = new FileDataProvider();
             IEnumerable<Item> ItemsToDelete = GetItemsByCategory(userInput);

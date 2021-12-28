@@ -3,9 +3,9 @@ namespace ToDoList.DataAccess.Models
 {
     public class Item
     {
-        public string ItemName { get; set; }
-        public string ItemCategory { get; set; }
-        public string ItemDescription { get; set; }
+        public string ItemName { get; set; } = "noneName";
+        public string ItemCategory { get; set; } = "noneCategory";
+        public string ItemDescription { get; set; } = "noneDescription";
         public int ItemId { get; set; }
 
         public string[] ConvertToDataRow()
