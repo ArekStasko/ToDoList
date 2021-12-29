@@ -15,10 +15,10 @@ namespace ToDoList.DataControllers
 
             var showProvider = new ShowProvider();
             showProvider.PrintCategories(categories);
-            string category = Console.ReadLine();
+            string? category = Console.ReadLine();
             int categoryNumber;
 
-            while (!Int32.TryParse(category, out categoryNumber))
+            while (!Int32.TryParse(category, out categoryNumber) || string.IsNullOrEmpty(category))
             {
                 Console.WriteLine("- Please provide number of category -");
                 category = Console.ReadLine();
@@ -112,9 +112,16 @@ namespace ToDoList.DataControllers
 
             Console.WriteLine("Please provide the category name to delete");
             Console.WriteLine("- This will delete all items with this category -");
-            string? userInput = Console.ReadLine();
+            string? userInput;
 
             var dataProvider = new FileDataProvider();
+
+            do
+            {
+                userInput = Console.ReadLine();
+            }
+            while (string.IsNullOrEmpty(userInput));
+
             IEnumerable<Item> ItemsToDelete = GetItemsByCategory(userInput);
             if (ItemsToDelete.Any())
             {

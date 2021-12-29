@@ -23,8 +23,8 @@ namespace ToDoList.DataControllers
         protected int GetID(string message)
         {
             Console.WriteLine(message);
-            string ID = Console.ReadLine();
-            while (!Int32.TryParse(ID, out int n))
+            string? ID = Console.ReadLine();
+            while (!Int32.TryParse(ID, out int n) || string.IsNullOrEmpty(ID))
             {
                 Console.WriteLine("ID must be number");
                 ID = Console.ReadLine();
@@ -69,62 +69,79 @@ namespace ToDoList.DataControllers
             }
         }
 
+        private IEnumerable<Item> GetItemsByCategory()
+        {
+            Console.WriteLine("Provide items category to find");
+            string? category;
+            Console.Clear();
+
+            do
+            {
+                category = Console.ReadLine();
+            } 
+            while (string.IsNullOrEmpty(category));
+
+            return GetItemsByCategory(category);            
+
+        }
+
 
         public void ChooseMainOption()
         {
             var optionsProvider = new Options();
             optionsProvider.PrintMainOptions();
+
             int userSelection = GetUserSelection();
 
-
-            if (userSelection == 1)
+            while(userSelection != 4)
             {
-                var dataProvider = new FileDataProvider();
-                IEnumerable<Item> items = dataProvider.GetItems();
-                var showProvider = new ShowProvider();
-                showProvider.PrintManyItems(items);
-            }
-            else if (userSelection == 2)
-            { 
-                optionsProvider.PrintItemSearchOptions();
-                int selectedSearchItemOption = GetUserSelection();
-
-                if (selectedSearchItemOption == 1)
+                switch (userSelection)
                 {
-                    Item searchedItem = GetItemByID("Provide item ID to find");
-                    var showProvider = new ShowProvider();
-                    showProvider.PrintItem(searchedItem);
+                    case 1:
+                        {
+                            var dataProvider = new FileDataProvider();
+                            IEnumerable<Item> items = dataProvider.GetItems();
+
+                            var showProvider = new ShowProvider();
+                            showProvider.PrintManyItems(items);
+                            break;
+                        }
+                    case 2:
+                        {
+                            optionsProvider.PrintItemSearchOptions();
+                            int selectedSearchItemOption = GetUserSelection();
+                            var showProvider = new ShowProvider();
+
+
+                            if (selectedSearchItemOption == 1)
+                            {
+                                Item searchedItem = GetItemByID("Provide item ID to find");
+                                showProvider.PrintItem(searchedItem);
+                            }
+                            else if (selectedSearchItemOption == 2)
+                            {
+                                IEnumerable<Item> searchedItems = GetItemsByCategory();
+                                showProvider.PrintManyItems(searchedItems);
+                            }
+                            break;
+                        }
+                    case 3:
+                        {
+                            optionsProvider.PrintEditionOptions();
+                            int selectedEditionOption = GetUserSelection();
+
+                            var editionController = new FileEditionController();
+                            editionController.GetSelectedEditionOption(selectedEditionOption);
+                            break;
+                        }
+                    default:
+                        Console.WriteLine("You provide wrong option number");
+                        break;
                 }
-                else if (selectedSearchItemOption == 2)
-                {
 
-                    Console.WriteLine("Provide items category to find");
-                    string? userInput = Console.ReadLine();
+                userSelection = GetUserSelection();
+            }
 
-                    IEnumerable<Item> searchedItems = GetItemsByCategory(userInput);
-                    Console.Clear();
-                    var showProvider = new ShowProvider();
-                    showProvider.PrintManyItems(searchedItems);                    
-                }
-
-            }
-            else if (userSelection == 3)
-            {
-                optionsProvider.PrintEditionOptions();
-                int selectedEditionOption = GetUserSelection();
-
-                var editionController = new FileEditionController();
-                editionController.GetSelectedEditionOption(selectedEditionOption);
-            }
-            else if (userSelection == 4)
-            {
-                Console.WriteLine("Goodbye ! :D");
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.WriteLine("You provide wrong option number");
-            }
         }
     }
 }
