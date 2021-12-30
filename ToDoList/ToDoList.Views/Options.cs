@@ -15,9 +15,9 @@ namespace ToDoList.Views
         public void PrintMainOptions()
         {
             string[] mainOptions = new string[] { 
-                "Show all items", 
-                "Show specific item", 
-                "Edit items", 
+                "Show all activities", 
+                "Show specific activities", 
+                "Edit activities", 
                 "Close ToDo list" 
             };
 
@@ -30,8 +30,8 @@ namespace ToDoList.Views
             Console.Clear();
             string[] editionOptions = new string[] { 
                 "Add new Category", 
-                "Add new item", 
-                "Delete item", 
+                "Add new activity", 
+                "Delete activity", 
                 "Delete category" 
             };
 
@@ -43,7 +43,7 @@ namespace ToDoList.Views
         {
             Console.Clear();
             string[] itemOptions = new string[] { 
-                "Get single item from ID", 
+                "Get single activity from ID", 
                 "Get items with specific category" 
             };
 

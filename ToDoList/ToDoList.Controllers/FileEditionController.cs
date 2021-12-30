@@ -2,6 +2,7 @@
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
 
+
 namespace ToDoList.DataControllers
 {
     public class FileEditionController : FileDataController
@@ -9,7 +10,7 @@ namespace ToDoList.DataControllers
 
         private string GetCategory()
         {
-            Console.WriteLine("- Please choose number of your item category -");
+            Console.WriteLine("- Please choose number of your activity category -");
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
 
@@ -44,14 +45,14 @@ namespace ToDoList.DataControllers
             showProvider.DisplayMessage("Successfully added new category");
         }
 
-        private void AddNewItem()
+        private void AddNewActivity()
         {
-            string[] itemQuery = new string[] { "Item Name", "Item Description" };
-            List<string> itemData = new List<string>(2) { "", "" };
+            string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
+            List<string> activityData = new List<string>(2) { "", "" };
 
-            for (int i = 0; i < itemQuery.Length; i++)
+            for (int i = 0; i < activityQuery.Length; i++)
             {
-                Console.WriteLine($"Insert {itemQuery[i]}");
+                Console.WriteLine($"Insert {activityQuery[i]}");
                 string? providedData = Console.ReadLine();
 
                 while (String.IsNullOrEmpty(providedData))
@@ -60,51 +61,51 @@ namespace ToDoList.DataControllers
                     providedData = Console.ReadLine();
                 }
 
-                itemData[i] = providedData;
+                activityData[i] = providedData;
             }
 
             string category = GetCategory();
-            int itemID = GetID("Provide new item ID");
+            int activityID = GetID("Provide new activity ID");
 
             var dataProvider = new FileDataProvider();
-            var items = dataProvider.GetItems();
+            var activities = dataProvider.GetActivities();
 
-            if (items.Any(item=>item.ItemId == itemID))
+            if (activities.Any(activity=>activity.ActivityID == activityID))
             {
-                Console.WriteLine("You already have item with this ID");
-                itemID = GetID("Provide new item unique ID");
+                Console.WriteLine("You already have activity with this ID");
+                activityID = GetID("Provide new activity unique ID");
             }
 
-            var newItem = new Item()
+            var newActivity = new Activity()
             {
-                ItemName = itemData[0],
-                ItemDescription = itemData[1],
-                ItemId = itemID,
-                ItemCategory = category
+                ActivityName = activityData[0],
+                ActivityDescription = activityData[1],
+                ActivityID = activityID,
+                ActivityCategory = category
             };
 
-            while (items.SingleOrDefault(item => item.ItemId == newItem.ItemId) != null)
+            while (activities.Any(activity => activity.ActivityID == newActivity.ActivityID))
             {
-                Console.WriteLine("- You already have item with this ID -");
-                int newItemID = GetID("- Provide unique ID number -");
-                newItem.ItemId = newItemID;
+                Console.WriteLine("- You already have activity with this ID -");
+                int newActivityID = GetID("- Provide unique ID number -");
+                newActivity.ActivityID = newActivityID;
             }
 
-            dataProvider.AddItem(newItem);
+            dataProvider.AddActivity(newActivity);
 
             var showProvider = new ShowProvider();
-            showProvider.DisplayMessage("Successfully added new item");
+            showProvider.DisplayMessage("Successfully added new Activity");
         }
 
-        private void DeleteItem()
+        private void DeleteActivity()
         {
             var dataProvider = new FileDataProvider();
 
-            Item itemToDelete = GetItemByID("Provide ID of item to delete");
-            dataProvider.RemoveItem(itemToDelete);
+            var activityToDelete = GetActivityByID("Provide ID of activity to delete");
+            dataProvider.RemoveActivity(activityToDelete);
 
             var showProvider = new ShowProvider();
-            showProvider.DisplayMessage("Successfully deleted item");
+            showProvider.DisplayMessage("Successfully deleted activity");
         }
 
         private void DeleteCategory()
@@ -122,10 +123,10 @@ namespace ToDoList.DataControllers
             }
             while (string.IsNullOrEmpty(userInput));
 
-            IEnumerable<Item> ItemsToDelete = GetItemsByCategory(userInput);
-            if (ItemsToDelete.Any())
+            IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(userInput);
+            if (ActivitiesToDelete.Any())
             {
-                dataProvider.RemoveItems(ItemsToDelete.ToList());
+                dataProvider.RemoveActivity(ActivitiesToDelete.ToList());
             }
             dataProvider.RemoveCategory(userInput);
             var showProvider = new ShowProvider();
@@ -137,7 +138,7 @@ namespace ToDoList.DataControllers
         {
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
-            var items = dataProvider.GetItems();
+            var activities = dataProvider.GetActivities();
 
             if (selectedOption == 1)
             {
@@ -152,19 +153,19 @@ namespace ToDoList.DataControllers
                 }
                 else
                 {
-                    AddNewItem();
+                    AddNewActivity();
                 }
             }
             else if (selectedOption == 3)
             {
                 
-                if (!items.Any())
+                if (!activities.Any())
                 {
-                    Console.WriteLine("You don't have any items");
+                    Console.WriteLine("You don't have any activities");
                 }
                 else
                 {
-                    DeleteItem();
+                    DeleteActivity();
                 }
             }
             else if (selectedOption == 4)

@@ -32,36 +32,36 @@ namespace ToDoList.DataControllers
             return Int32.Parse(ID);
         }
 
-        protected Item GetItemByID(string msg)
+        protected Activity GetActivityByID(string msg)
         {
             var dataProvider = new FileDataProvider();
-            IEnumerable<Item> items = dataProvider.GetItems();
+            IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-            int itemID = GetID(msg);
+            int activityID = GetID(msg);
 
             try
             {
-                var item = items.Single(item => item.ItemId == itemID);
+                var activity = activities.Single(activity => activity.ActivityID == activityID);
                 Console.Clear();
-                return item;
+                return activity;
             }
             catch(Exception)
             {
-                throw new Exception($"You don't have item with {itemID} ID");
+                throw new Exception($"You don't have item with {activityID} ID");
             }
 
         }
 
 
-        protected IEnumerable<Item> GetItemsByCategory(string category)
+        protected IEnumerable<Activity> GetActivitiesByCategory(string category)
         {
             var dataProvider = new FileDataProvider();
             IEnumerable<string> categories = dataProvider.GetCategories();
-            IEnumerable<Item> items = dataProvider.GetItems();
+            IEnumerable<Activity> activities = dataProvider.GetActivities();
             try
             {
                 Console.Clear();
-                return items.Where(item => item.ItemCategory == category);
+                return activities.Where(activity => activity.ActivityCategory == category);
             }
             catch(Exception)
             {
@@ -69,9 +69,9 @@ namespace ToDoList.DataControllers
             }
         }
 
-        private IEnumerable<Item> GetItemsByCategory()
+        private IEnumerable<Activity> GetActivitiesByCategory()
         {
-            Console.WriteLine("Provide items category to find");
+            Console.WriteLine("Provide activities category to find");
             string? category;
             Console.Clear();
 
@@ -81,7 +81,7 @@ namespace ToDoList.DataControllers
             } 
             while (string.IsNullOrEmpty(category));
 
-            return GetItemsByCategory(category);            
+            return GetActivitiesByCategory(category);            
 
         }
 
@@ -100,10 +100,10 @@ namespace ToDoList.DataControllers
                     case 1:
                         {
                             var dataProvider = new FileDataProvider();
-                            IEnumerable<Item> items = dataProvider.GetItems();
+                            IEnumerable<Activity> activities = dataProvider.GetActivities();
 
                             var showProvider = new ShowProvider();
-                            showProvider.PrintManyItems(items);
+                            showProvider.PrintManyActivities(activities);
                             break;
                         }
                     case 2:
@@ -115,13 +115,13 @@ namespace ToDoList.DataControllers
 
                             if (selectedSearchItemOption == 1)
                             {
-                                Item searchedItem = GetItemByID("Provide item ID to find");
-                                showProvider.PrintItem(searchedItem);
+                                Activity searchedActivity = GetActivityByID("Provide activity ID to find");
+                                showProvider.PrintActivity(searchedActivity);
                             }
                             else if (selectedSearchItemOption == 2)
                             {
-                                IEnumerable<Item> searchedItems = GetItemsByCategory();
-                                showProvider.PrintManyItems(searchedItems);
+                                IEnumerable<Activity> searchedActivity = GetActivitiesByCategory();
+                                showProvider.PrintManyActivities(searchedActivity);
                             }
                             break;
                         }
