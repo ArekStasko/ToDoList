@@ -25,7 +25,7 @@ namespace ToDoList.DataControllers
                 category = Console.ReadLine();
             };
 
-            return categories.ElementAt(categoryNumber-1);
+            return categories.ElementAt(categoryNumber - 1);
         }
 
         private void AddNewCategory()
@@ -70,7 +70,7 @@ namespace ToDoList.DataControllers
             var dataProvider = new FileDataProvider();
             var activities = dataProvider.GetActivities();
 
-            if (activities.Any(activity=>activity.ActivityID == activityID))
+            if (activities.Any(activity => activity.ActivityID == activityID))
             {
                 Console.WriteLine("You already have activity with this ID");
                 activityID = GetID("Provide new activity unique ID");
@@ -124,15 +124,17 @@ namespace ToDoList.DataControllers
             while (string.IsNullOrEmpty(userInput));
 
             IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(userInput);
+         
             if (ActivitiesToDelete.Any())
             {
                 dataProvider.RemoveActivity(ActivitiesToDelete.ToList());
+            
             }
             dataProvider.RemoveCategory(userInput);
             var showProvider = new ShowProvider();
             showProvider.DisplayMessage("Successfully deleted category");
-        }           
-        
+        }
+
 
         public void GetSelectedEditionOption(int selectedOption)
         {
@@ -140,49 +142,58 @@ namespace ToDoList.DataControllers
             var categories = dataProvider.GetCategories();
             var activities = dataProvider.GetActivities();
 
-            if (selectedOption == 1)
+            switch (selectedOption)
             {
-                AddNewCategory();
+                case 1:
+                    {
+                        AddNewCategory();
+                        break;
+                    }
+                case 2:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("Please first add at least one category");
+                            AddNewCategory();
+                        }
+                        else
+                        {
+                            AddNewActivity();
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (!activities.Any())
+                        {
+                            Console.WriteLine("You don't have any activities");
+                        }
+                        else
+                        {
+                            DeleteActivity();
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("You don't have any category");
+                        }
+                        else
+                        {
+                            DeleteCategory();
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("You provide wrong option number");
+                        break;
+                    }
             }
-            else if (selectedOption == 2)
-            {                
-                if (!categories.Any())
-                {
-                    Console.WriteLine("Please first add at least one category");
-                    AddNewCategory();
-                }
-                else
-                {
-                    AddNewActivity();
-                }
-            }
-            else if (selectedOption == 3)
-            {
-                
-                if (!activities.Any())
-                {
-                    Console.WriteLine("You don't have any activities");
-                }
-                else
-                {
-                    DeleteActivity();
-                }
-            }
-            else if (selectedOption == 4)
-            {
-                if (!categories.Any())
-                {
-                    Console.WriteLine("You don't have any category");
-                }
-                else
-                {
-                    DeleteCategory();
-                }
-            }
-            else
-            {
-                Console.WriteLine("You provide wrong option number");
-            }
+
         }
 
 
