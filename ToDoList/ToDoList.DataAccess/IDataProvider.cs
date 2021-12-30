@@ -4,11 +4,11 @@ namespace ToDoList.DataAccess
 {
     public interface IDataProvider
     {
-        IEnumerable<Item> GetItems();
+        IEnumerable<Activity> GetActivities();
         IEnumerable<string> GetCategories();
         void AddCategory(string newCategory);
-        void AddItem(Item newItem);
-        void AddItems(List<Item> newItems);
-        void RemoveItem(Item itemToRemove);
+        void AddActivity(Activity newActivity);
+        void AddActivities(List<Activity> newActivities);
+        void RemoveActivity(Activity activityToRemove);
     }
 }

@@ -4,17 +4,17 @@ namespace ToDoList.Views
 {
     public class ShowProvider
     {
-        public void PrintItem(Item item)
+        public void PrintActivity(Activity activity)
         {
-            string itemRow = $"| {item.ItemId} | {item.ItemCategory} | {item.ItemName} | {item.ItemDescription} |";
-            Console.WriteLine(itemRow);
+            string activityRow = $"| {activity.ActivityID} | {activity.ActivityCategory} | {activity.ActivityName} | {activity.ActivityDescription} |";
+            Console.WriteLine(activityRow);
         }
 
-        public void PrintManyItems(IEnumerable<Item> items)
+        public void PrintManyActivities(IEnumerable<Activity> activities)
         {
-            foreach (var item in items)
+            foreach (var activity in activities)
             {
-                PrintItem(item);
+                PrintActivity(activity);
             }
         }
 

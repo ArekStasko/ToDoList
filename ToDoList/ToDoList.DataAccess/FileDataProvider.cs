@@ -5,14 +5,14 @@ namespace ToDoList.DataAccess
     public class FileDataProvider : IDataProvider
     {
         private const string categoriesFilePath = @".\categories.txt";
-        private const string itemsFilePath = @".\items.txt";
+        private const string activitiesFilePath = @".\activities.txt";
         private const string separator = "|";
 
-        private void InitializeItemsFile()
+        private void InitializeActivitiesFile()
         {
-            if (!File.Exists(itemsFilePath))
+            if (!File.Exists(activitiesFilePath))
             {
-                using (File.Create(itemsFilePath))
+                using (File.Create(activitiesFilePath))
                 {
 
                 }
@@ -30,20 +30,20 @@ namespace ToDoList.DataAccess
             }
         }
 
-        public IEnumerable<Item> GetItems()
+        public IEnumerable<Activity> GetActivities()
         {
-            InitializeItemsFile();
-            foreach (string line in File.ReadLines(itemsFilePath))
+            InitializeActivitiesFile();
+            foreach (string line in File.ReadLines(activitiesFilePath))
             {
                 if (!String.IsNullOrWhiteSpace(line))
                 {
                     string[] data = line.Split(separator.ToCharArray());
-                    var newItem = new Item()
+                    var newItem = new Activity()
                     {
-                        ItemId = Int32.Parse(data[0]),
-                        ItemCategory = data[1],
-                        ItemName = data[2],
-                        ItemDescription = data[3],
+                        ActivityID = Int32.Parse(data[0]),
+                        ActivityCategory = data[1],
+                        ActivityName = data[2],
+                        ActivityDescription = data[3],
                     };
                     yield return newItem;
                 }
@@ -78,32 +78,32 @@ namespace ToDoList.DataAccess
             }
         }
 
-        public void AddItem(Item newItem)
+        public void AddActivity(Activity newActivity)
         {
-            InitializeItemsFile();
-            string line = string.Join(separator, newItem.ConvertToDataRow());
-            File.AppendAllText(itemsFilePath, line + Environment.NewLine);
+            InitializeActivitiesFile();
+            string line = string.Join(separator, newActivity.ConvertToDataRow());
+            File.AppendAllText(activitiesFilePath, line + Environment.NewLine);
         }
 
-        public void AddItems(List<Item> newItems)
+        public void AddActivities(List<Activity> newActivities)
         {
-            foreach (var item in newItems)
-                AddItem(item);
+            foreach (var activity in newActivities)
+                AddActivity(activity);
         }
 
-        public void RemoveItem(Item itemToRemove)
+        public void RemoveActivity(Activity activityToRemove)
         {
-            InitializeItemsFile();
-            var items = GetItems().ToList();
-            items.Remove(itemToRemove);
-            File.WriteAllText(itemsFilePath, string.Empty);
-            AddItems(items);
+            InitializeActivitiesFile();
+            var activities = GetActivities().ToList();
+            activities.Remove(activityToRemove);
+            File.WriteAllText(activitiesFilePath, string.Empty);
+            AddActivities(activities);
         }
 
-        public void RemoveItems(List<Item> newItems)
+        public void RemoveActivity(List<Activity> newActivities)
         {
-            foreach (var item in newItems)
-                RemoveItem(item);
+            foreach (var activity in newActivities)
+                RemoveActivity(activity);
         }
 
     }
