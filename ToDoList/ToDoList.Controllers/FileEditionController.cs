@@ -45,6 +45,12 @@ namespace ToDoList.DataControllers
             showProvider.DisplayMessage("Successfully added new category");
         }
 
+        private void GetUserDate(string msg)
+        {
+            Console.WriteLine(msg);
+            
+        }
+
         private void AddNewActivity()
         {
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
@@ -65,7 +71,7 @@ namespace ToDoList.DataControllers
             }
 
             string category = GetCategory();
-            int activityID = GetID("Provide new activity ID");
+            int activityID = GetNumericValue("Provide new activity ID");
 
             var dataProvider = new FileDataProvider();
             var activities = dataProvider.GetActivities();
@@ -73,7 +79,7 @@ namespace ToDoList.DataControllers
             if (activities.Any(activity => activity.ActivityID == activityID))
             {
                 Console.WriteLine("You already have activity with this ID");
-                activityID = GetID("Provide new activity unique ID");
+                activityID = GetNumericValue("Provide new activity unique ID");
             }
 
             var newActivity = new Activity()
@@ -87,7 +93,7 @@ namespace ToDoList.DataControllers
             while (activities.Any(activity => activity.ActivityID == newActivity.ActivityID))
             {
                 Console.WriteLine("- You already have activity with this ID -");
-                int newActivityID = GetID("- Provide unique ID number -");
+                int newActivityID = GetNumericValue("- Provide unique ID number -");
                 newActivity.ActivityID = newActivityID;
             }
 

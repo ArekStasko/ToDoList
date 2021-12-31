@@ -20,16 +20,16 @@ namespace ToDoList.DataControllers
             return optionNumber;
         }
 
-        protected int GetID(string message)
+        protected int GetNumericValue(string message)
         {
             Console.WriteLine(message);
-            string? ID = Console.ReadLine();
-            while (!Int32.TryParse(ID, out int n) || string.IsNullOrEmpty(ID))
+            string? NumVal = Console.ReadLine();
+            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal))
             {
-                Console.WriteLine("ID must be number");
-                ID = Console.ReadLine();
+                Console.WriteLine("Input must be number");
+                NumVal = Console.ReadLine();
             }
-            return Int32.Parse(ID);
+            return Int32.Parse(NumVal);
         }
 
         protected Activity GetActivityByID(string msg)
@@ -37,7 +37,7 @@ namespace ToDoList.DataControllers
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-            int activityID = GetID(msg);
+            int activityID = GetNumericValue(msg);
 
             try
             {

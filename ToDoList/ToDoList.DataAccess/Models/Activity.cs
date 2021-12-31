@@ -7,6 +7,19 @@ namespace ToDoList.DataAccess.Models
         public string ActivityCategory { get; set; } = "noneCategory";
         public string ActivityDescription { get; set; } = "noneDescription";
         public int ActivityID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DeadlineDate { get; set; }
+
+        public int[] GetTimeToDeadline()
+        {
+            TimeSpan dateDifference = DeadlineDate - StartDate;
+
+            return new[] { 
+                dateDifference.Minutes, 
+                dateDifference.Hours,
+                dateDifference.Days,
+            };
+        }
 
         public string[] ConvertToDataRow()
         {
