@@ -10,20 +10,21 @@ namespace ToDoList.DataAccess.Models
         public DateTime StartDate { get; set; }
         public DateTime DeadlineDate { get; set; }
 
-        public int[] GetTimeToDeadline()
+        public string GetTimeToDeadline()
         {
             TimeSpan dateDifference = DeadlineDate - StartDate;
-
-            return new[] { 
-                dateDifference.Minutes, 
-                dateDifference.Hours,
-                dateDifference.Days,
-            };
+            return dateDifference.ToString("MM/dd/yyyy HH:mm");
         }
 
         public string[] ConvertToDataRow()
         {
-            return new[] { ActivityID.ToString(), ActivityCategory,ActivityName, ActivityDescription };
+            return new[] { 
+                ActivityID.ToString(), 
+                ActivityCategory,ActivityName, 
+                ActivityDescription, 
+                StartDate.ToString("MM/dd/yyyy HH:mm"),
+                DeadlineDate.ToString("MM/dd/yyyy HH:mm")
+            };
         }
 
         protected bool Equals(Activity other)

@@ -24,9 +24,9 @@ namespace ToDoList.DataControllers
         {
             Console.WriteLine(message);
             string? NumVal = Console.ReadLine();
-            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal))
-            {
-                Console.WriteLine("Input must be number");
+            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
+           {
+                Console.WriteLine("Input must be non 0 number");
                 NumVal = Console.ReadLine();
             }
             return Int32.Parse(NumVal);

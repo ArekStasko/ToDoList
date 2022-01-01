@@ -45,16 +45,63 @@ namespace ToDoList.DataControllers
             showProvider.DisplayMessage("Successfully added new category");
         }
 
-        private void GetUserDate(string msg)
+        private DateTime GetUserDate(string msg)
         {
             Console.WriteLine(msg);
-            
+            string[] dateQuery = new string[] { "Month", "Day", "Year", "Hour", "Minute" };
+            var dataDate = new List<int> { };
+
+            foreach (var data in dateQuery)
+            {
+                int numericValue;
+                do
+                {
+                    numericValue = GetNumericValue($"Provide {data}");
+                }
+                while (numericValue <= 0);
+                dataDate.Add(numericValue);
+            }
+
+            try
+            {
+                DateTime date = new DateTime(
+                    dataDate[0],
+                    dataDate[1],
+                    dataDate[2],
+                    dataDate[3],
+                    dataDate[4],
+                    0
+                    );
+
+                var currentDate = DateTime.Now;
+
+                if (date.CompareTo(currentDate) >= 0)
+                    return date;
+                else
+                    throw new Exception();
+            }
+            catch (Exception)
+            {
+                throw new Exception("You provided wrong date");
+            }
+
         }
 
         private void AddNewActivity()
         {
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
             List<string> activityData = new List<string>(2) { "", "" };
+
+            int activityID = GetNumericValue("Provide new activity ID");
+
+            var dataProvider = new FileDataProvider();
+            var activities = dataProvider.GetActivities();
+
+            if (activities.Any(activity => activity.ActivityID == activityID))
+            {
+                Console.WriteLine("You already have activity with this ID");
+                activityID = GetNumericValue("Provide new activity unique ID");
+            }
 
             for (int i = 0; i < activityQuery.Length; i++)
             {
@@ -71,31 +118,21 @@ namespace ToDoList.DataControllers
             }
 
             string category = GetCategory();
-            int activityID = GetNumericValue("Provide new activity ID");
 
-            var dataProvider = new FileDataProvider();
-            var activities = dataProvider.GetActivities();
-
-            if (activities.Any(activity => activity.ActivityID == activityID))
-            {
-                Console.WriteLine("You already have activity with this ID");
-                activityID = GetNumericValue("Provide new activity unique ID");
-            }
+            var startDate = GetUserDate("Provide start date of activity");
+            var deadlineDate = GetUserDate("Provide deadline date of activity");
 
             var newActivity = new Activity()
             {
                 ActivityName = activityData[0],
                 ActivityDescription = activityData[1],
                 ActivityID = activityID,
-                ActivityCategory = category
+                ActivityCategory = category,
+                StartDate = startDate,
+                DeadlineDate = deadlineDate,
             };
 
-            while (activities.Any(activity => activity.ActivityID == newActivity.ActivityID))
-            {
-                Console.WriteLine("- You already have activity with this ID -");
-                int newActivityID = GetNumericValue("- Provide unique ID number -");
-                newActivity.ActivityID = newActivityID;
-            }
+
 
             dataProvider.AddActivity(newActivity);
 
@@ -130,11 +167,11 @@ namespace ToDoList.DataControllers
             while (string.IsNullOrEmpty(userInput));
 
             IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(userInput);
-         
+
             if (ActivitiesToDelete.Any())
             {
                 dataProvider.RemoveActivity(ActivitiesToDelete.ToList());
-            
+
             }
             dataProvider.RemoveCategory(userInput);
             var showProvider = new ShowProvider();

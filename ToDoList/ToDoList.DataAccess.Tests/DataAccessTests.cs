@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
 using System.Linq;
+using System;
 using ToDoList.DataAccess.Models;
 
 namespace ToDoList.DataAccess.Tests.Unit
@@ -30,17 +31,21 @@ namespace ToDoList.DataAccess.Tests.Unit
         public void AddActivity_Should_Work()
         {
             var dataProvider = new FileDataProvider();
-            var activityID = 1;
-            var category = "TestCategory";
-            var desc = "TestDescription";
-            var activityName = "TestItemName";
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()
             {
                 ActivityID = activityID,
                 ActivityCategory = category,
                 ActivityDescription = desc,
-                ActivityName = activityName
+                ActivityName = activityName,
+                StartDate = startDate,
+                DeadlineDate = deadlineDate
             };
 
             dataProvider.AddActivity(newActivity);
@@ -51,6 +56,8 @@ namespace ToDoList.DataAccess.Tests.Unit
             itemToAssert.ActivityCategory.Should().Be(category);
             itemToAssert.ActivityDescription.Should().Be(desc);
             itemToAssert.ActivityName.Should().Be(activityName);
+            itemToAssert.StartDate.Should().Be(startDate);
+            itemToAssert.DeadlineDate.Should().Be(deadlineDate);
         }
 
         [Test]
