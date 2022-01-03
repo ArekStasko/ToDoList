@@ -44,9 +44,9 @@ namespace ToDoList.DataAccess
                         ActivityCategory = data[1],
                         ActivityName = data[2],
                         ActivityDescription = data[3],
-                        StartDate = Convert.ToDateTime(data[4]),
-                        DeadlineDate = Convert.ToDateTime(data[5])
-                };
+                        StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy hh:mm", null),
+                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy hh:mm", null)
+                    };
                     yield return newItem;
                 }
             }

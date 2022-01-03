@@ -12,8 +12,11 @@ namespace ToDoList.DataAccess.Models
 
         public string GetTimeToDeadline()
         {
-            TimeSpan dateDifference = DeadlineDate - StartDate;
-            return dateDifference.ToString("MM/dd/yyyy HH:mm");
+            string dateDifference = (DeadlineDate - StartDate).ToString();
+            string[] dateDifferences = dateDifference.Split('.');
+            return dateDifferences.Length > 1 ? 
+                $"Days: {dateDifferences[0]}  Time: {dateDifferences[1]}" :
+                $"Time: {dateDifferences[0]}";
         }
 
         public string[] ConvertToDataRow()

@@ -7,7 +7,13 @@ namespace ToDoList.Views
         public void PrintActivity(Activity activity)
         {
             string activityRow = $"| {activity.ActivityID} | {activity.ActivityCategory} | {activity.ActivityName} | {activity.ActivityDescription} |";
+            string activitiTime = $"| {activity.StartDate} | {activity.DeadlineDate} |";
+
+            Console.WriteLine($"| Activity ID | Activity Category | Activity Name | Activity Description |");
             Console.WriteLine(activityRow);
+            Console.WriteLine($"| Start Date | Deadline |");
+            Console.WriteLine(activitiTime);
+            Console.WriteLine($"| Remain time : {activity.GetTimeToDeadline()} |");
         }
 
         public void PrintManyActivities(IEnumerable<Activity> activities)

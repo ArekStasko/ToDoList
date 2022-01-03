@@ -8,9 +8,68 @@ namespace ToDoList.DataControllers
     public class FileEditionController : FileDataController
     {
 
-        private string GetCategory()
+        public void GetSelectedEditionOption(int selectedOption)
         {
-            Console.WriteLine("- Please choose number of your activity category -");
+            var dataProvider = new FileDataProvider();
+            var categories = dataProvider.GetCategories();
+            var activities = dataProvider.GetActivities();
+
+            switch (selectedOption)
+            {
+                case 1:
+                    {
+                        AddNewCategory();
+                        break;
+                    }
+                case 2:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("Please first add at least one category");
+                            AddNewCategory();
+                        }
+                        else
+                        {
+                            AddNewActivity();
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (!activities.Any())
+                        {
+                            Console.WriteLine("You don't have any activities");
+                        }
+                        else
+                        {
+                            DeleteActivity();
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("You don't have any category");
+                        }
+                        else
+                        {
+                            DeleteCategory();
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("You provide wrong option number");
+                        break;
+                    }
+            }
+        }
+
+            private string GetCategory()
+        {
+            Console.WriteLine("- Please choose number of category -");
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
 
@@ -48,7 +107,7 @@ namespace ToDoList.DataControllers
         private DateTime GetUserDate(string msg)
         {
             Console.WriteLine(msg);
-            string[] dateQuery = new string[] { "Month", "Day", "Year", "Hour", "Minute" };
+            string[] dateQuery = new string[] { "Year", "Month", "Day", "Hour", "Minute" };
             var dataDate = new List<int> { };
 
             foreach (var data in dateQuery)
@@ -153,92 +212,24 @@ namespace ToDoList.DataControllers
 
         private void DeleteCategory()
         {
-
             Console.WriteLine("Please provide the category name to delete");
             Console.WriteLine("- This will delete all items with this category -");
-            string? userInput;
 
+            var showProvider = new ShowProvider();
             var dataProvider = new FileDataProvider();
 
-            do
-            {
-                userInput = Console.ReadLine();
-            }
-            while (string.IsNullOrEmpty(userInput));
+            var categoryToDelete = GetCategory();              
 
-            IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(userInput);
+            IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(categoryToDelete);
 
             if (ActivitiesToDelete.Any())
             {
                 dataProvider.RemoveActivity(ActivitiesToDelete.ToList());
 
             }
-            dataProvider.RemoveCategory(userInput);
-            var showProvider = new ShowProvider();
+            dataProvider.RemoveCategory(categoryToDelete);
             showProvider.DisplayMessage("Successfully deleted category");
-        }
-
-
-        public void GetSelectedEditionOption(int selectedOption)
-        {
-            var dataProvider = new FileDataProvider();
-            var categories = dataProvider.GetCategories();
-            var activities = dataProvider.GetActivities();
-
-            switch (selectedOption)
-            {
-                case 1:
-                    {
-                        AddNewCategory();
-                        break;
-                    }
-                case 2:
-                    {
-                        if (!categories.Any())
-                        {
-                            Console.WriteLine("Please first add at least one category");
-                            AddNewCategory();
-                        }
-                        else
-                        {
-                            AddNewActivity();
-                        }
-                        break;
-                    }
-                case 3:
-                    {
-                        if (!activities.Any())
-                        {
-                            Console.WriteLine("You don't have any activities");
-                        }
-                        else
-                        {
-                            DeleteActivity();
-                        }
-                        break;
-                    }
-                case 4:
-                    {
-                        if (!categories.Any())
-                        {
-                            Console.WriteLine("You don't have any category");
-                        }
-                        else
-                        {
-                            DeleteCategory();
-                        }
-
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("You provide wrong option number");
-                        break;
-                    }
-            }
-
-        }
-
+        }        
 
     }
 }
