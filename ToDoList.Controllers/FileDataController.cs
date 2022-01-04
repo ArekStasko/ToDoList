@@ -1,10 +1,12 @@
 ﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
+using ToDoList.Controllers.Activities;
+using ToDoList.Controllers.Categories;
 
-namespace ToDoList.DataControllers
+namespace ToDoList.Controllers
 {
-    public class FileDataController : IFileDataController
+    internal class FileDataController : IFileDataController
     {
 
         public void ChooseMainOption()
@@ -53,20 +55,19 @@ namespace ToDoList.DataControllers
                             optionsProvider.PrintEditionOptions();
                             int selectedEditionOption = GetUserSelection();
 
-                            var editionController = new FileEditionController();
-                            editionController.GetSelectedEditionOption(selectedEditionOption);
+                            GetSelectedEditionOption(selectedEditionOption);
                             break;
                         }
                     default:
                         Console.WriteLine("You provide wrong option number");
                         break;
 
-                }                                 
+                }
             }
             while (userSelection != 4);
         }
 
-            private int GetUserSelection()
+        private int GetUserSelection()
         {
             string? selectedOption = Console.ReadLine();
             int optionNumber;
@@ -144,6 +145,69 @@ namespace ToDoList.DataControllers
             return GetActivitiesByCategory(category);
 
         }
-                    
+
+        private void GetSelectedEditionOption(int selectedOption)
+        {
+            var dataProvider = new FileDataProvider();
+            var categories = dataProvider.GetCategories();
+            var activities = dataProvider.GetActivities();
+
+            switch (selectedOption)
+            {
+                case 1:
+                    {
+                        var categoriesControllers = new CategoriesControllers();
+                        categoriesControllers.AddNewCategory();
+                        break;
+                    }
+                case 2:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("Please first add at least one category");
+                            var categoriesControllers = new CategoriesControllers();
+                            categoriesControllers.AddNewCategory();
+                        }
+                        else
+                        {
+                            var activitiesControllers = new ActivitiesControllers();
+                            activitiesControllers.AddNewActivity();
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (!activities.Any())
+                        {
+                            Console.WriteLine("You don't have any activities");
+                        }
+                        else
+                        {
+                            var activitiesControllers = new ActivitiesControllers();
+                            activitiesControllers.DeleteActivity();
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("You don't have any category");
+                        }
+                        else
+                        {
+                            var categoriesControllers = new CategoriesControllers();
+                            categoriesControllers.DeleteCategory();
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("You provide wrong option number");
+                        break;
+                    }
+            }
+        }
     }
 }

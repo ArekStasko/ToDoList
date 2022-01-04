@@ -1,7 +1,7 @@
 ﻿
-namespace ToDoList.DataControllers
+namespace ToDoList.Controllers
 {
-    interface IFileDataController
+    internal interface IFileDataController
     {
         public void ChooseMainOption();
     }
