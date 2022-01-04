@@ -13,7 +13,7 @@ namespace ToDoList.Views
             Console.WriteLine(activityRow);
             Console.WriteLine($"| Start Date | Deadline |");
             Console.WriteLine(activitiTime);
-            Console.WriteLine($"| Remain time : {activity.GetTimeToDeadline()} |");
+            Console.WriteLine($"| Time To Deadline : {activity.GetTimeToDeadline()} |");
         }
 
         public void PrintManyActivities(IEnumerable<Activity> activities)

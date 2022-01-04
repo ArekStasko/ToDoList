@@ -6,7 +6,7 @@ using ToDoList.Controllers.Categories;
 
 namespace ToDoList.Controllers
 {
-    internal class FileDataController : IFileDataController
+    public class FileDataController : IFileDataController
     {
 
         public void ChooseMainOption()

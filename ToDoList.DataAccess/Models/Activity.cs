@@ -12,11 +12,13 @@ namespace ToDoList.DataAccess.Models
 
         public string GetTimeToDeadline()
         {
-            string dateDifference = (DeadlineDate - StartDate).ToString();
-            string[] dateDifferences = dateDifference.Split('.');
-            return dateDifferences.Length > 1 ? 
-                $"Days: {dateDifferences[0]}  Time: {dateDifferences[1]}" :
-                $"Time: {dateDifferences[0]}";
+            TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
+            return $"{dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
+        }
+
+        public bool IsActivityCurrent()
+        {
+            return DeadlineDate > DateTime.Now;
         }
 
         public string[] ConvertToDataRow()
