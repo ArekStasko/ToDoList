@@ -10,21 +10,31 @@ namespace ToDoList.DataAccess.Models
         public DateTime StartDate { get; set; }
         public DateTime DeadlineDate { get; set; }
         public bool IsActive { get { return DeadlineDate > DateTime.Now; } }
-
+        public bool IsDone { get; set; } = false;
+        
         public string GetTimeToDeadline()
         {
-            TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
-            return $"{dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
+            if (!IsDone)
+            {
+                TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
+                return $"{dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
+            } 
+            else
+            {
+                return "This activity is done";
+            }
+
         }
 
         public string[] ConvertToDataRow()
         {
-            return new[] { 
-                ActivityID.ToString(), 
-                ActivityCategory,ActivityName, 
-                ActivityDescription, 
+            return new[] {
+                ActivityID.ToString(),
+                ActivityCategory,ActivityName,
+                ActivityDescription,
                 StartDate.ToString("MM/dd/yyyy HH:mm"),
-                DeadlineDate.ToString("MM/dd/yyyy HH:mm")
+                DeadlineDate.ToString("MM/dd/yyyy HH:mm"),
+                IsDone ? "1" : "0"
             };
         }
 

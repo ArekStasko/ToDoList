@@ -5,7 +5,8 @@ namespace ToDoList.Views
     {
 
         void PrintMainOptions();
-        void PrintEditionOptions();
+        void PrintActivitiesOptions();
+        void PrintCategoriesOptions();
         void PrintActivitySearchOptions();
     }
 }

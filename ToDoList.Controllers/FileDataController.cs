@@ -1,8 +1,8 @@
-﻿using ToDoList.DataAccess;
+﻿using ToDoList.Controllers.Activities;
+using ToDoList.Controllers.Categories;
+using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
-using ToDoList.Controllers.Activities;
-using ToDoList.Controllers.Categories;
 
 namespace ToDoList.Controllers
 {
@@ -28,7 +28,7 @@ namespace ToDoList.Controllers
                             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
                             var showProvider = new ShowProvider();
-                            showProvider.PrintActivities(activities);
+                            showProvider.PrintActivities(activities.Where(activity => !activity.IsDone));
                             break;
                         }
                     case 2:
@@ -62,10 +62,18 @@ namespace ToDoList.Controllers
                         }
                     case 3:
                         {
-                            optionsProvider.PrintEditionOptions();
+                            optionsProvider.PrintActivitiesOptions();
                             int selectedEditionOption = GetUserSelection();
 
-                            GetSelectedEditionOption(selectedEditionOption);
+                            RunActivityController(selectedEditionOption);
+                            break;
+                        }
+                    case 4:
+                        {
+                            optionsProvider.PrintCategoriesOptions();
+                            int selectedEditionOption = GetUserSelection();
+
+                            RunCategoryController(selectedEditionOption);
                             break;
                         }
                     default:
@@ -74,7 +82,7 @@ namespace ToDoList.Controllers
 
                 }
             }
-            while (userSelection != 4);
+            while (userSelection != 5);
         }
 
         private int GetUserSelection()
@@ -156,11 +164,10 @@ namespace ToDoList.Controllers
 
         }
 
-        private void GetSelectedEditionOption(int selectedOption)
+        private void RunCategoryController(int selectedOption)
         {
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
-            var activities = dataProvider.GetActivities();
 
             switch (selectedOption)
             {
@@ -171,34 +178,6 @@ namespace ToDoList.Controllers
                         break;
                     }
                 case 2:
-                    {
-                        if (!categories.Any())
-                        {
-                            Console.WriteLine("Please first add at least one category");
-                            var categoriesControllers = new CategoriesControllers();
-                            categoriesControllers.AddNewCategory();
-                        }
-                        else
-                        {
-                            var activitiesControllers = new ActivitiesControllers();
-                            activitiesControllers.AddNewActivity();
-                        }
-                        break;
-                    }
-                case 3:
-                    {
-                        if (!activities.Any())
-                        {
-                            Console.WriteLine("You don't have any activities");
-                        }
-                        else
-                        {
-                            var activitiesControllers = new ActivitiesControllers();
-                            activitiesControllers.DeleteActivity();
-                        }
-                        break;
-                    }
-                case 4:
                     {
                         if (!categories.Any())
                         {
@@ -219,5 +198,63 @@ namespace ToDoList.Controllers
                     }
             }
         }
+
+
+
+        private void RunActivityController(int selectedOption)
+        {
+            var dataProvider = new FileDataProvider();
+            var categories = dataProvider.GetCategories();
+            var activities = dataProvider.GetActivities();
+            var activitiesControllers = new ActivitiesControllers();
+
+            switch (selectedOption)
+            {
+                case 1:
+                    {
+                        if (!categories.Any())
+                        {
+                            Console.WriteLine("Please first add at least one category");
+                            var categoriesControllers = new CategoriesControllers();
+                            categoriesControllers.AddNewCategory();
+                        }
+                        else
+                            activitiesControllers.AddNewActivity();
+                        break;
+                    }
+                case 2:
+                    {
+                        if (!activities.Any())
+                        {
+                            Console.WriteLine("You don't have any activities");
+                        }
+                        else
+                            activitiesControllers.SetActivityAsDone();
+                        break;
+                    }
+                case 3:
+                    {
+                        var showProvider = new ShowProvider();
+                        showProvider.PrintActivities(activities.Where(activity => activity.IsDone));
+                        break;
+                    }
+                case 4:
+                    {
+                        if (!activities.Any())
+                        {
+                            Console.WriteLine("You don't have any activities");
+                        }
+                        else
+                            activitiesControllers.DeleteActivity();
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("You provide wrong option number");
+                        break;
+                    }
+            }
+        }
+
     }
 }

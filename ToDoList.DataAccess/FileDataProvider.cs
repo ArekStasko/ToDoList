@@ -54,16 +54,17 @@ namespace ToDoList.DataAccess
                 if (!String.IsNullOrWhiteSpace(line))
                 {
                     string[] data = line.Split(separator.ToCharArray());
-                    var newItem = new Activity()
+                    var newActivity = new Activity()
                     {
                         ActivityID = Int32.Parse(data[0]),
                         ActivityCategory = data[1],
                         ActivityName = data[2],
                         ActivityDescription = data[3],
                         StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy hh:mm", null),
-                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy hh:mm", null)
+                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy hh:mm", null),
+                        IsDone = data[6] == "1"
                     };
-                    yield return newItem;
+                    yield return newActivity;
                 }
             }
         }
@@ -122,6 +123,12 @@ namespace ToDoList.DataAccess
         {
             foreach (var activity in newActivities)
                 RemoveActivity(activity);
+        }
+
+        public void UpdateActivity(Activity activityToUpdate)
+        {
+            RemoveActivity(activityToUpdate);
+            AddActivity(activityToUpdate);
         }
 
     }

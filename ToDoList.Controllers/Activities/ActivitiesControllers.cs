@@ -8,6 +8,14 @@ namespace ToDoList.Controllers.Activities
     internal class ActivitiesControllers : FileDataController, IActivitiesControllers
     {
 
+        public void SetActivityAsDone()
+        {
+            var dataProvider = new FileDataProvider();
+            var activity = GetActivityByID("Please provide activity ID");
+            activity.IsDone = true;
+            dataProvider.UpdateActivity(activity);
+        }
+
         public void AddNewActivity()
         {
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };

@@ -17,7 +17,8 @@ namespace ToDoList.Views
             string[] mainOptions = new string[] { 
                 "Show all activities", 
                 "Show specific activities", 
-                "Edit activities", 
+                "Manage Activities", 
+                "Manage Categories",
                 "Close ToDo list" 
             };
 
@@ -25,18 +26,28 @@ namespace ToDoList.Views
             printOptions(mainOptions, msg);
         }
 
-        public void PrintEditionOptions()
+        public void PrintActivitiesOptions()
         {
             Console.Clear();
-            string[] editionOptions = new string[] { 
-                "Add new Category", 
-                "Add new activity", 
-                "Delete activity", 
-                "Delete category" 
+            string[] editionOptions = new string[] {
+                "Add new activity",
+                "Set activity as done",
+                "Show all done activities",
+                "Delete activity"
             };
 
-            string msg = "Please select one edition option :";
-            printOptions(editionOptions, msg);
+            printOptions(editionOptions, "Please select one option :");
+        }
+
+        public void PrintCategoriesOptions()
+        {
+            Console.Clear();
+            string[] editionOptions = new string[] {
+                "Add new category",
+                "Delete category"
+            };
+
+            printOptions(editionOptions, "Please select one option :");
         }
 
         public void PrintActivitySearchOptions()
