@@ -28,25 +28,35 @@ namespace ToDoList.Controllers
                             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
                             var showProvider = new ShowProvider();
-                            showProvider.PrintManyActivities(activities);
+                            showProvider.PrintActivities(activities);
                             break;
                         }
                     case 2:
                         {
-                            optionsProvider.PrintItemSearchOptions();
-                            int selectedSearchItemOption = GetUserSelection();
+                            optionsProvider.PrintActivitySearchOptions();
+                            int selectedOption = GetUserSelection();
                             var showProvider = new ShowProvider();
 
 
-                            if (selectedSearchItemOption == 1)
+                            if (selectedOption == 1)
                             {
-                                Activity searchedActivity = GetActivityByID("Provide activity ID to find");
+                                var searchedActivity = GetActivityByID("Provide activity ID to find");
                                 showProvider.PrintActivity(searchedActivity);
                             }
-                            else if (selectedSearchItemOption == 2)
+                            else if (selectedOption == 2)
                             {
-                                IEnumerable<Activity> searchedActivity = GetActivitiesByCategory();
-                                showProvider.PrintManyActivities(searchedActivity);
+                                var dataProvider = new FileDataProvider();
+                                showProvider.PrintActivities(dataProvider.GetActivityByTerm(true));
+                            }
+                            else if (selectedOption == 3)
+                            {
+                                var dataProvider = new FileDataProvider();
+                                showProvider.PrintActivities(dataProvider.GetActivityByTerm(false));
+                            }
+                            else if (selectedOption == 4)
+                            {
+                                var searchedActivity = GetActivitiesByCategory();
+                                showProvider.PrintActivities(searchedActivity);
                             }
                             break;
                         }

@@ -116,7 +116,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string[] activitiesNames = new string[] { "testName1", "testName2", "testName3", "testName4" };
             string[] activitiesDesc = new string[] { "testDesc1", "testDesc2", "testDesc3", "testDesc4" };
             string[] activitiesCategories = new string[] { "testCategory", "testCategory", "testCategory", "testCategory" };
-            int[] activitiesIDs = new int[] { 123, 456, 789, 321 };
 
             for (int i = 0; i < activitiesNames.Length; i++)
             {
@@ -125,7 +124,7 @@ namespace ToDoList.DataAccess.Tests.Unit
                     ActivityName = activitiesNames[i],
                     ActivityDescription = activitiesDesc[i],
                     ActivityCategory = activitiesCategories[i],
-                    ActivityID = activitiesIDs[i],
+                    ActivityID = i,
                 };
 
                 dataProvider.AddActivity(newActivity);
@@ -136,6 +135,85 @@ namespace ToDoList.DataAccess.Tests.Unit
             dataProvider.RemoveActivity(activitiesToFind.ToList());
             var activitiesFromFile = dataProvider.GetActivities().ToList();
             activitiesFromFile.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetActivityByTerm_ShouldGive_unavailableActivity()
+        {
+            var dataProvider = new FileDataProvider();
+            string[] activitiesNames = new string[] { "testName1", "testName2", "testName3", "testName4" };
+            string[] activitiesDesc = new string[] { "testDesc1", "testDesc2", "testDesc3", "testDesc4" };
+            string[] activitiesCategories = new string[] { "testCategory", "testCategory", "testCategory", "testCategory" };
+            DateTime[] startDate = new DateTime[] { 
+                new DateTime(2015, 05, 20, 05, 50, 0), 
+                new DateTime(2016, 05, 20, 05, 50, 0),
+                new DateTime(2017, 05, 20, 05, 50, 0),
+                new DateTime(2018, 05, 20, 05, 50, 0)
+            };
+            DateTime[] deadlineDate = new DateTime[] {
+                new DateTime(2020, 05, 20, 05, 50, 0),
+                new DateTime(2015, 05, 20, 05, 50, 0),
+                new DateTime(2022, 07, 20, 05, 50, 0),
+                new DateTime(2015, 05, 20, 05, 50, 0)
+            };
+
+            for (int i = 0; i<activitiesNames.Length; i++)
+            {
+                var newActivity = new Activity()
+                {
+                    ActivityName = activitiesNames[i],
+                    ActivityDescription = activitiesDesc[i],
+                    ActivityCategory = activitiesCategories[i],
+                    ActivityID = i,
+                    StartDate = startDate[i],
+                    DeadlineDate = deadlineDate[i]
+                };
+
+                dataProvider.AddActivity(newActivity);
+            }
+
+            var availableActivities = dataProvider.GetActivityByTerm(true);
+            availableActivities.Should().Contain(activity => activity.IsActive);
+
+        }
+
+        [Test]
+        public void GetActivityByTerm_ShouldGive_availableActivity()
+        {
+            var dataProvider = new FileDataProvider();
+            string[] activitiesNames = new string[] { "testName1", "testName2", "testName3", "testName4" };
+            string[] activitiesDesc = new string[] { "testDesc1", "testDesc2", "testDesc3", "testDesc4" };
+            string[] activitiesCategories = new string[] { "testCategory", "testCategory", "testCategory", "testCategory" };
+            DateTime[] startDate = new DateTime[] {
+                new DateTime(2015, 05, 20, 05, 50, 0),
+                new DateTime(2016, 05, 20, 05, 50, 0),
+                new DateTime(2017, 05, 20, 05, 50, 0),
+                new DateTime(2018, 05, 20, 05, 50, 0)
+            };
+            DateTime[] deadlineDate = new DateTime[] {
+                new DateTime(2020, 05, 20, 05, 50, 0),
+                new DateTime(2015, 05, 20, 05, 50, 0),
+                new DateTime(2022, 07, 20, 05, 50, 0),
+                new DateTime(2015, 05, 20, 05, 50, 0)
+            };
+
+            for (int i = 0; i < activitiesNames.Length; i++)
+            {
+                var newActivity = new Activity()
+                {
+                    ActivityName = activitiesNames[i],
+                    ActivityDescription = activitiesDesc[i],
+                    ActivityCategory = activitiesCategories[i],
+                    ActivityID = i,
+                    StartDate = startDate[i],
+                    DeadlineDate = deadlineDate[i]
+                };
+
+                dataProvider.AddActivity(newActivity);
+            }
+
+            var availableActivities = dataProvider.GetActivityByTerm(false);
+            availableActivities.Should().Contain(activity => !activity.IsActive);
         }
     }
 }

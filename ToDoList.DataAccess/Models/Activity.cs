@@ -9,16 +9,12 @@ namespace ToDoList.DataAccess.Models
         public int ActivityID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime DeadlineDate { get; set; }
+        public bool IsActive { get { return DeadlineDate > DateTime.Now; } }
 
         public string GetTimeToDeadline()
         {
             TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
             return $"{dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
-        }
-
-        public bool IsActivityCurrent()
-        {
-            return DeadlineDate > DateTime.Now;
         }
 
         public string[] ConvertToDataRow()

@@ -16,7 +16,7 @@ namespace ToDoList.Views
             Console.WriteLine($"| Time To Deadline : {activity.GetTimeToDeadline()} |");
         }
 
-        public void PrintManyActivities(IEnumerable<Activity> activities)
+        public void PrintActivities(IEnumerable<Activity> activities)
         {
             foreach (var activity in activities)
             {

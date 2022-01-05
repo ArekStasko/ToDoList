@@ -39,12 +39,14 @@ namespace ToDoList.Views
             printOptions(editionOptions, msg);
         }
 
-        public void PrintItemSearchOptions()
+        public void PrintActivitySearchOptions()
         {
             Console.Clear();
             string[] itemOptions = new string[] { 
-                "Get single activity from ID", 
-                "Get items with specific category" 
+                "Get single activity from ID",
+                "Get current activities",
+                "Get activities out of date",
+                "Get activities with specific category" 
             };
 
             string msg = "Please select one item search option :";

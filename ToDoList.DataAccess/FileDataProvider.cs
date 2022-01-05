@@ -30,6 +30,22 @@ namespace ToDoList.DataAccess
             }
         }
 
+        public IEnumerable<Activity> GetActivityByTerm(bool available)
+        {
+            var activities = GetActivities();
+
+            if (activities.Any())
+            {
+                return available ? 
+                    activities.Where(activity => activity.IsActive) :
+                    activities.Where(activity => !activity.IsActive);
+            }
+            else
+            {
+                throw new Exception("You don't have any activity");
+            }
+        }
+
         public IEnumerable<Activity> GetActivities()
         {
             InitializeActivitiesFile();
