@@ -21,9 +21,8 @@ namespace ToDoList.Views
                 "Manage Categories",
                 "Close ToDo list" 
             };
-
-            string msg = "Please select one option :";
-            printOptions(mainOptions, msg);
+            
+            printOptions(mainOptions, "Please select one option :");
         }
 
         public void PrintActivitiesOptions()

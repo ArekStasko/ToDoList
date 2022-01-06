@@ -61,6 +61,39 @@ namespace ToDoList.DataAccess.Tests.Unit
         }
 
         [Test]
+        public void UpdateActivity_Should_Work()
+        {
+            var dataProvider = new FileDataProvider();
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
+
+            var newActivity = new Activity()
+            {
+                ActivityID = activityID,
+                ActivityCategory = category,
+                ActivityDescription = desc,
+                ActivityName = activityName,
+                StartDate = startDate,
+                DeadlineDate = deadlineDate
+            };
+
+            dataProvider.AddActivity(newActivity);
+            var activitiesFromFile = dataProvider.GetActivities().ToList();
+            var activityToAssert = activitiesFromFile.Single(x => x.ActivityID == activityID);
+            activityToAssert.IsDone = true;
+
+            dataProvider.UpdateActivity(activityToAssert);
+
+            activitiesFromFile = dataProvider.GetActivities().ToList();
+            activityToAssert = activitiesFromFile.Single(x => x.ActivityID == activityID);
+            activityToAssert.IsDone.Should().BeTrue();            
+        }
+
+        [Test]
         public void RemoveActivity_Should_Work()
         {
             var dataProvider = new FileDataProvider();

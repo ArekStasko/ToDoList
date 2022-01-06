@@ -6,7 +6,7 @@ namespace ToDoList
     {
         static void Main(string[] args)
         {
-            var dataController = new FileDataController();
+            var dataController = new FileDataControllerChooser();
             dataController.ChooseMainOption();
         }
     }

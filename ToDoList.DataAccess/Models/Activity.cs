@@ -9,19 +9,28 @@ namespace ToDoList.DataAccess.Models
         public int ActivityID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime DeadlineDate { get; set; }
-        public bool IsActive { get { return DeadlineDate > DateTime.Now; } }
-        public bool IsDone { get; set; } = false;
-        
+        public bool IsActive { get => DeadlineDate > DateTime.Now;  }
+        private TimeSpan TimeExceeded { get; set; }
+
+        private bool _isDone = false;
+        public bool IsDone { get => _isDone; 
+            set
+            {
+                _isDone = value;
+                TimeExceeded = DeadlineDate - DateTime.Now;
+            }
+        } 
+
         public string GetTimeToDeadline()
         {
-            if (!IsDone)
+            if (!_isDone)
             {
                 TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
-                return $"{dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
+                return $"Time To Deadline: {dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
             } 
             else
             {
-                return "This activity is done";
+                return $"Exceeded time: {TimeExceeded.Days} Days  {TimeExceeded.Hours} Hours  {TimeExceeded.Minutes} Minutes";
             }
 
         }
