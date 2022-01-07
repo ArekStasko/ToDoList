@@ -6,23 +6,22 @@ namespace ToDoList.Controllers
     public class FileDataController
     {
 
-        protected int GetUserSelection()
+        protected int GetUserSelection(int numberOfOptions)
         {
-            string? selectedOption = Console.ReadLine();
-            int optionNumber;
+            int selectedOption = GetNumericValue();
 
-            while (!Int32.TryParse(selectedOption, out optionNumber))
+            while (selectedOption > numberOfOptions)
             {
-                Console.WriteLine("You have to choose the number of option");
-                selectedOption = Console.ReadLine();
+                Console.WriteLine($"There is no {selectedOption} option");
+                selectedOption = GetNumericValue();
             }
+
             Console.Clear();
-            return optionNumber;
+            return selectedOption;
         }
 
-        protected int GetNumericValue(string message)
+        protected int GetNumericValue()
         {
-            Console.WriteLine(message);
             string? NumVal = Console.ReadLine();
             while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
             {
@@ -32,12 +31,27 @@ namespace ToDoList.Controllers
             return Int32.Parse(NumVal);
         }
 
+        protected string GetStringValue(string msg)
+        {
+            Console.WriteLine(msg);
+            string? providedData = Console.ReadLine();
+
+            while (String.IsNullOrEmpty(providedData))
+            {
+                Console.WriteLine("-You can't add empty data-");
+                providedData = Console.ReadLine();
+            }
+
+            return providedData;
+        }
+
         protected Activity GetActivityByID(string msg)
         {
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-            int activityID = GetNumericValue(msg);
+            Console.WriteLine(msg);
+            int activityID = GetNumericValue();
 
             try
             {
@@ -47,9 +61,19 @@ namespace ToDoList.Controllers
             }
             catch (Exception)
             {
-                throw new Exception($"You don't have item with {activityID} ID");
+                throw new Exception($"You don't have activity with {activityID} ID");
             }
 
+        }
+
+        protected Activity GetActivityByID(int ID)
+        {
+            var dataProvider = new FileDataProvider();
+            IEnumerable<Activity> activities = dataProvider.GetActivities();
+
+            var activity = activities.Single(activity => activity.ActivityID == ID);
+            Console.Clear();
+            return activity;
         }
 
 

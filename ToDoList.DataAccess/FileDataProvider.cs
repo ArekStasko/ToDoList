@@ -60,8 +60,8 @@ namespace ToDoList.DataAccess
                         ActivityCategory = data[1],
                         ActivityName = data[2],
                         ActivityDescription = data[3],
-                        StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy hh:mm", null),
-                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy hh:mm", null),
+                        StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy HH:mm", null),
+                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy HH:mm", null),
                         IsDone = data[6] == "1"
                     };
                     yield return newActivity;

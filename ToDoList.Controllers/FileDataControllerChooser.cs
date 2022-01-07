@@ -17,7 +17,7 @@ namespace ToDoList.Controllers
                 var optionsProvider = new Options();
                 optionsProvider.PrintMainOptions();
 
-                userSelection = GetUserSelection();
+                userSelection = GetUserSelection(5);
 
                 switch (userSelection)
                 {
@@ -33,7 +33,7 @@ namespace ToDoList.Controllers
                     case 2:
                         {
                             optionsProvider.PrintActivitySearchOptions();
-                            int selectedOption = GetUserSelection();
+                            int selectedOption = GetUserSelection(4);
                             var showProvider = new ShowProvider();
 
 
@@ -62,7 +62,7 @@ namespace ToDoList.Controllers
                     case 3:
                         {
                             optionsProvider.PrintActivitiesOptions();
-                            int selectedEditionOption = GetUserSelection();
+                            int selectedEditionOption = GetUserSelection(5);
 
                             RunActivityController(selectedEditionOption);
                             break;
@@ -70,13 +70,13 @@ namespace ToDoList.Controllers
                     case 4:
                         {
                             optionsProvider.PrintCategoriesOptions();
-                            int selectedEditionOption = GetUserSelection();
+                            int selectedEditionOption = GetUserSelection(2);
 
                             RunCategoryController(selectedEditionOption);
                             break;
                         }
                     default:
-                        Console.WriteLine("You provide wrong option number");
+                        Console.WriteLine("Goodbye :D");
                         break;
 
                 }
@@ -142,14 +142,18 @@ namespace ToDoList.Controllers
                     }
                 case 2:
                     {
+                        var activityToEdit = GetActivityByID("Provide activity ID to edit");
                         int editSelection;
                         do
                         {
+                            activityToEdit = GetActivityByID(activityToEdit.ActivityID);
+
                             var optionsProvider = new Options();
                             optionsProvider.PrintEditActivityOptions();
-                            editSelection = GetUserSelection();
-                            activitiesControllers.EditActivity(editSelection);
-                        } while (editSelection != 4);
+
+                            editSelection = GetUserSelection(6);
+                            activitiesControllers.EditActivity(editSelection, activityToEdit);
+                        } while (editSelection != 6);
                         break;
                     }
                 case 3:

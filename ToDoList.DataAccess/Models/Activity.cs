@@ -34,7 +34,7 @@ namespace ToDoList.DataAccess.Models
             }
 
         }
-
+        
         public string[] ConvertToDataRow()
         {
             return new[] {

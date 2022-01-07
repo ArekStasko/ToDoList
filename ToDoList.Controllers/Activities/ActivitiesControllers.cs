@@ -21,7 +21,8 @@ namespace ToDoList.Controllers.Activities
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
             List<string> activityData = new List<string>(2) { "", "" };
 
-            int activityID = GetNumericValue("Provide new activity ID");
+            Console.WriteLine("Provide new activity ID");
+            int activityID = GetNumericValue();
 
             var dataProvider = new FileDataProvider();
             var activities = dataProvider.GetActivities();
@@ -29,28 +30,19 @@ namespace ToDoList.Controllers.Activities
             if (activities.Any(activity => activity.ActivityID == activityID))
             {
                 Console.WriteLine("You already have activity with this ID");
-                activityID = GetNumericValue("Provide new activity unique ID");
+                activityID = GetNumericValue();
             }
 
             for (int i = 0; i < activityQuery.Length; i++)
             {
-                Console.WriteLine($"Insert {activityQuery[i]}");
-                string? providedData = Console.ReadLine();
-
-                while (String.IsNullOrEmpty(providedData))
-                {
-                    Console.WriteLine("-You can't add empty data-");
-                    providedData = Console.ReadLine();
-                }
-
-                activityData[i] = providedData;
+                activityData[i] = GetStringValue($"Insert {activityQuery[i]}");
             }
 
             var categoriesControllers = new CategoriesControllers();
             string category = categoriesControllers.GetCategory();
 
-            var startDate = GetUserDate("Provide start date of activity");
-            var deadlineDate = GetUserDate("Provide deadline date of activity");
+            var startDate = GetDate("Provide start date of activity");
+            var deadlineDate = GetDate("Provide deadline date of activity");
 
             var newActivity = new Activity()
             {
@@ -70,9 +62,40 @@ namespace ToDoList.Controllers.Activities
             showProvider.DisplayMessage("Successfully added new Activity");
         }
 
-        public void EditActivity(int editOption)
-        {
-            Console.WriteLine(editOption);
+        public void EditActivity(int editOption, Activity activityToEdit)
+        {            
+            switch (editOption)
+            {
+                case 1:
+                    {
+                        activityToEdit.ActivityName = GetStringValue("Provide new activity name");
+                        break;
+                    }
+                case 2:
+                    {
+                        var categoriesControllers = new CategoriesControllers();
+                        activityToEdit.ActivityCategory = categoriesControllers.GetCategory();
+                        break;
+                    }
+                case 3:
+                    {
+                        activityToEdit.ActivityDescription = GetStringValue("Provide new activity description");
+                        break;
+                    }
+                case 4:
+                    {
+                        activityToEdit.StartDate = GetDate("Provide new activity start date");
+                        break;
+                    }
+                case 5:
+                    {
+                        activityToEdit.DeadlineDate = GetDate("Provide new activity deadline date");
+                        break;
+                    }
+            }
+            var dataProvider = new FileDataProvider();
+            dataProvider.UpdateActivity(activityToEdit);
+
         }
 
         public void DeleteActivity()
@@ -86,7 +109,7 @@ namespace ToDoList.Controllers.Activities
             showProvider.DisplayMessage("Successfully deleted activity");
         }
 
-        private DateTime GetUserDate(string msg)
+        private DateTime GetDate(string msg)
         {
             Console.WriteLine(msg);
             string[] dateQuery = new string[] { "Year", "Month", "Day", "Hour", "Minute" };
@@ -97,7 +120,8 @@ namespace ToDoList.Controllers.Activities
                 int numericValue;
                 do
                 {
-                    numericValue = GetNumericValue($"Provide {data}");
+                    Console.WriteLine($"Provide {data}");
+                    numericValue = GetNumericValue();
                 }
                 while (numericValue <= 0);
                 dataDate.Add(numericValue);
