@@ -28,14 +28,30 @@ namespace ToDoList.Views
         public void PrintActivitiesOptions()
         {
             Console.Clear();
-            string[] editionOptions = new string[] {
+            string[] activitiesOptions = new string[] {
                 "Add new activity",
+                "Edit activity",
                 "Set activity as done",
                 "Show all done activities",
                 "Delete activity"
             };
 
-            printOptions(editionOptions, "Please select one option :");
+            printOptions(activitiesOptions, "Please select one option :");
+        }
+
+        public void PrintEditActivityOptions()
+        {
+            string[] editOptions = new string[]
+            {
+                "Edit Activity Name",
+                "Edit Activity Category",
+                "Edit Activity Description",
+                "Edit Start Date",
+                "Edit Deadline Date",
+                "Close edition"
+            };
+
+            printOptions(editOptions, "What you want to change ?");
         }
 
         public void PrintCategoriesOptions()

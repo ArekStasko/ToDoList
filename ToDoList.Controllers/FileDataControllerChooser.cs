@@ -142,6 +142,18 @@ namespace ToDoList.Controllers
                     }
                 case 2:
                     {
+                        int editSelection;
+                        do
+                        {
+                            var optionsProvider = new Options();
+                            optionsProvider.PrintEditActivityOptions();
+                            editSelection = GetUserSelection();
+                            activitiesControllers.EditActivity(editSelection);
+                        } while (editSelection != 4);
+                        break;
+                    }
+                case 3:
+                    {
                         if (!activities.Any())
                         {
                             Console.WriteLine("You don't have any activities");
@@ -150,13 +162,13 @@ namespace ToDoList.Controllers
                             activitiesControllers.SetActivityAsDone();
                         break;
                     }
-                case 3:
+                case 4:
                     {
                         var showProvider = new ShowProvider();
                         showProvider.PrintActivities(activities.Where(activity => activity.IsDone));
                         break;
                     }
-                case 4:
+                case 5:
                     {
                         if (!activities.Any())
                         {

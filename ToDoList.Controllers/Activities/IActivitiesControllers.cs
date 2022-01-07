@@ -5,5 +5,7 @@ namespace ToDoList.Controllers.Activities
     {
         public void AddNewActivity();
         public void DeleteActivity();
+        public void EditActivity(int editOption);
+        public void SetActivityAsDone();
     }
 }

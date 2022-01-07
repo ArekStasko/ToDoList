@@ -70,6 +70,11 @@ namespace ToDoList.Controllers.Activities
             showProvider.DisplayMessage("Successfully added new Activity");
         }
 
+        public void EditActivity(int editOption)
+        {
+            Console.WriteLine(editOption);
+        }
+
         public void DeleteActivity()
         {
             var dataProvider = new FileDataProvider();

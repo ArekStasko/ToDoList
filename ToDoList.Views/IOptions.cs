@@ -8,5 +8,6 @@ namespace ToDoList.Views
         void PrintActivitiesOptions();
         void PrintCategoriesOptions();
         void PrintActivitySearchOptions();
+        public void PrintEditActivityOptions();
     }
 }
