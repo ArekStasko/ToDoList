@@ -1,7 +1,7 @@
-﻿using ToDoList.DataAccess;
+﻿using ToDoList.Controllers.Categories;
+using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 using ToDoList.Views;
-using ToDoList.Controllers.Categories;
 
 namespace ToDoList.Controllers.Activities
 {
@@ -12,6 +12,13 @@ namespace ToDoList.Controllers.Activities
         {
             var dataProvider = new FileDataProvider();
             var activity = GetActivityByID("Please provide activity ID");
+
+            var currentDate = DateTime.Now;
+            if (activity.StartDate.CompareTo(currentDate) >= 0)
+            {
+                throw new Exception("You don't even start this activity");
+            }
+
             activity.IsDone = true;
             dataProvider.UpdateActivity(activity);
         }
@@ -44,6 +51,11 @@ namespace ToDoList.Controllers.Activities
             var startDate = GetDate("Provide start date of activity");
             var deadlineDate = GetDate("Provide deadline date of activity");
 
+            while (deadlineDate <= startDate)
+            {
+                deadlineDate = GetDate("Deadline can't be earlier than start date");
+            }
+
             var newActivity = new Activity()
             {
                 ActivityName = activityData[0],
@@ -63,7 +75,7 @@ namespace ToDoList.Controllers.Activities
         }
 
         public void EditActivity(int editOption, Activity activityToEdit)
-        {            
+        {
             switch (editOption)
             {
                 case 1:

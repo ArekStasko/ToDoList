@@ -143,6 +143,11 @@ namespace ToDoList.Controllers
                 case 2:
                     {
                         var activityToEdit = GetActivityByID("Provide activity ID to edit");
+                        var currentDate = DateTime.Now;
+                        if(activityToEdit.StartDate.CompareTo(currentDate) >= 0)
+                        {
+                            throw new Exception("You can't edit activity which already started");
+                        }
                         int editSelection;
                         do
                         {
