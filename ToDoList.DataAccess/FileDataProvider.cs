@@ -69,6 +69,18 @@ namespace ToDoList.DataAccess
             }
         }
 
+        public IEnumerable<string> GetActivitiesToShow()
+        {
+            InitializeActivitiesFile();
+            foreach (string line in File.ReadLines(activitiesFilePath))
+            {
+                if (!String.IsNullOrWhiteSpace(line))
+                {
+                    yield return line;                  
+                }
+            }
+        }
+
         public IEnumerable<string> GetCategories()
         {
             InitializeCategoriesFile();

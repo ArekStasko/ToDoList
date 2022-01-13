@@ -6,7 +6,6 @@ namespace ToDoList.Controllers
 {
     public class FileDataController
     {
-
         protected int GetUserSelection(int numberOfOptions)
         {
             int selectedOption = GetNumericValue();

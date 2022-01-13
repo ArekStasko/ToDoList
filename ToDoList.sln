@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList", "ToDoList\ToDoList.csproj", "{560CE853-4C5C-4629-A467-C29C92532A7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList", "ToDoList\ToDoList.csproj", "{560CE853-4C5C-4629-A467-C29C92532A7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.DataAccess", "ToDoList.DataAccess\ToDoList.DataAccess.csproj", "{1957293B-88DF-4477-A14A-89E0CBF95E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.DataAccess", "ToDoList.DataAccess\ToDoList.DataAccess.csproj", "{1957293B-88DF-4477-A14A-89E0CBF95E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Controllers", "ToDoList.Controllers\ToDoList.Controllers.csproj", "{297B2C6C-2B50-43B7-AE46-10B6C9E770FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.Controllers", "ToDoList.Controllers\ToDoList.Controllers.csproj", "{297B2C6C-2B50-43B7-AE46-10B6C9E770FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Views", "ToDoList.Views\ToDoList.Views.csproj", "{5997D37D-E192-42F4-82EE-9E18500E4076}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.DataAccess.Tests", "ToDoList.DataAccess.Tests\ToDoList.DataAccess.Tests.csproj", "{99A66A8B-017A-43AB-A5E5-37DC3D0E7D18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.DataAccess.Tests", "ToDoList.DataAccess.Tests\ToDoList.DataAccess.Tests.csproj", "{99A66A8B-017A-43AB-A5E5-37DC3D0E7D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{297B2C6C-2B50-43B7-AE46-10B6C9E770FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{297B2C6C-2B50-43B7-AE46-10B6C9E770FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{297B2C6C-2B50-43B7-AE46-10B6C9E770FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5997D37D-E192-42F4-82EE-9E18500E4076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5997D37D-E192-42F4-82EE-9E18500E4076}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5997D37D-E192-42F4-82EE-9E18500E4076}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5997D37D-E192-42F4-82EE-9E18500E4076}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99A66A8B-017A-43AB-A5E5-37DC3D0E7D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99A66A8B-017A-43AB-A5E5-37DC3D0E7D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A66A8B-017A-43AB-A5E5-37DC3D0E7D18}.Release|Any CPU.ActiveCfg = Release|Any CPU

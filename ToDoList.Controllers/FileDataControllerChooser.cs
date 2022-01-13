@@ -2,21 +2,24 @@
 using ToDoList.Controllers.Categories;
 using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
-using ToDoList.Views;
 
 namespace ToDoList.Controllers
 {
     public class FileDataControllerChooser : FileDataController, IFileDataController
     {
+        private readonly IView _view;
+
+        public FileDataControllerChooser(IView view)
+        {
+            _view = view;
+        }
+
         public void ChooseMainOption()
         {
             int userSelection;
 
             do
             {
-                var optionsProvider = new Options();
-                optionsProvider.PrintMainOptions();
-
                 userSelection = GetUserSelection(5);
 
                 switch (userSelection)
@@ -26,42 +29,40 @@ namespace ToDoList.Controllers
                             var dataProvider = new FileDataProvider();
                             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-                            var showProvider = new ShowProvider();
-                            showProvider.PrintActivities(activities.Where(activity => !activity.IsDone));
+
+                            _view.PrintActivities(activities.Where(activity => !activity.IsDone));
                             break;
                         }
                     case 2:
                         {
-                            optionsProvider.PrintActivitySearchOptions();
                             int selectedOption = GetUserSelection(4);
-                            var showProvider = new ShowProvider();
+
 
 
                             if (selectedOption == 1)
                             {
                                 var searchedActivity = GetActivityByID();
-                                showProvider.PrintActivity(searchedActivity);
+                                _view.PrintActivity(searchedActivity);
                             }
                             else if (selectedOption == 2)
                             {
                                 var dataProvider = new FileDataProvider();
-                                showProvider.PrintActivities(dataProvider.GetActivityByTerm(true));
+                                _view.PrintActivities(dataProvider.GetActivityByTerm(true));
                             }
                             else if (selectedOption == 3)
                             {
                                 var dataProvider = new FileDataProvider();
-                                showProvider.PrintActivities(dataProvider.GetActivityByTerm(false));
+                                _view.PrintActivities(dataProvider.GetActivityByTerm(false));
                             }
                             else if (selectedOption == 4)
                             {
                                 var searchedActivity = GetActivitiesByCategory();
-                                showProvider.PrintActivities(searchedActivity);
+                                _view.PrintActivities(searchedActivity);
                             }
                             break;
                         }
                     case 3:
                         {
-                            optionsProvider.PrintActivitiesOptions();
                             int selectedEditionOption = GetUserSelection(5);
 
                             RunActivityController(selectedEditionOption);
@@ -69,7 +70,6 @@ namespace ToDoList.Controllers
                         }
                     case 4:
                         {
-                            optionsProvider.PrintCategoriesOptions();
                             int selectedEditionOption = GetUserSelection(2);
 
                             RunCategoryController(selectedEditionOption);
@@ -125,7 +125,6 @@ namespace ToDoList.Controllers
             var categories = dataProvider.GetCategories();
             var activities = dataProvider.GetActivities();
             var activitiesControllers = new ActivitiesControllers();
-            var showProvider = new ShowProvider();
 
             switch (selectedOption)
             {
@@ -147,16 +146,13 @@ namespace ToDoList.Controllers
                         var currentDate = DateTime.Now;
                         if(activityToEdit.StartDate.CompareTo(currentDate) >= 0)
                         {
-                            showProvider.ErrorMessage("You can't edit activity which already started");
+                            _view.ErrorMessage("You can't edit activity which already started");
                             throw new Exception();
                         }
                         int editSelection;
                         do
                         {
                             activityToEdit = GetActivityByID(activityToEdit.ActivityID);
-
-                            var optionsProvider = new Options();
-                            optionsProvider.PrintEditActivityOptions();
 
                             editSelection = GetUserSelection(6);
                             activitiesControllers.EditActivity(editSelection, activityToEdit);
@@ -167,7 +163,7 @@ namespace ToDoList.Controllers
                     {
                         if (!activities.Any())
                         {
-                            showProvider.DisplayMessage("You don't have any activities");
+                            _view.DisplayMessage("You don't have any activities");
                             break;
                         }
 
@@ -176,14 +172,14 @@ namespace ToDoList.Controllers
                     }
                 case 4:
                     {
-                        showProvider.PrintActivities(activities.Where(activity => activity.IsDone));
+                        _view.PrintActivities(activities.Where(activity => activity.IsDone));
                         break;
                     }
                 case 5:
                     {
                         if (!activities.Any())
                         {
-                            showProvider.DisplayMessage("You don't have any activities");
+                            _view.DisplayMessage("You don't have any activities");
                             break;
                         }
 
@@ -192,7 +188,7 @@ namespace ToDoList.Controllers
                     }
                 default:
                     {
-                        showProvider.ErrorMessage("You provide wrong option number");
+                        _view.ErrorMessage("You provide wrong option number");
                         break;
                     }
             }
