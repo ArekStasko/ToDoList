@@ -11,12 +11,14 @@ namespace ToDoList.Controllers.Activities
         public void SetActivityAsDone()
         {
             var dataProvider = new FileDataProvider();
-            var activity = GetActivityByID("Please provide activity ID");
+            var activity = GetActivityByID();
 
             var currentDate = DateTime.Now;
             if (activity.StartDate.CompareTo(currentDate) >= 0)
             {
-                throw new Exception("You don't even start this activity");
+                var showProvider = new ShowProvider();
+                showProvider.ErrorMessage("You don't even start this activity");
+                throw new Exception();
             }
 
             activity.IsDone = true;
@@ -28,7 +30,9 @@ namespace ToDoList.Controllers.Activities
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
             List<string> activityData = new List<string>(2) { "", "" };
 
-            Console.WriteLine("Provide new activity ID");
+            var showProvider = new ShowProvider();
+
+            showProvider.DisplayMessage("Provide new activity ID");
             int activityID = GetNumericValue();
 
             var dataProvider = new FileDataProvider();
@@ -36,17 +40,18 @@ namespace ToDoList.Controllers.Activities
 
             if (activities.Any(activity => activity.ActivityID == activityID))
             {
-                Console.WriteLine("You already have activity with this ID");
+                showProvider.ErrorMessage("You already have activity with this ID");
                 activityID = GetNumericValue();
             }
 
             for (int i = 0; i < activityQuery.Length; i++)
             {
-                activityData[i] = GetStringValue($"Insert {activityQuery[i]}");
+                activityData[i] = showProvider.GetData() ?? "None";
             }
 
             var categoriesControllers = new CategoriesControllers();
             string category = categoriesControllers.GetCategory();
+
 
             var startDate = GetDate("Provide start date of activity");
             var deadlineDate = GetDate("Provide deadline date of activity");
@@ -69,8 +74,6 @@ namespace ToDoList.Controllers.Activities
 
 
             dataProvider.AddActivity(newActivity);
-
-            var showProvider = new ShowProvider();
             showProvider.DisplayMessage("Successfully added new Activity");
         }
 
@@ -114,7 +117,7 @@ namespace ToDoList.Controllers.Activities
         {
             var dataProvider = new FileDataProvider();
 
-            var activityToDelete = GetActivityByID("Provide ID of activity to delete");
+            var activityToDelete = GetActivityByID();
             dataProvider.RemoveActivity(activityToDelete);
 
             var showProvider = new ShowProvider();

@@ -39,5 +39,23 @@ namespace ToDoList.Views
             Console.Clear();
             Console.WriteLine($"{msg}");
         }
+
+        public void ErrorMessage(string msg)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{msg}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void ClearView()
+        {
+            Console.Clear();
+        }
+
+        public string? GetData()
+        {
+            return Console.ReadLine();
+        }
     }
 }

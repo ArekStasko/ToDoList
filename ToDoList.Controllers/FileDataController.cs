@@ -1,5 +1,6 @@
 ﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
+using ToDoList.Views;
 
 namespace ToDoList.Controllers
 {
@@ -9,59 +10,65 @@ namespace ToDoList.Controllers
         protected int GetUserSelection(int numberOfOptions)
         {
             int selectedOption = GetNumericValue();
+            var showProvider = new ShowProvider();
 
             while (selectedOption > numberOfOptions)
             {
-                Console.WriteLine($"There is no {selectedOption} option");
+                showProvider.DisplayMessage($"There is no {selectedOption} option");
                 selectedOption = GetNumericValue();
             }
 
-            Console.Clear();
+            showProvider.ClearView();
             return selectedOption;
         }
 
         protected int GetNumericValue()
         {
-            string? NumVal = Console.ReadLine();
+            var showProvider = new ShowProvider();
+
+            string? NumVal = showProvider.GetData();
             while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
             {
-                Console.WriteLine("Input must be non 0 number");
-                NumVal = Console.ReadLine();
+                showProvider.DisplayMessage("Input must be non 0 number");
+                NumVal = showProvider.GetData();
             }
             return Int32.Parse(NumVal);
         }
 
         protected string GetStringValue(string msg)
         {
-            Console.WriteLine(msg);
-            string? providedData = Console.ReadLine();
+            var showProvider = new ShowProvider();
+            showProvider.DisplayMessage(msg);
+            string? providedData = showProvider.GetData();
 
             while (String.IsNullOrEmpty(providedData))
             {
-                Console.WriteLine("-You can't add empty data-");
-                providedData = Console.ReadLine();
+                showProvider.DisplayMessage("-You can't add empty data-");
+                providedData = showProvider.GetData();
             }
 
             return providedData;
         }
 
-        protected Activity GetActivityByID(string msg)
+        protected Activity GetActivityByID()
         {
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-            Console.WriteLine(msg);
+            var showProvider = new ShowProvider();
+            showProvider.DisplayMessage("Provide activity ID");
             int activityID = GetNumericValue();
 
             try
             {
                 var activity = activities.Single(activity => activity.ActivityID == activityID);
-                Console.Clear();
+                showProvider.ClearView();
                 return activity;
             }
             catch (Exception)
             {
-                throw new Exception($"You don't have activity with {activityID} ID");
+                showProvider.ErrorMessage($"There is no activity with {activityID} ID");
+                throw new Exception();
             }
 
         }
@@ -72,7 +79,8 @@ namespace ToDoList.Controllers
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
             var activity = activities.Single(activity => activity.ActivityID == ID);
-            Console.Clear();
+            var showProvider = new ShowProvider();
+            showProvider.ClearView();
             return activity;
         }
 
@@ -80,28 +88,32 @@ namespace ToDoList.Controllers
         protected IEnumerable<Activity> GetActivitiesByCategory(string category)
         {
             var dataProvider = new FileDataProvider();
+            var showProvider = new ShowProvider();
+
             IEnumerable<string> categories = dataProvider.GetCategories();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
             try
             {
-                Console.Clear();
+                showProvider.ClearView();
                 return activities.Where(activity => activity.ActivityCategory == category);
             }
             catch (Exception)
             {
-                throw new Exception($"You don't have {category} category");
+                showProvider.ErrorMessage($"You don't have {category} category");
+                throw new Exception();
             }
         }
 
         protected IEnumerable<Activity> GetActivitiesByCategory()
         {
-            Console.WriteLine("Provide activities category to find");
+            var showProvider = new ShowProvider();
+            showProvider.DisplayMessage("Provide activities category to find");
             string? category;
-            Console.Clear();
+            showProvider.ClearView();
 
             do
             {
-                category = Console.ReadLine();
+                category = showProvider.GetData();
             }
             while (string.IsNullOrEmpty(category));
 

@@ -39,7 +39,7 @@ namespace ToDoList.Controllers
 
                             if (selectedOption == 1)
                             {
-                                var searchedActivity = GetActivityByID("Provide activity ID to find");
+                                var searchedActivity = GetActivityByID();
                                 showProvider.PrintActivity(searchedActivity);
                             }
                             else if (selectedOption == 2)
@@ -125,6 +125,7 @@ namespace ToDoList.Controllers
             var categories = dataProvider.GetCategories();
             var activities = dataProvider.GetActivities();
             var activitiesControllers = new ActivitiesControllers();
+            var showProvider = new ShowProvider();
 
             switch (selectedOption)
             {
@@ -142,11 +143,12 @@ namespace ToDoList.Controllers
                     }
                 case 2:
                     {
-                        var activityToEdit = GetActivityByID("Provide activity ID to edit");
+                        var activityToEdit = GetActivityByID();
                         var currentDate = DateTime.Now;
                         if(activityToEdit.StartDate.CompareTo(currentDate) >= 0)
                         {
-                            throw new Exception("You can't edit activity which already started");
+                            showProvider.ErrorMessage("You can't edit activity which already started");
+                            throw new Exception();
                         }
                         int editSelection;
                         do
@@ -165,15 +167,15 @@ namespace ToDoList.Controllers
                     {
                         if (!activities.Any())
                         {
-                            Console.WriteLine("You don't have any activities");
+                            showProvider.DisplayMessage("You don't have any activities");
+                            break;
                         }
-                        else
-                            activitiesControllers.SetActivityAsDone();
+
+                        activitiesControllers.SetActivityAsDone();
                         break;
                     }
                 case 4:
                     {
-                        var showProvider = new ShowProvider();
                         showProvider.PrintActivities(activities.Where(activity => activity.IsDone));
                         break;
                     }
@@ -181,15 +183,16 @@ namespace ToDoList.Controllers
                     {
                         if (!activities.Any())
                         {
-                            Console.WriteLine("You don't have any activities");
+                            showProvider.DisplayMessage("You don't have any activities");
+                            break;
                         }
-                        else
-                            activitiesControllers.DeleteActivity();
+
+                        activitiesControllers.DeleteActivity();
                         break;
                     }
                 default:
                     {
-                        Console.WriteLine("You provide wrong option number");
+                        showProvider.ErrorMessage("You provide wrong option number");
                         break;
                     }
             }

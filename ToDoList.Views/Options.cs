@@ -3,7 +3,7 @@ namespace ToDoList.Views
 {
     public class Options : IOptions
     {
-        private void printOptions(string[] options, string msg)
+        public void printOptions(string[] options, string msg)
         {
             Console.WriteLine(msg);
             for (int i = 0; i < options.Length; i++)
