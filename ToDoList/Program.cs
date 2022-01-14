@@ -6,10 +6,8 @@ namespace ToDoList
     {
         static void Main(string[] args)
         {
-            var view = new ShowProvider();
-
-            var dataController = new FileDataControllerChooser(view);
-            dataController.ChooseMainOption();
+            var optionsProvider = new OptionsProvider();
+            optionsProvider.ChooseMainOption();
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using ToDoList.Controllers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ToDoList.Controllers;
+
 
 namespace ToDoList
 {
-    public class ShowProvider : IView
+    internal class View : IView
     {
         public void PrintActivity(string activity)
         {
@@ -51,5 +55,6 @@ namespace ToDoList
         {
             return Console.ReadLine();
         }
+
     }
 }

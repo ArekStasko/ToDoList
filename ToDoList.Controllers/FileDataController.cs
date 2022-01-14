@@ -1,11 +1,17 @@
 ﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
-using ToDoList.Views;
 
 namespace ToDoList.Controllers
 {
     public class FileDataController
     {
+        private readonly IView _view;
+
+        public FileDataController(IView view)
+        {
+            _view = view;
+        }
+
         protected int GetUserSelection(int numberOfOptions)
         {
             int selectedOption = GetNumericValue();

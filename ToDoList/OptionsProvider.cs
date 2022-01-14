@@ -1,17 +1,15 @@
-﻿using ToDoList.Controllers.Activities;
-using ToDoList.Controllers.Categories;
-using ToDoList.DataAccess;
-using ToDoList.DataAccess.Models;
-
-namespace ToDoList.Controllers
+﻿
+namespace ToDoList
 {
-    public class FileDataControllerChooser : FileDataController, IFileDataController
+    public class OptionsProvider 
     {
-        private readonly IView _view;
+        private Options Options;
+        private View _view;
 
-        public FileDataControllerChooser(IView view)
+        public OptionsProvider()
         {
-            _view = view;
+            Options = new Options();
+            _view = new View();  
         }
 
         public void ChooseMainOption()
@@ -144,7 +142,7 @@ namespace ToDoList.Controllers
                     {
                         var activityToEdit = GetActivityByID();
                         var currentDate = DateTime.Now;
-                        if(activityToEdit.StartDate.CompareTo(currentDate) >= 0)
+                        if (activityToEdit.StartDate.CompareTo(currentDate) >= 0)
                         {
                             _view.ErrorMessage("You can't edit activity which already started");
                             throw new Exception();
