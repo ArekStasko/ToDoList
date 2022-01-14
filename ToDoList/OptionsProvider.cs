@@ -1,4 +1,5 @@
-﻿
+﻿using ToDoList.Controllers;
+
 namespace ToDoList
 {
     public class OptionsProvider 
@@ -15,10 +16,11 @@ namespace ToDoList
         public void ChooseMainOption()
         {
             int userSelection;
+            var dataController = new FileDataController(_view);
 
             do
             {
-                userSelection = GetUserSelection(5);
+                userSelection = dataController.GetUserSelection(5);
 
                 switch (userSelection)
                 {
@@ -33,13 +35,13 @@ namespace ToDoList
                         }
                     case 2:
                         {
-                            int selectedOption = GetUserSelection(4);
+                            int selectedOption = dataController.GetUserSelection(4);
 
 
 
                             if (selectedOption == 1)
                             {
-                                var searchedActivity = GetActivityByID();
+                                var searchedActivity = dataController.GetActivityByID();
                                 _view.PrintActivity(searchedActivity);
                             }
                             else if (selectedOption == 2)
@@ -54,21 +56,21 @@ namespace ToDoList
                             }
                             else if (selectedOption == 4)
                             {
-                                var searchedActivity = GetActivitiesByCategory();
+                                var searchedActivity = dataController.GetActivitiesByCategory();
                                 _view.PrintActivities(searchedActivity);
                             }
                             break;
                         }
                     case 3:
                         {
-                            int selectedEditionOption = GetUserSelection(5);
+                            int selectedEditionOption = dataController.GetUserSelection(5);
 
                             RunActivityController(selectedEditionOption);
                             break;
                         }
                     case 4:
                         {
-                            int selectedEditionOption = GetUserSelection(2);
+                            int selectedEditionOption = dataController.GetUserSelection(2);
 
                             RunCategoryController(selectedEditionOption);
                             break;
@@ -140,7 +142,7 @@ namespace ToDoList
                     }
                 case 2:
                     {
-                        var activityToEdit = GetActivityByID();
+                        var activityToEdit = dataController.GetActivityByID();
                         var currentDate = DateTime.Now;
                         if (activityToEdit.StartDate.CompareTo(currentDate) >= 0)
                         {
@@ -150,9 +152,9 @@ namespace ToDoList
                         int editSelection;
                         do
                         {
-                            activityToEdit = GetActivityByID(activityToEdit.ActivityID);
+                            activityToEdit = dataController.GetActivityByID(activityToEdit.ActivityID);
 
-                            editSelection = GetUserSelection(6);
+                            editSelection = dataController.GetUserSelection(6);
                             activitiesControllers.EditActivity(editSelection, activityToEdit);
                         } while (editSelection != 6);
                         break;
