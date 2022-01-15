@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.DataAccess\ToDoList.DataAccess.csproj" />
+    <ProjectReference Include="..\ToDoList\ToDoList.csproj" />
   </ItemGroup>
 
 </Project>

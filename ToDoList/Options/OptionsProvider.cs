@@ -1,11 +1,13 @@
 ﻿using ToDoList.Controllers;
+using ToDoList.Controllers.Categories;
+using ToDoList.Controllers.Activities;
 
 namespace ToDoList
 {
     public class OptionsProvider 
     {
         private Options Options;
-        private View _view;
+        public View _view;
 
         public OptionsProvider()
         {
@@ -26,11 +28,13 @@ namespace ToDoList
                 {
                     case 1:
                         {
-                            var dataProvider = new FileDataProvider();
-                            IEnumerable<Activity> activities = dataProvider.GetActivities();
+                            var activities = dataController.GetActivities();
+                            activities = activities.Where(activity => !activity.IsDone);
 
-
-                            _view.PrintActivities(activities.Where(activity => !activity.IsDone));
+                            foreach(var activity in activities)
+                            {
+                                _view.PrintActivity(activity.ConvertToString());
+                            }
                             break;
                         }
                     case 2:
@@ -42,22 +46,25 @@ namespace ToDoList
                             if (selectedOption == 1)
                             {
                                 var searchedActivity = dataController.GetActivityByID();
-                                _view.PrintActivity(searchedActivity);
+                                _view.PrintActivity(searchedActivity.ConvertToString());
                             }
                             else if (selectedOption == 2)
                             {
-                                var dataProvider = new FileDataProvider();
-                                _view.PrintActivities(dataProvider.GetActivityByTerm(true));
+                                var activities = dataController.GetActiveActivities();
+                                foreach (var activity in activities)
+                                    _view.PrintActivity(activity.ConvertToString());
                             }
                             else if (selectedOption == 3)
                             {
-                                var dataProvider = new FileDataProvider();
-                                _view.PrintActivities(dataProvider.GetActivityByTerm(false));
+                                var activities = dataController.GetInactiveActivities();
+                                foreach(var activity in activities)
+                                    _view.PrintActivity(activity.ConvertToString());
                             }
                             else if (selectedOption == 4)
                             {
                                 var searchedActivity = dataController.GetActivitiesByCategory();
-                                _view.PrintActivities(searchedActivity);
+                                foreach(var activity in searchedActivity)                                
+                                    _view.PrintActivity(activity.ConvertToString());
                             }
                             break;
                         }
@@ -86,29 +93,25 @@ namespace ToDoList
 
         private void RunCategoryController(int selectedOption)
         {
-            var dataProvider = new FileDataProvider();
-            var categories = dataProvider.GetCategories();
+            var categoriesControllers = new CategoriesControllers(_view);
+            var categories = categoriesControllers.GetCategories();
 
             switch (selectedOption)
             {
                 case 1:
                     {
-                        var categoriesControllers = new CategoriesControllers();
                         categoriesControllers.AddNewCategory();
                         break;
                     }
                 case 2:
                     {
-                        if (!categories.Any())
+                        if (categories.Any())
                         {
-                            Console.WriteLine("You don't have any category");
-                        }
-                        else
-                        {
-                            var categoriesControllers = new CategoriesControllers();
                             categoriesControllers.DeleteCategory();
+                            break;
                         }
 
+                        Console.WriteLine("You don't have any categories");
                         break;
                     }
                 default:
@@ -121,41 +124,44 @@ namespace ToDoList
 
         private void RunActivityController(int selectedOption)
         {
-            var dataProvider = new FileDataProvider();
-            var categories = dataProvider.GetCategories();
-            var activities = dataProvider.GetActivities();
-            var activitiesControllers = new ActivitiesControllers();
+            var activitiesController = new ActivitiesControllers(_view);
+            var categoriesController = new CategoriesControllers(_view);   
+            
+            var categories = categoriesController.GetCategories();
+            var activities = activitiesController.GetActivities();
 
             switch (selectedOption)
             {
                 case 1:
                     {
-                        if (!categories.Any())
+                        if (categories.Any())
                         {
-                            Console.WriteLine("Please first add at least one category");
-                            var categoriesControllers = new CategoriesControllers();
-                            categoriesControllers.AddNewCategory();
+                            activitiesController.AddNewActivity();
+                            break;
                         }
-                        else
-                            activitiesControllers.AddNewActivity();
+
+                        Console.WriteLine("Please first add at least one category");
+                        categoriesController.AddNewCategory();
                         break;
                     }
                 case 2:
                     {
-                        var activityToEdit = dataController.GetActivityByID();
+                        var activityToEdit = activitiesController.GetActivityByID();
                         var currentDate = DateTime.Now;
+
                         if (activityToEdit.StartDate.CompareTo(currentDate) >= 0)
                         {
                             _view.ErrorMessage("You can't edit activity which already started");
                             throw new Exception();
                         }
+
                         int editSelection;
                         do
                         {
-                            activityToEdit = dataController.GetActivityByID(activityToEdit.ActivityID);
+                            activityToEdit = activitiesController.GetActivityByID(activityToEdit.ActivityID);
 
-                            editSelection = dataController.GetUserSelection(6);
-                            activitiesControllers.EditActivity(editSelection, activityToEdit);
+                            editSelection = activitiesController.GetUserSelection(6);
+                            activitiesController.EditActivity(editSelection, activityToEdit);
                         } while (editSelection != 6);
                         break;
                     }
@@ -167,12 +173,14 @@ namespace ToDoList
                             break;
                         }
 
-                        activitiesControllers.SetActivityAsDone();
+                        activitiesController.SetActivityAsDone();
                         break;
                     }
                 case 4:
                     {
-                        _view.PrintActivities(activities.Where(activity => activity.IsDone));
+                        foreach (var activity in activities.Where(activity => activity.IsDone))
+                            _view.PrintActivity(activity.ConvertToString());
+
                         break;
                     }
                 case 5:
@@ -183,7 +191,7 @@ namespace ToDoList
                             break;
                         }
 
-                        activitiesControllers.DeleteActivity();
+                        activitiesController.DeleteActivity();
                         break;
                     }
                 default:

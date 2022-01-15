@@ -1,12 +1,22 @@
 ﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
-using ToDoList.Views;
-
 
 namespace ToDoList.Controllers.Categories
 {
-    internal class CategoriesControllers : FileDataController, ICategoriesControllers
+    public class CategoriesControllers : FileDataController, ICategoriesControllers
     {
+        private readonly IView view;
+
+        public CategoriesControllers(IView _view) : base(_view)
+        {
+            view = _view;
+        }
+
+        public IEnumerable<string> GetCategories()
+        {
+            var dataProvider = new FileDataProvider();
+            return dataProvider.GetCategories();
+        }
 
         public string GetCategory()
         {
@@ -14,8 +24,7 @@ namespace ToDoList.Controllers.Categories
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
 
-            var showProvider = new ShowProvider();
-            showProvider.PrintCategories(categories);
+            view.PrintCategories(categories);
             string? category = Console.ReadLine();
             int categoryNumber;
 
@@ -41,8 +50,7 @@ namespace ToDoList.Controllers.Categories
             var dataProvider = new FileDataProvider();
             dataProvider.AddCategory(categoryName);
 
-            var showProvider = new ShowProvider();
-            showProvider.DisplayMessage("Successfully added new category");
+            view.DisplayMessage("Successfully added new category");
         }
 
         public void DeleteCategory()
@@ -50,7 +58,6 @@ namespace ToDoList.Controllers.Categories
             Console.WriteLine("Please provide the category name to delete");
             Console.WriteLine("- This will delete all items with this category -");
 
-            var showProvider = new ShowProvider();
             var dataProvider = new FileDataProvider();
 
             var categoryToDelete = GetCategory();
@@ -63,7 +70,7 @@ namespace ToDoList.Controllers.Categories
 
             }
             dataProvider.RemoveCategory(categoryToDelete);
-            showProvider.DisplayMessage("Successfully deleted category");
+            view.DisplayMessage("Successfully deleted category");
         }
     }
 }

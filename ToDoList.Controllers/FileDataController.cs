@@ -5,7 +5,7 @@ namespace ToDoList.Controllers
 {
     public class FileDataController
     {
-        private readonly IView _view;
+        protected readonly IView _view;
 
         public FileDataController(IView view)
         {
@@ -49,6 +49,24 @@ namespace ToDoList.Controllers
             }
 
             return providedData;
+        }
+
+        public IEnumerable<Activity> GetInactiveActivities()
+        {
+            var activities = GetActivities();
+            return activities.Where(activity => !activity.IsActive);
+        }
+
+        public IEnumerable<Activity> GetActiveActivities()
+        {
+            var activities = GetActivities();
+            return activities.Where(activity => !activity.IsActive);
+        }
+
+        public IEnumerable<Activity> GetActivities()
+        {
+            var dataProvider = new FileDataProvider();
+            return dataProvider.GetActivities();    
         }
 
         public Activity GetActivityByID()

@@ -6,7 +6,7 @@ using ToDoList.Controllers;
 
 namespace ToDoList
 {
-    internal class View : IView
+    public class View : IView
     {
         public void PrintActivity(string activity)
         {

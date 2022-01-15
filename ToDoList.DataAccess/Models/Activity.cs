@@ -47,6 +47,12 @@ namespace ToDoList.DataAccess.Models
             };
         }
 
+        public string ConvertToString()
+        {
+            string[] activity = ConvertToDataRow();
+            return string.Join("|", activity);
+        }
+
         protected bool Equals(Activity other)
         {
             return ActivityID == other.ActivityID;

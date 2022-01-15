@@ -1,12 +1,16 @@
 ﻿using ToDoList.Controllers.Categories;
 using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
-using ToDoList.Views;
 
 namespace ToDoList.Controllers.Activities
 {
-    internal class ActivitiesControllers : FileDataController, IActivitiesControllers
+    public class ActivitiesControllers : FileDataController, IActivitiesControllers
     {
+        private readonly IView view;
+        public ActivitiesControllers(IView _view) : base(_view)
+        {
+            view = _view;
+        }
 
         public void SetActivityAsDone()
         {
@@ -16,8 +20,7 @@ namespace ToDoList.Controllers.Activities
             var currentDate = DateTime.Now;
             if (activity.StartDate.CompareTo(currentDate) >= 0)
             {
-                var showProvider = new ShowProvider();
-                showProvider.ErrorMessage("You don't even start this activity");
+                view.ErrorMessage("You don't even start this activity");
                 throw new Exception();
             }
 
@@ -30,9 +33,7 @@ namespace ToDoList.Controllers.Activities
             string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
             List<string> activityData = new List<string>(2) { "", "" };
 
-            var showProvider = new ShowProvider();
-
-            showProvider.DisplayMessage("Provide new activity ID");
+            view.DisplayMessage("Provide new activity ID");
             int activityID = GetNumericValue();
 
             var dataProvider = new FileDataProvider();
@@ -40,16 +41,16 @@ namespace ToDoList.Controllers.Activities
 
             if (activities.Any(activity => activity.ActivityID == activityID))
             {
-                showProvider.ErrorMessage("You already have activity with this ID");
+                view.ErrorMessage("You already have activity with this ID");
                 activityID = GetNumericValue();
             }
 
             for (int i = 0; i < activityQuery.Length; i++)
             {
-                activityData[i] = showProvider.GetData() ?? "None";
+                activityData[i] = view.GetData() ?? "None";
             }
 
-            var categoriesControllers = new CategoriesControllers();
+            var categoriesControllers = new CategoriesControllers(view);
             string category = categoriesControllers.GetCategory();
 
 
@@ -74,7 +75,7 @@ namespace ToDoList.Controllers.Activities
 
 
             dataProvider.AddActivity(newActivity);
-            showProvider.DisplayMessage("Successfully added new Activity");
+            view.DisplayMessage("Successfully added new Activity");
         }
 
         public void EditActivity(int editOption, Activity activityToEdit)
@@ -88,7 +89,7 @@ namespace ToDoList.Controllers.Activities
                     }
                 case 2:
                     {
-                        var categoriesControllers = new CategoriesControllers();
+                        var categoriesControllers = new CategoriesControllers(view);
                         activityToEdit.ActivityCategory = categoriesControllers.GetCategory();
                         break;
                     }
@@ -120,8 +121,7 @@ namespace ToDoList.Controllers.Activities
             var activityToDelete = GetActivityByID();
             dataProvider.RemoveActivity(activityToDelete);
 
-            var showProvider = new ShowProvider();
-            showProvider.DisplayMessage("Successfully deleted activity");
+            view.DisplayMessage("Successfully deleted activity");
         }
 
         private DateTime GetDate(string msg)
