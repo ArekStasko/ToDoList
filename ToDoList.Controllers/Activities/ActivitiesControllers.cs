@@ -21,7 +21,7 @@ namespace ToDoList.Controllers.Activities
             if (activity.StartDate.CompareTo(currentDate) >= 0)
             {
                 view.ErrorMessage("You don't even start this activity");
-                throw new Exception();
+                return;
             }
 
             activity.IsDone = true;
@@ -47,19 +47,22 @@ namespace ToDoList.Controllers.Activities
 
             for (int i = 0; i < activityQuery.Length; i++)
             {
+                view.DisplayMessage($"Provide {activityQuery[i]}");
                 activityData[i] = view.GetData() ?? "None";
             }
 
             var categoriesControllers = new CategoriesControllers(view);
             string category = categoriesControllers.GetCategory();
 
-
-            var startDate = GetDate("Provide start date of activity");
-            var deadlineDate = GetDate("Provide deadline date of activity");
+            view.DisplayMessage("Provide start date of activity");
+            var startDate = GetDate();
+            view.DisplayMessage("Provide deadline date of activity");
+            var deadlineDate = GetDate();
 
             while (deadlineDate <= startDate)
             {
-                deadlineDate = GetDate("Deadline can't be earlier than start date");
+                view.DisplayMessage("Deadline can't be earlier than start date");
+                deadlineDate = GetDate();
             }
 
             var newActivity = new Activity()
@@ -100,12 +103,14 @@ namespace ToDoList.Controllers.Activities
                     }
                 case 4:
                     {
-                        activityToEdit.StartDate = GetDate("Provide new activity start date");
+                        view.DisplayMessage("Provide new activity start date");
+                        activityToEdit.StartDate = GetDate();
                         break;
                     }
                 case 5:
                     {
-                        activityToEdit.DeadlineDate = GetDate("Provide new activity deadline date");
+                        view.DisplayMessage("Provide new activity deadline date");
+                        activityToEdit.DeadlineDate = GetDate();
                         break;
                     }
             }
@@ -124,47 +129,34 @@ namespace ToDoList.Controllers.Activities
             view.DisplayMessage("Successfully deleted activity");
         }
 
-        private DateTime GetDate(string msg)
+        private DateTime GetDate()
         {
-            Console.WriteLine(msg);
             string[] dateQuery = new string[] { "Year", "Month", "Day", "Hour", "Minute" };
-            var dataDate = new List<int> { };
 
-            foreach (var data in dateQuery)
+            DateTime date;
+            do
             {
-                int numericValue;
-                do
+                var dataDate = new List<int> { };
+
+                foreach (var data in dateQuery)
                 {
-                    Console.WriteLine($"Provide {data}");
-                    numericValue = GetNumericValue();
+                    view.DisplayMessage($"Provide {data}");
+                    int numericValue = GetNumericValue();
+                    dataDate.Add(numericValue);
                 }
-                while (numericValue <= 0);
-                dataDate.Add(numericValue);
-            }
 
-            try
-            {
-                DateTime date = new DateTime(
+                date = new DateTime(
                     dataDate[0],
                     dataDate[1],
                     dataDate[2],
                     dataDate[3],
                     dataDate[4],
                     0
-                    );
+                );
 
-                var currentDate = DateTime.Now;
+            } while (date.CompareTo(DateTime.Now) >= 0);
 
-                if (date.CompareTo(currentDate) >= 0)
-                    return date;
-                else
-                    throw new Exception();
-            }
-            catch (Exception)
-            {
-                throw new Exception("You provided wrong date");
-            }
-
+            return date;
         }
     }
 }

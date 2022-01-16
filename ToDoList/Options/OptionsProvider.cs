@@ -137,6 +137,9 @@ namespace ToDoList
                         if (categories.Any())
                         {
                             activitiesController.AddNewActivity();
+
+
+
                             break;
                         }
 
