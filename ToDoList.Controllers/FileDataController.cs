@@ -7,10 +7,7 @@ namespace ToDoList.Controllers
     {
         protected readonly IView _view;
 
-        public FileDataController(IView view)
-        {
-            _view = view;
-        }
+        public FileDataController(IView view) => _view = view;
 
         public int GetUserSelection(int numberOfOptions)
         {
@@ -37,9 +34,8 @@ namespace ToDoList.Controllers
             return Int32.Parse(NumVal);
         }
 
-        protected string GetStringValue(string msg)
+        protected string GetStringValue()
         {
-            _view.DisplayMessage(msg);
             string? providedData = _view.GetData();
 
             while (String.IsNullOrEmpty(providedData))
@@ -73,22 +69,17 @@ namespace ToDoList.Controllers
         {
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
+            int activityID;
 
-            _view.DisplayMessage("Provide activity ID");
-            int activityID = GetNumericValue();
-
-            try
+            do
             {
-                var activity = activities.Single(activity => activity.ActivityID == activityID);
-                _view.ClearView();
-                return activity;
-            }
-            catch (Exception)
-            {
-                _view.ErrorMessage($"There is no activity with {activityID} ID");
-                throw new Exception();
-            }
+                _view.DisplayMessage("Provide activity ID");
+                activityID = GetNumericValue();
+            } while (!activities.Any(activity => activity.ActivityID == activityID));
 
+            var activity = activities.Single(activity => activity.ActivityID == activityID);
+            _view.ClearView();
+            return activity;
         }
 
         public Activity GetActivityByID(int ID)
@@ -106,32 +97,24 @@ namespace ToDoList.Controllers
         protected IEnumerable<Activity> GetActivitiesByCategory(string category)
         {
             var dataProvider = new FileDataProvider();
-
-            IEnumerable<string> categories = dataProvider.GetCategories();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
-            try
-            {
-                _view.ClearView();
-                return activities.Where(activity => activity.ActivityCategory == category);
-            }
-            catch (Exception)
-            {
-                _view.ErrorMessage($"You don't have {category} category");
-                throw new Exception();
-            }
+
+            _view.ClearView();
+            return activities.Where(activity => activity.ActivityCategory == category);
         }
 
         public IEnumerable<Activity> GetActivitiesByCategory()
         {
-            _view.DisplayMessage("Provide activities category to find");
-            string? category;
-            _view.ClearView();
+            var dataProvider = new FileDataProvider();
+            IEnumerable<Activity> activities = dataProvider.GetActivities();
+            string category;
 
             do
             {
-                category = _view.GetData();
+                category = GetStringValue();
+                _view.ClearView();
             }
-            while (string.IsNullOrEmpty(category));
+            while (activities.Any(activity => activity.ActivityCategory == category));
 
             return GetActivitiesByCategory(category);
 

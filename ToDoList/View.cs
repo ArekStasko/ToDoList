@@ -17,9 +17,7 @@ namespace ToDoList
         public void PrintActivities(IEnumerable<string> activities)
         {
             foreach (var activity in activities)
-            {
                 PrintActivity(activity);
-            }
         }
 
         public void PrintCategories(IEnumerable<string> categories)
@@ -46,15 +44,8 @@ namespace ToDoList
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void ClearView()
-        {
-            Console.Clear();
-        }
-
-        public string? GetData()
-        {
-            return Console.ReadLine();
-        }
+        public void ClearView() => Console.Clear();
+        public string? GetData() => Console.ReadLine();
 
     }
 }

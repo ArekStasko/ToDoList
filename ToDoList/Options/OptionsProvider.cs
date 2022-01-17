@@ -62,6 +62,7 @@ namespace ToDoList
                             }
                             else if (selectedOption == 4)
                             {
+                                Console.WriteLine("Provide activities category to find");
                                 var searchedActivity = dataController.GetActivitiesByCategory();
                                 foreach(var activity in searchedActivity)                                
                                     _view.PrintActivity(activity.ConvertToString());
@@ -100,6 +101,7 @@ namespace ToDoList
             {
                 case 1:
                     {
+                        Console.WriteLine("- Please insert new category name -");
                         categoriesControllers.AddNewCategory();
                         break;
                     }
@@ -107,6 +109,8 @@ namespace ToDoList
                     {
                         if (categories.Any())
                         {
+                            Console.WriteLine("Please provide the category name to delete");
+                            Console.WriteLine("- This will delete all items with this category -");
                             categoriesControllers.DeleteCategory();
                             break;
                         }
@@ -137,9 +141,6 @@ namespace ToDoList
                         if (categories.Any())
                         {
                             activitiesController.AddNewActivity();
-
-
-
                             break;
                         }
 

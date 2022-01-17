@@ -7,10 +7,7 @@ namespace ToDoList.Controllers.Activities
     public class ActivitiesControllers : FileDataController, IActivitiesControllers
     {
         private readonly IView view;
-        public ActivitiesControllers(IView _view) : base(_view)
-        {
-            view = _view;
-        }
+        public ActivitiesControllers(IView _view) : base(_view) => view = _view;
 
         public void SetActivityAsDone()
         {
@@ -87,7 +84,8 @@ namespace ToDoList.Controllers.Activities
             {
                 case 1:
                     {
-                        activityToEdit.ActivityName = GetStringValue("Provide new activity name");
+                        _view.DisplayMessage("Provide new activity name");
+                        activityToEdit.ActivityName = GetStringValue();
                         break;
                     }
                 case 2:
@@ -98,7 +96,8 @@ namespace ToDoList.Controllers.Activities
                     }
                 case 3:
                     {
-                        activityToEdit.ActivityDescription = GetStringValue("Provide new activity description");
+                        _view.DisplayMessage("Provide new activity description");
+                        activityToEdit.ActivityDescription = GetStringValue();
                         break;
                     }
                 case 4:

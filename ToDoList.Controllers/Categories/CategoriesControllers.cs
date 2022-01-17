@@ -7,10 +7,7 @@ namespace ToDoList.Controllers.Categories
     {
         private readonly IView view;
 
-        public CategoriesControllers(IView _view) : base(_view)
-        {
-            view = _view;
-        }
+        public CategoriesControllers(IView _view) : base(_view) => view = _view;
 
         public IEnumerable<string> GetCategories()
         {
@@ -20,18 +17,18 @@ namespace ToDoList.Controllers.Categories
 
         public string GetCategory()
         {
-            Console.WriteLine("- Please choose number of category -");
+            view.DisplayMessage("- Please choose number of category -");
             var dataProvider = new FileDataProvider();
             var categories = dataProvider.GetCategories();
 
             view.PrintCategories(categories);
-            string? category = Console.ReadLine();
+            string? category = view.GetData();
             int categoryNumber;
 
             while (!Int32.TryParse(category, out categoryNumber) || string.IsNullOrEmpty(category))
             {
-                Console.WriteLine("- Please provide number of category -");
-                category = Console.ReadLine();
+                view.DisplayMessage("- Please provide number of category -");
+                category = view.GetData();
             };
 
             return categories.ElementAt(categoryNumber - 1);
@@ -39,12 +36,11 @@ namespace ToDoList.Controllers.Categories
 
         public void AddNewCategory()
         {
-            Console.WriteLine("- Please insert new category name -");
-            string? categoryName = Console.ReadLine();
+            string? categoryName = view.GetData();
             while (String.IsNullOrEmpty(categoryName))
             {
-                Console.WriteLine("-Category can't be empty-");
-                categoryName = Console.ReadLine();
+                view.DisplayMessage("-Category can't be empty-");
+                categoryName = view.GetData();
             }
 
             var dataProvider = new FileDataProvider();
@@ -55,20 +51,16 @@ namespace ToDoList.Controllers.Categories
 
         public void DeleteCategory()
         {
-            Console.WriteLine("Please provide the category name to delete");
-            Console.WriteLine("- This will delete all items with this category -");
-
             var dataProvider = new FileDataProvider();
-
             var categoryToDelete = GetCategory();
+            var activities = dataProvider.GetActivities();
 
-            IEnumerable<Activity> ActivitiesToDelete = GetActivitiesByCategory(categoryToDelete);
-
-            if (ActivitiesToDelete.Any())
+            if (activities.Any(activity => activity.ActivityCategory == categoryToDelete))
             {
-                dataProvider.RemoveActivity(ActivitiesToDelete.ToList());
-
+                activities = GetActivitiesByCategory(categoryToDelete);
+                dataProvider.RemoveActivity(activities.ToList());
             }
+
             dataProvider.RemoveCategory(categoryToDelete);
             view.DisplayMessage("Successfully deleted category");
         }
