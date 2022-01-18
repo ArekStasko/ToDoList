@@ -11,7 +11,7 @@ namespace ToDoList
                 Console.WriteLine($"{i + 1}. {options[i]}");
             }
         }
-
+        
         public void PrintMainOptions()
         {
             string[] mainOptions = new string[] { 

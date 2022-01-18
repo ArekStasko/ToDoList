@@ -27,10 +27,8 @@ namespace ToDoList.Controllers.Activities
 
         public void AddNewActivity()
         {
-            string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
-            List<string> activityData = new List<string>(2) { "", "" };
+            var newActivity = new Activity();
 
-            view.DisplayMessage("Provide new activity ID");
             int activityID = GetNumericValue();
 
             var dataProvider = new FileDataProvider();
@@ -42,37 +40,27 @@ namespace ToDoList.Controllers.Activities
                 activityID = GetNumericValue();
             }
 
-            for (int i = 0; i < activityQuery.Length; i++)
-            {
-                view.DisplayMessage($"Provide {activityQuery[i]}");
-                activityData[i] = view.GetData() ?? "None";
-            }
+            newActivity.ActivityID = activityID;
+
+            newActivity.ActivityName = GetStringValue();
+            newActivity.ActivityDescription = GetStringValue();
 
             var categoriesControllers = new CategoriesControllers(view);
             string category = categoriesControllers.GetCategory();
 
-            view.DisplayMessage("Provide start date of activity");
+            newActivity.ActivityCategory = category;
+
             var startDate = GetDate();
-            view.DisplayMessage("Provide deadline date of activity");
             var deadlineDate = GetDate();
 
             while (deadlineDate <= startDate)
             {
-                view.DisplayMessage("Deadline can't be earlier than start date");
+                view.ErrorMessage("Deadline can't be earlier than start date");
                 deadlineDate = GetDate();
             }
 
-            var newActivity = new Activity()
-            {
-                ActivityName = activityData[0],
-                ActivityDescription = activityData[1],
-                ActivityID = activityID,
-                ActivityCategory = category,
-                StartDate = startDate,
-                DeadlineDate = deadlineDate,
-            };
-
-
+            newActivity.StartDate = startDate;
+            newActivity.DeadlineDate = deadlineDate;
 
             dataProvider.AddActivity(newActivity);
             view.DisplayMessage("Successfully added new Activity");
@@ -113,6 +101,7 @@ namespace ToDoList.Controllers.Activities
                         break;
                     }
             }
+
             var dataProvider = new FileDataProvider();
             dataProvider.UpdateActivity(activityToEdit);
 

@@ -46,7 +46,7 @@ namespace ToDoList.DataAccess.Models
                 IsDone ? "1" : "0"
             };
         }
-
+        
         public string ConvertToString()
         {
             string[] activity = ConvertToDataRow();

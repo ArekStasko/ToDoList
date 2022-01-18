@@ -1,18 +1,18 @@
 ﻿using ToDoList.Controllers;
-using ToDoList.Controllers.Categories;
 using ToDoList.Controllers.Activities;
+using ToDoList.Controllers.Categories;
 
 namespace ToDoList
 {
-    public class OptionsProvider 
+    public class OptionsProvider
     {
-        private Options Options;
+        public Options _options;
         public View _view;
 
         public OptionsProvider()
         {
-            Options = new Options();
-            _view = new View();  
+            _options = new Options();
+            _view = new View();
         }
 
         public void ChooseMainOption()
@@ -22,6 +22,7 @@ namespace ToDoList
 
             do
             {
+                _options.PrintMainOptions();
                 userSelection = dataController.GetUserSelection(5);
 
                 switch (userSelection)
@@ -31,7 +32,7 @@ namespace ToDoList
                             var activities = dataController.GetActivities();
                             activities = activities.Where(activity => !activity.IsDone);
 
-                            foreach(var activity in activities)
+                            foreach (var activity in activities)
                             {
                                 _view.PrintActivity(activity.ConvertToString());
                             }
@@ -40,8 +41,6 @@ namespace ToDoList
                     case 2:
                         {
                             int selectedOption = dataController.GetUserSelection(4);
-
-
 
                             if (selectedOption == 1)
                             {
@@ -57,45 +56,40 @@ namespace ToDoList
                             else if (selectedOption == 3)
                             {
                                 var activities = dataController.GetInactiveActivities();
-                                foreach(var activity in activities)
+                                foreach (var activity in activities)
                                     _view.PrintActivity(activity.ConvertToString());
                             }
                             else if (selectedOption == 4)
                             {
                                 Console.WriteLine("Provide activities category to find");
                                 var searchedActivity = dataController.GetActivitiesByCategory();
-                                foreach(var activity in searchedActivity)                                
+                                foreach (var activity in searchedActivity)
                                     _view.PrintActivity(activity.ConvertToString());
                             }
+
                             break;
                         }
                     case 3:
-                        {
-                            int selectedEditionOption = dataController.GetUserSelection(5);
-
-                            RunActivityController(selectedEditionOption);
-                            break;
-                        }
+                        RunActivityController();
+                        break;
                     case 4:
-                        {
-                            int selectedEditionOption = dataController.GetUserSelection(2);
-
-                            RunCategoryController(selectedEditionOption);
-                            break;
-                        }
+                        RunCategoryController();
+                        break;
                     default:
                         Console.WriteLine("Goodbye :D");
                         break;
 
                 }
-            }
-            while (userSelection != 5);
+            } while (userSelection != 5);
         }
 
-        private void RunCategoryController(int selectedOption)
+        private void RunCategoryController()
         {
             var categoriesControllers = new CategoriesControllers(_view);
             var categories = categoriesControllers.GetCategories();
+
+            var dataController = new FileDataController(_view);
+            int selectedOption = dataController.GetUserSelection(5);
 
             switch (selectedOption)
             {
@@ -126,26 +120,32 @@ namespace ToDoList
             }
         }
 
-        private void RunActivityController(int selectedOption)
+        private void RunActivityController()
         {
             var activitiesController = new ActivitiesControllers(_view);
-            var categoriesController = new CategoriesControllers(_view);   
-            
+            var categoriesController = new CategoriesControllers(_view);
+
             var categories = categoriesController.GetCategories();
             var activities = activitiesController.GetActivities();
+
+            var dataController = new FileDataController(_view);
+            int selectedOption = dataController.GetUserSelection(2);
 
             switch (selectedOption)
             {
                 case 1:
                     {
-                        if (categories.Any())
+                        if (!categories.Any())
                         {
-                            activitiesController.AddNewActivity();
+                            Console.WriteLine("Please first add at least one category");
+                            categoriesController.AddNewCategory();
                             break;
                         }
 
-                        Console.WriteLine("Please first add at least one category");
-                        categoriesController.AddNewCategory();
+                        string[] activityQuery = new string[] { "Activity Name", "Activity Description" };
+                        Console.WriteLine("Provide data :");
+                        Console.WriteLine();
+                        activitiesController.AddNewActivity();
                         break;
                     }
                 case 2:
