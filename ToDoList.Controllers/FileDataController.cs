@@ -1,13 +1,14 @@
 ﻿using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
+using ToDoList.Controllers.Activities;
 
 namespace ToDoList.Controllers
 {
     public class FileDataController
     {
         protected readonly IView _view;
-
         public FileDataController(IView view) => _view = view;
+
 
         public int GetUserSelection(int numberOfOptions)
         {
@@ -23,40 +24,30 @@ namespace ToDoList.Controllers
             return selectedOption;
         }
 
-        protected int GetNumericValue()
-        {
-            string? NumVal = _view.GetData();
-            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
-            {
-                _view.DisplayMessage("Input must be non 0 number");
-                NumVal = _view.GetData();
-            }
-            return Int32.Parse(NumVal);
-        }
-
-        protected string GetStringValue()
-        {
-            string? providedData = _view.GetData();
-
-            while (String.IsNullOrEmpty(providedData))
-            {
-                _view.DisplayMessage("-You can't add empty data-");
-                providedData = _view.GetData();
-            }
-
-            return providedData;
-        }
-
-        public IEnumerable<Activity> GetInactiveActivities()
+        public IEnumerable<ActivityStruct> GetInactiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => !activity._isActive);
+            activities = activities.Where(activity => !activity._isActive);
+            foreach(var activity in activities)
+            {
+                yield return new ActivityStruct(activity);
+            }
         }
 
-        public IEnumerable<Activity> GetActiveActivities()
+        public IEnumerable<ActivityStruct> GetActiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => !activity._isActive);
+            activities = activities.Where(activity => activity._isActive);
+            foreach (var activity in activities)
+            {
+                yield return new ActivityStruct(activity);
+            }
+        }
+
+        public ActivityStruct GetActivityStructByID()
+        {
+            var activity = GetActivityByID();
+            return new ActivityStruct(activity);
         }
 
         public IEnumerable<Activity> GetActivities()
@@ -93,16 +84,6 @@ namespace ToDoList.Controllers
             return activity;
         }
 
-
-        protected IEnumerable<Activity> GetActivitiesByCategory(string category)
-        {
-            var dataProvider = new FileDataProvider();
-            IEnumerable<Activity> activities = dataProvider.GetActivities();
-
-            _view.ClearView();
-            return activities.Where(activity => activity.Category == category);
-        }
-
         public IEnumerable<Activity> GetActivitiesByCategory()
         {
             var dataProvider = new FileDataProvider();
@@ -120,5 +101,37 @@ namespace ToDoList.Controllers
 
         }
 
+        protected IEnumerable<Activity> GetActivitiesByCategory(string category)
+        {
+            var dataProvider = new FileDataProvider();
+            IEnumerable<Activity> activities = dataProvider.GetActivities();
+
+            _view.ClearView();
+            return activities.Where(activity => activity.Category == category);
+        }
+
+        protected int GetNumericValue()
+        {
+            string? NumVal = _view.GetData();
+            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
+            {
+                _view.DisplayMessage("Input must be non 0 number");
+                NumVal = _view.GetData();
+            }
+            return Int32.Parse(NumVal);
+        }
+
+        protected string GetStringValue()
+        {
+            string? providedData = _view.GetData();
+
+            while (String.IsNullOrEmpty(providedData))
+            {
+                _view.DisplayMessage("-You can't add empty data-");
+                providedData = _view.GetData();
+            }
+
+            return providedData;
+        }
     }
 }

@@ -1,11 +1,11 @@
-﻿using ToDoList.DataAccess.Models;
+﻿using ToDoList.Controllers.Activities;
 
 namespace ToDoList.Controllers
 {
     public interface IView
     {
-        public void PrintActivity(string activity);
-        public void PrintActivities(IEnumerable<string> activities);
+        public void PrintActivity(ActivityStruct activity);
+        public void PrintActivities(IEnumerable<ActivityStruct> activities);
         public void PrintCategories(IEnumerable<string> categories);
         public void DisplayMessage(string msg);
         public void ErrorMessage(string msg);

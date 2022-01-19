@@ -67,7 +67,7 @@ namespace ToDoList
                 case 4:
                     {
                         foreach (var activity in activities.Where(activity => activity.IsDone))
-                            _view.PrintActivity(activity.ConvertToString());
+                            _view.PrintActivity(new ActivityStruct(activity));
 
                         break;
                     }

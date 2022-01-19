@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ToDoList.Controllers.Activities;
 using ToDoList.Controllers;
 
 
@@ -8,13 +6,21 @@ namespace ToDoList
 {
     public class View : IView
     {
-        public void PrintActivity(string activity)
+        public void PrintActivity(ActivityStruct activity)
         {
-            Console.WriteLine($"| Activity ID | Activity Category | Activity Name | Activity Description | Start Date | Deadline |");
-            Console.WriteLine(activity);
+            Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | Start Date | End Date |");
+
+            if (activity._isActive)
+                Console.ForegroundColor = ConsoleColor.Green;
+            else
+                Console.ForegroundColor = ConsoleColor.Red;
+
+
+            Console.WriteLine($"| {activity.Id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.StartDate} | {activity.EndDate} |");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void PrintActivities(IEnumerable<string> activities)
+        public void PrintActivities(IEnumerable<ActivityStruct> activities)
         {
             foreach (var activity in activities)
                 PrintActivity(activity);

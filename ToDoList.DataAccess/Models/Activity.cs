@@ -4,9 +4,9 @@ namespace ToDoList.DataAccess.Models
     public class Activity
     {
         public int _id { get; set; }
-        public string Title { get; set; } = "noneName";
-        public string Category { get; set; } = "noneCategory";
-        public string Description { get; set; } = "noneDescription";
+        public string Title { get; set; } = "none Title";
+        public string Category { get; set; } = "none Category";
+        public string Description { get; set; } = "none Description";
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool _isActive { get => EndDate > DateTime.Now;  }

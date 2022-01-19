@@ -1,5 +1,5 @@
 ﻿using ToDoList.Controllers;
-
+using ToDoList.Controllers.Activities;
 namespace ToDoList
 {
     public class MainOptions
@@ -30,11 +30,9 @@ namespace ToDoList
                         {
                             var activities = dataController.GetActivities();
                             activities = activities.Where(activity => !activity.IsDone);
-
                             foreach (var activity in activities)
-                            {
-                                _view.PrintActivity(activity.ConvertToString());
-                            }
+                                _view.PrintActivity(new ActivityStruct(activity));
+
                             break;
                         }
                     case 2:
@@ -44,29 +42,26 @@ namespace ToDoList
 
                             if (selectedOption == 1)
                             {
-                                var searchedActivity = dataController.GetActivityByID();
-                                _view.PrintActivity(searchedActivity.ConvertToString());
+                                var activity = dataController.GetActivityStructByID();
+                                _view.PrintActivity(activity);
                             }
                             else if (selectedOption == 2)
                             {
                                 var activities = dataController.GetActiveActivities();
-                                foreach (var activity in activities)
-                                    _view.PrintActivity(activity.ConvertToString());
+                                _view.PrintActivities(activities);
                             }
                             else if (selectedOption == 3)
                             {
                                 var activities = dataController.GetInactiveActivities();
-                                foreach (var activity in activities)
-                                    _view.PrintActivity(activity.ConvertToString());
+                                _view.PrintActivities(activities);
                             }
                             else if (selectedOption == 4)
                             {
                                 Console.WriteLine("Provide activities category to find");
-                                var searchedActivity = dataController.GetActivitiesByCategory();
-                                foreach (var activity in searchedActivity)
-                                    _view.PrintActivity(activity.ConvertToString());
+                                var activities = dataController.GetActivitiesByCategory();
+                                foreach (var activity in activities)
+                                    _view.PrintActivity(new ActivityStruct(activity));
                             }
-
                             break;
                         }
                     case 3:
