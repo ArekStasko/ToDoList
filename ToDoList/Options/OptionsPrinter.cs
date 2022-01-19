@@ -1,11 +1,10 @@
 ﻿
 namespace ToDoList
 {
-    public class Options : IOptions
+    public class OptionsPrinter
     {
-        public void printOptions(string[] options, string msg)
+        private void printOptions(string[] options)
         {
-            Console.WriteLine(msg);
             for (int i = 0; i < options.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {options[i]}");
@@ -14,34 +13,36 @@ namespace ToDoList
         
         public void PrintMainOptions()
         {
-            string[] mainOptions = new string[] { 
+            string[] mainOptions =
+            { 
                 "Show all activities", 
                 "Show specific activities", 
                 "Manage Activities", 
                 "Manage Categories",
                 "Close ToDo list" 
             };
-            
-            printOptions(mainOptions, "Please select one option :");
+            Console.WriteLine("Please select one option :");
+            printOptions(mainOptions);
         }
 
         public void PrintActivitiesOptions()
         {
             Console.Clear();
-            string[] activitiesOptions = new string[] {
+            string[] activitiesOptions = 
+            {
                 "Add new activity",
                 "Edit activity",
                 "Set activity as done",
                 "Show all done activities",
                 "Delete activity"
             };
-
-            printOptions(activitiesOptions, "Please select one option :");
+            Console.WriteLine("Please select one option :");
+            printOptions(activitiesOptions);
         }
 
         public void PrintEditActivityOptions()
         {
-            string[] editOptions = new string[]
+            string[] editOptions = 
             {
                 "Edit Activity Name",
                 "Edit Activity Category",
@@ -50,33 +51,51 @@ namespace ToDoList
                 "Edit Deadline Date",
                 "Close edition"
             };
-
-            printOptions(editOptions, "What you want to change ?");
+            Console.WriteLine("What you want to change ?");
+            printOptions(editOptions);
         }
 
         public void PrintCategoriesOptions()
         {
             Console.Clear();
-            string[] editionOptions = new string[] {
+            string[] editionOptions = 
+            {
                 "Add new category",
                 "Delete category"
             };
 
-            printOptions(editionOptions, "Please select one option :");
+            Console.WriteLine("Please select one option: ");
+            printOptions(editionOptions);
         }
 
         public void PrintActivitySearchOptions()
         {
             Console.Clear();
-            string[] itemOptions = new string[] { 
+            string[] activityOptions = 
+            { 
                 "Get single activity from ID",
                 "Get current activities",
                 "Get activities out of date",
                 "Get activities with specific category" 
             };
 
-            string msg = "Please select one item search option :";
-            printOptions(itemOptions, msg);
+            Console.WriteLine("Please select one item search option :");
+            printOptions(activityOptions);
+        }
+
+        public void PrintAddActivityOptions()
+        {
+            string[] activityOptions =  
+            {
+                "Activity ID",
+                "Activity Name", 
+                "Activity Description",
+                "Activity Category",
+                "Start date of activity",
+                "End date of activity"
+            };
+            Console.WriteLine("Provide data :");
+            printOptions(activityOptions);
         }
 
     }

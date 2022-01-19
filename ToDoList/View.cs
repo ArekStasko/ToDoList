@@ -32,13 +32,11 @@ namespace ToDoList
 
         public void DisplayMessage(string msg)
         {
-            Console.Clear();
             Console.WriteLine($"{msg}");
         }
 
         public void ErrorMessage(string msg)
         {
-            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{msg}");
             Console.ForegroundColor = ConsoleColor.White;

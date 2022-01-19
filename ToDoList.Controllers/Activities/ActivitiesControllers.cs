@@ -39,7 +39,7 @@ namespace ToDoList.Controllers.Activities
                 view.ErrorMessage("You already have activity with this ID");
                 activityID = GetNumericValue();
             }
-
+            
             newActivity._id = activityID;
 
             newActivity.Title = GetStringValue();

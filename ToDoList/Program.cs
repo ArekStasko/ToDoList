@@ -6,7 +6,7 @@ namespace ToDoList
     {
         static void Main(string[] args)
         {
-            var optionsProvider = new OptionsProvider();
+            var optionsProvider = new MainOptions();
             optionsProvider.ChooseMainOption();
         }
     }
