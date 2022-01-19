@@ -40,24 +40,24 @@ namespace ToDoList.DataAccess.Tests.Unit
 
             var newActivity = new Activity()
             {
-                ActivityID = activityID,
-                ActivityCategory = category,
-                ActivityDescription = desc,
-                ActivityName = activityName,
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
                 StartDate = startDate,
-                DeadlineDate = deadlineDate
+                EndDate = deadlineDate
             };
 
             dataProvider.AddActivity(newActivity);
 
             var activitiesFromFile = dataProvider.GetActivities().ToList();
-            activitiesFromFile.Should().ContainSingle(x => x.ActivityID == activityID);
-            var itemToAssert = activitiesFromFile.Single(x => x.ActivityID == activityID);
-            itemToAssert.ActivityCategory.Should().Be(category);
-            itemToAssert.ActivityDescription.Should().Be(desc);
-            itemToAssert.ActivityName.Should().Be(activityName);
+            activitiesFromFile.Should().ContainSingle(activity => activity._id == activityID);
+            var itemToAssert = activitiesFromFile.Single(activity => activity._id == activityID);
+            itemToAssert.Category.Should().Be(category);
+            itemToAssert.Description.Should().Be(desc);
+            itemToAssert.Title.Should().Be(activityName);
             itemToAssert.StartDate.Should().Be(startDate);
-            itemToAssert.DeadlineDate.Should().Be(deadlineDate);
+            itemToAssert.EndDate.Should().Be(deadlineDate);
         }
 
         [Test]
@@ -73,23 +73,23 @@ namespace ToDoList.DataAccess.Tests.Unit
 
             var newActivity = new Activity()
             {
-                ActivityID = activityID,
-                ActivityCategory = category,
-                ActivityDescription = desc,
-                ActivityName = activityName,
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
                 StartDate = startDate,
-                DeadlineDate = deadlineDate
+                EndDate = deadlineDate
             };
 
             dataProvider.AddActivity(newActivity);
             var activitiesFromFile = dataProvider.GetActivities().ToList();
-            var activityToAssert = activitiesFromFile.Single(x => x.ActivityID == activityID);
+            var activityToAssert = activitiesFromFile.Single(activity => activity._id == activityID);
             activityToAssert.IsDone = true;
 
             dataProvider.UpdateActivity(activityToAssert);
 
             activitiesFromFile = dataProvider.GetActivities().ToList();
-            activityToAssert = activitiesFromFile.Single(x => x.ActivityID == activityID);
+            activityToAssert = activitiesFromFile.Single(activity => activity._id == activityID);
             activityToAssert.IsDone.Should().BeTrue();            
         }
 
@@ -104,10 +104,10 @@ namespace ToDoList.DataAccess.Tests.Unit
 
             var newActivity = new Activity()
             {
-                ActivityID = activityID,
-                ActivityCategory = category,
-                ActivityDescription = desc,
-                ActivityName = activityName
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName
             };
 
             dataProvider.AddActivity(newActivity);
@@ -154,16 +154,16 @@ namespace ToDoList.DataAccess.Tests.Unit
             {
                 var newActivity = new Activity()
                 {
-                    ActivityName = activitiesNames[i],
-                    ActivityDescription = activitiesDesc[i],
-                    ActivityCategory = activitiesCategories[i],
-                    ActivityID = i,
+                    Title = activitiesNames[i],
+                    Description = activitiesDesc[i],
+                    Category = activitiesCategories[i],
+                    _id = i,
                 };
 
                 dataProvider.AddActivity(newActivity);
             }
 
-            var activitiesToFind = dataProvider.GetActivities().Where(activity => activity.ActivityCategory == "testCategory");
+            var activitiesToFind = dataProvider.GetActivities().Where(activity => activity.Category == "testCategory");
 
             dataProvider.RemoveActivity(activitiesToFind.ToList());
             var activitiesFromFile = dataProvider.GetActivities().ToList();

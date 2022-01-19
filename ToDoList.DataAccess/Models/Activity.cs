@@ -3,47 +3,47 @@ namespace ToDoList.DataAccess.Models
 {
     public class Activity
     {
-        public string ActivityName { get; set; } = "noneName";
-        public string ActivityCategory { get; set; } = "noneCategory";
-        public string ActivityDescription { get; set; } = "noneDescription";
-        public int ActivityID { get; set; }
+        public int _id { get; set; }
+        public string Title { get; set; } = "noneName";
+        public string Category { get; set; } = "noneCategory";
+        public string Description { get; set; } = "noneDescription";
         public DateTime StartDate { get; set; }
-        public DateTime DeadlineDate { get; set; }
-        public bool IsActive { get => DeadlineDate > DateTime.Now;  }
-        private TimeSpan TimeExceeded { get; set; }
+        public DateTime EndDate { get; set; }
+        public bool _isActive { get => EndDate > DateTime.Now;  }
+        private TimeSpan ExceededTime { get; set; }
 
         private bool _isDone = false;
         public bool IsDone { get => _isDone; 
             set
             {
                 _isDone = value;
-                TimeExceeded = DeadlineDate - DateTime.Now;
+                ExceededTime = EndDate - DateTime.Now;
             }
         } 
 
         public string GetTimeToDeadline()
         {
-            if (!_isDone)
-            {
-                TimeSpan dateDifference = (DeadlineDate - DateTime.Now);
-                return $"Time To Deadline: {dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
-            } 
-            else
-            {
-                return $"Exceeded time: {TimeExceeded.Days} Days  {TimeExceeded.Hours} Hours  {TimeExceeded.Minutes} Minutes";
-            }
+            if (_isDone)
+                return $"Exceeded time: {ExceededTime.Days} Days  {ExceededTime.Hours} Hours  {ExceededTime.Minutes} Minutes";
 
+            TimeSpan dateDifference = (EndDate - DateTime.Now);
+            return $"Time To Deadline: {dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
         }
         
         public string[] ConvertToDataRow()
         {
+            /*
+            Warning - the order of creating this data row is important
+                      because of txt file 'database'
+            */
             return new[] {
-                ActivityID.ToString(),
-                ActivityCategory,ActivityName,
-                ActivityDescription,
+                _id.ToString(),
+                Category,
+                Title,
+                Description,
                 StartDate.ToString("MM/dd/yyyy HH:mm"),
-                DeadlineDate.ToString("MM/dd/yyyy HH:mm"),
-                IsDone ? "1" : "0"
+                EndDate.ToString("MM/dd/yyyy HH:mm"),
+                _isDone ? "1" : "0"
             };
         }
         
@@ -55,7 +55,7 @@ namespace ToDoList.DataAccess.Models
 
         protected bool Equals(Activity other)
         {
-            return ActivityID == other.ActivityID;
+            return _id == other._id;
         }
 
         public override bool Equals(object? obj)
@@ -74,7 +74,7 @@ namespace ToDoList.DataAccess.Models
 
         public override int GetHashCode()
         {
-            return ActivityID;
+            return _id;
         }
     }
 }

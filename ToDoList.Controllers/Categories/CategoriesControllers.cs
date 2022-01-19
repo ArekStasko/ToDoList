@@ -55,7 +55,7 @@ namespace ToDoList.Controllers.Categories
             var categoryToDelete = GetCategory();
             var activities = dataProvider.GetActivities();
 
-            if (activities.Any(activity => activity.ActivityCategory == categoryToDelete))
+            if (activities.Any(activity => activity.Category == categoryToDelete))
             {
                 activities = GetActivitiesByCategory(categoryToDelete);
                 dataProvider.RemoveActivity(activities.ToList());

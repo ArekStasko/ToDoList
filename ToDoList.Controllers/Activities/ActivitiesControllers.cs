@@ -34,33 +34,33 @@ namespace ToDoList.Controllers.Activities
             var dataProvider = new FileDataProvider();
             var activities = dataProvider.GetActivities();
 
-            if (activities.Any(activity => activity.ActivityID == activityID))
+            if (activities.Any(activity => activity._id == activityID))
             {
                 view.ErrorMessage("You already have activity with this ID");
                 activityID = GetNumericValue();
             }
 
-            newActivity.ActivityID = activityID;
+            newActivity._id = activityID;
 
-            newActivity.ActivityName = GetStringValue();
-            newActivity.ActivityDescription = GetStringValue();
+            newActivity.Title = GetStringValue();
+            newActivity.Description = GetStringValue();
 
             var categoriesControllers = new CategoriesControllers(view);
             string category = categoriesControllers.GetCategory();
 
-            newActivity.ActivityCategory = category;
+            newActivity.Category = category;
 
             var startDate = GetDate();
-            var deadlineDate = GetDate();
+            var endDate = GetDate();
 
-            while (deadlineDate <= startDate)
+            while (endDate <= startDate)
             {
                 view.ErrorMessage("Deadline can't be earlier than start date");
-                deadlineDate = GetDate();
+                endDate = GetDate();
             }
 
             newActivity.StartDate = startDate;
-            newActivity.DeadlineDate = deadlineDate;
+            newActivity.EndDate = endDate;
 
             dataProvider.AddActivity(newActivity);
             view.DisplayMessage("Successfully added new Activity");
@@ -73,19 +73,19 @@ namespace ToDoList.Controllers.Activities
                 case 1:
                     {
                         _view.DisplayMessage("Provide new activity name");
-                        activityToEdit.ActivityName = GetStringValue();
+                        activityToEdit.Title = GetStringValue();
                         break;
                     }
                 case 2:
                     {
                         var categoriesControllers = new CategoriesControllers(view);
-                        activityToEdit.ActivityCategory = categoriesControllers.GetCategory();
+                        activityToEdit.Category = categoriesControllers.GetCategory();
                         break;
                     }
                 case 3:
                     {
                         _view.DisplayMessage("Provide new activity description");
-                        activityToEdit.ActivityDescription = GetStringValue();
+                        activityToEdit.Description = GetStringValue();
                         break;
                     }
                 case 4:
@@ -97,7 +97,7 @@ namespace ToDoList.Controllers.Activities
                 case 5:
                     {
                         view.DisplayMessage("Provide new activity deadline date");
-                        activityToEdit.DeadlineDate = GetDate();
+                        activityToEdit.EndDate = GetDate();
                         break;
                     }
             }

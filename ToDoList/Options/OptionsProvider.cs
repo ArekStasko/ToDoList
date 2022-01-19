@@ -162,7 +162,7 @@ namespace ToDoList
                         int editSelection;
                         do
                         {
-                            activityToEdit = activitiesController.GetActivityByID(activityToEdit.ActivityID);
+                            activityToEdit = activitiesController.GetActivityByID(activityToEdit._id);
 
                             editSelection = activitiesController.GetUserSelection(6);
                             activitiesController.EditActivity(editSelection, activityToEdit);

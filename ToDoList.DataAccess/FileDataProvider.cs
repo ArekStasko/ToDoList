@@ -40,12 +40,12 @@ namespace ToDoList.DataAccess
                     string[] data = line.Split(separator.ToCharArray());
                     var newActivity = new Activity()
                     {
-                        ActivityID = Int32.Parse(data[0]),
-                        ActivityCategory = data[1],
-                        ActivityName = data[2],
-                        ActivityDescription = data[3],
+                        _id = Int32.Parse(data[0]),
+                        Category = data[1],
+                        Title = data[2],
+                        Description = data[3],
                         StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy HH:mm", null),
-                        DeadlineDate = DateTime.ParseExact(data[5], "MM/dd/yyyy HH:mm", null),
+                        EndDate = DateTime.ParseExact(data[5], "MM/dd/yyyy HH:mm", null),
                         IsDone = data[6] == "1"
                     };
                     yield return newActivity;

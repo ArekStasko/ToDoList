@@ -50,13 +50,13 @@ namespace ToDoList.Controllers
         public IEnumerable<Activity> GetInactiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => !activity.IsActive);
+            return activities.Where(activity => !activity._isActive);
         }
 
         public IEnumerable<Activity> GetActiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => !activity.IsActive);
+            return activities.Where(activity => !activity._isActive);
         }
 
         public IEnumerable<Activity> GetActivities()
@@ -75,9 +75,9 @@ namespace ToDoList.Controllers
             {
                 _view.DisplayMessage("Provide activity ID");
                 activityID = GetNumericValue();
-            } while (!activities.Any(activity => activity.ActivityID == activityID));
+            } while (!activities.Any(activity => activity._id == activityID));
 
-            var activity = activities.Single(activity => activity.ActivityID == activityID);
+            var activity = activities.Single(activity => activity._id == activityID);
             _view.ClearView();
             return activity;
         }
@@ -87,7 +87,7 @@ namespace ToDoList.Controllers
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
-            var activity = activities.Single(activity => activity.ActivityID == ID);
+            var activity = activities.Single(activity => activity._id == ID);
 
             _view.ClearView();
             return activity;
@@ -100,7 +100,7 @@ namespace ToDoList.Controllers
             IEnumerable<Activity> activities = dataProvider.GetActivities();
 
             _view.ClearView();
-            return activities.Where(activity => activity.ActivityCategory == category);
+            return activities.Where(activity => activity.Category == category);
         }
 
         public IEnumerable<Activity> GetActivitiesByCategory()
@@ -114,7 +114,7 @@ namespace ToDoList.Controllers
                 category = GetStringValue();
                 _view.ClearView();
             }
-            while (activities.Any(activity => activity.ActivityCategory == category));
+            while (activities.Any(activity => activity.Category == category));
 
             return GetActivitiesByCategory(category);
 
