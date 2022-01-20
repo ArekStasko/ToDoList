@@ -9,7 +9,6 @@ namespace ToDoList.Controllers
         protected readonly IView _view;
         public FileDataController(IView view) => _view = view;
 
-
         public int GetUserSelection(int numberOfOptions)
         {
             int selectedOption = GetNumericValue();
@@ -28,20 +27,14 @@ namespace ToDoList.Controllers
         {
             var activities = GetActivities();
             activities = activities.Where(activity => !activity._isActive);
-            foreach(var activity in activities)
-            {
-                yield return new ActivityStruct(activity);
-            }
+            return ConvertActivities(activities);
         }
 
         public IEnumerable<ActivityStruct> GetActiveActivities()
         {
             var activities = GetActivities();
             activities = activities.Where(activity => activity._isActive);
-            foreach (var activity in activities)
-            {
-                yield return new ActivityStruct(activity);
-            }
+            return ConvertActivities(activities);
         }
 
         public ActivityStruct GetActivityStructByID()
@@ -50,11 +43,8 @@ namespace ToDoList.Controllers
             return new ActivityStruct(activity);
         }
 
-        public IEnumerable<Activity> GetActivities()
-        {
-            var dataProvider = new FileDataProvider();
-            return dataProvider.GetActivities();    
-        }
+        public IEnumerable<ActivityStruct> GetActivityStructs() => ConvertActivities(GetActivities());
+
 
         public Activity GetActivityByID()
         {
@@ -84,7 +74,7 @@ namespace ToDoList.Controllers
             return activity;
         }
 
-        public IEnumerable<Activity> GetActivitiesByCategory()
+        public IEnumerable<ActivityStruct> GetActivitiesByCategory()
         {
             var dataProvider = new FileDataProvider();
             IEnumerable<Activity> activities = dataProvider.GetActivities();
@@ -96,8 +86,8 @@ namespace ToDoList.Controllers
                 _view.ClearView();
             }
             while (activities.Any(activity => activity.Category == category));
-
-            return GetActivitiesByCategory(category);
+            activities = GetActivitiesByCategory(category);
+            return ConvertActivities(activities);
 
         }
 
@@ -132,6 +122,20 @@ namespace ToDoList.Controllers
             }
 
             return providedData;
+        }
+
+        private IEnumerable<Activity> GetActivities()
+        {
+            var dataProvider = new FileDataProvider();
+            return dataProvider.GetActivities();
+        }
+
+        private IEnumerable<ActivityStruct> ConvertActivities(IEnumerable<Activity> activities)
+        {
+            foreach(var activity in activities)
+            {
+                yield return new ActivityStruct(activity);
+            }
         }
     }
 }

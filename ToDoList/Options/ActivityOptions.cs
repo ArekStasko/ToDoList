@@ -3,18 +3,21 @@ using ToDoList.Controllers.Categories;
 
 namespace ToDoList
 {
-    internal class ActivityOptions : MainOptions
+    internal class ActivityOptions 
     {
         internal void RunActivityController()
         {
+            var _options = new OptionsPrinter(); ;
+            var _view = new View();
+
             var activitiesController = new ActivitiesControllers(_view);
             var categoriesController = new CategoriesControllers(_view);
 
             var categories = categoriesController.GetCategories();
-            var activities = activitiesController.GetActivities();
+            var activities = activitiesController.GetActivityStructs();
 
             _options.PrintActivitiesOptions();
-            int selectedOption = dataController.GetUserSelection(2);
+            int selectedOption = activitiesController.GetUserSelection(2);
 
             switch (selectedOption)
             {
@@ -66,9 +69,7 @@ namespace ToDoList
                     }
                 case 4:
                     {
-                        foreach (var activity in activities.Where(activity => activity.IsDone))
-                            _view.PrintActivity(new ActivityStruct(activity));
-
+                        _view.PrintActivities(activities);
                         break;
                     }
                 case 5:
