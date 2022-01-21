@@ -8,17 +8,33 @@ namespace ToDoList.Controllers.Activities
     {
         public ActivitiesControllers(IView _view) : base(_view) { }
 
-        public void SetActivityAsDone()
+        public void StartActivity()
         {
             var dataProvider = new DataProvider();
 
             int activityID = _view.GetID();
             var activity = GetActivityByID(activityID);
 
-            var currentDate = DateTime.Now;
-            if (activity.StartDate.CompareTo(currentDate) >= 0)
+            if (activity.IsDone)
             {
-                _view.ErrorMessage("You don't even start this activity");
+                _view.ErrorMessage("You already done this activity");
+                return;
+            }
+
+            activity.IsActive = true;
+            dataProvider.UpdateActivity(activity);
+        }
+
+        public void SetActivityAsDone()
+        {
+            var dataProvider = new DataProvider();
+
+            int activityID = _view.GetID();
+            var activity = GetActivityByID(activityID);
+            
+            if (!activity.IsActive)
+            {
+                _view.ErrorMessage("You don't start this activity");
                 return;
             }
 
@@ -54,14 +70,7 @@ namespace ToDoList.Controllers.Activities
             var startDate = GetDate();
             var endDate = GetDate();
 
-            while (endDate <= startDate)
-            {
-                _view.ErrorMessage("Deadline can't be earlier than start date");
-                endDate = GetDate();
-            }
-
-            newActivity.StartDate = startDate;
-            newActivity.EndDate = endDate;
+            newActivity.EndDate =GetDate();
 
             dataProvider.AddActivity(newActivity);
             _view.DisplayMessage("Successfully added new Activity");
@@ -90,12 +99,6 @@ namespace ToDoList.Controllers.Activities
                         break;
                     }
                 case 4:
-                    {
-                        _view.DisplayMessage("Provide new activity start date");
-                        activityToEdit.StartDate = GetDate();
-                        break;
-                    }
-                case 5:
                     {
                         _view.DisplayMessage("Provide new activity deadline date");
                         activityToEdit.EndDate = GetDate();
@@ -144,7 +147,7 @@ namespace ToDoList.Controllers.Activities
                     0
                 );
 
-            } while (date.CompareTo(DateTime.Now) >= 0);
+            } while (date.CompareTo(DateTime.Now) <= 0);
 
             return date;
         }

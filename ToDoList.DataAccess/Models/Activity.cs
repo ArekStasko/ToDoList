@@ -7,10 +7,11 @@ namespace ToDoList.DataAccess.Models
         public string Title { get; set; } = "none Title";
         public string Category { get; set; } = "none Category";
         public string Description { get; set; } = "none Description";
-        public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool _isActive { get => EndDate > DateTime.Now;  }
         private TimeSpan ExceededTime { get; set; }
+
+        private bool _isActive = false;
+        public bool IsActive { get => _isActive; set => _isActive = value; }
 
         private bool _isDone = false;
         public bool IsDone { get => _isDone; 
@@ -41,8 +42,8 @@ namespace ToDoList.DataAccess.Models
                 Category,
                 Title,
                 Description,
-                StartDate.ToString("MM/dd/yyyy HH:mm"),
                 EndDate.ToString("MM/dd/yyyy HH:mm"),
+                _isActive ? "1" : "0",
                 _isDone ? "1" : "0"
             };
         }

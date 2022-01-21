@@ -22,7 +22,7 @@ namespace ToDoList
                 {
                     case 1:
                         {
-                            var activities = dataController.GetActiveActivities();
+                            var activities = dataController.GetInactiveActivities();
                             _view.PrintActivities(activities);
                             break;
                         }

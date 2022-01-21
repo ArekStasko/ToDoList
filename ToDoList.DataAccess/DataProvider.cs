@@ -44,8 +44,8 @@ namespace ToDoList.DataAccess
                         Category = data[1],
                         Title = data[2],
                         Description = data[3],
-                        StartDate = DateTime.ParseExact(data[4], "MM/dd/yyyy HH:mm", null),
-                        EndDate = DateTime.ParseExact(data[5], "MM/dd/yyyy HH:mm", null),
+                        EndDate = DateTime.ParseExact(data[4], "MM/dd/yyyy HH:mm", null),
+                        IsActive = data[5] == "1",
                         IsDone = data[6] == "1"
                     };
                     yield return newActivity;
@@ -56,13 +56,13 @@ namespace ToDoList.DataAccess
         public IEnumerable<Activity> GetActiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => !activity.IsDone);
+            return activities.Where(activity => activity.IsActive);
         }
 
         public IEnumerable<Activity> GetInactiveActivities()
         {
             var activities = GetActivities();
-            return activities.Where(activity => activity.IsDone);
+            return activities.Where(activity => !activity.IsActive);
         }
 
         public Activity GetActivityByID(int _id)

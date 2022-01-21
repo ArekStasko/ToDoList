@@ -8,7 +8,6 @@ namespace ToDoList.Controllers.Activities
         public string Title { get; set; } = "none Title";
         public string Category { get; set; } = "none Category";
         public string Description { get; set; } = "none Description";
-        public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool _isActive { get => EndDate > DateTime.Now; }
 
@@ -18,7 +17,6 @@ namespace ToDoList.Controllers.Activities
             Title = act.Title;
             Category = act.Category;
             Description = act.Description;
-            StartDate = act.StartDate;
             EndDate = act.EndDate;
         }
     }

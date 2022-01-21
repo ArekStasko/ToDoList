@@ -38,13 +38,6 @@ namespace ToDoList
                     {
                         int activityID = _view.GetID();
                         var activityToEdit = activitiesController.GetActivityByID(activityID);
-                        var currentDate = DateTime.Now;
-
-                        if (activityToEdit.StartDate.CompareTo(currentDate) >= 0)
-                        {
-                            _view.ErrorMessage("You can't edit activity which already started");
-                            throw new Exception();
-                        }
 
                         int editSelection;
                         do
@@ -65,15 +58,26 @@ namespace ToDoList
                             break;
                         }
 
-                        activitiesController.SetActivityAsDone();
+                        activitiesController.StartActivity();
                         break;
                     }
                 case 4:
                     {
-                        _view.PrintActivities(activities);
+                        if (!activities.Any())
+                        {
+                            _view.DisplayMessage("You don't have any activities");
+                            break;
+                        }
+
+                        activitiesController.SetActivityAsDone();
                         break;
                     }
                 case 5:
+                    {
+                        _view.PrintActivities(activities);
+                        break;
+                    }
+                case 6:
                     {
                         if (!activities.Any())
                         {

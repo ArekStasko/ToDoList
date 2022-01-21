@@ -32,6 +32,7 @@ namespace ToDoList
             {
                 "Add new activity",
                 "Edit activity",
+                "Start activity",
                 "Set activity as done",
                 "Show all done activities",
                 "Delete activity"
@@ -47,7 +48,6 @@ namespace ToDoList
                 "Edit Activity Name",
                 "Edit Activity Category",
                 "Edit Activity Description",
-                "Edit Start Date",
                 "Edit Deadline Date",
                 "Close edition"
             };

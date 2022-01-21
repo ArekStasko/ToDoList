@@ -8,7 +8,7 @@ namespace ToDoList
     {
         public void PrintActivity(ActivityStruct activity)
         {
-            Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | Start Date | End Date |");
+            Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
 
             if (activity._isActive)
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -16,7 +16,7 @@ namespace ToDoList
                 Console.ForegroundColor = ConsoleColor.Red;
 
 
-            Console.WriteLine($"| {activity.Id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.StartDate} | {activity.EndDate} |");
+            Console.WriteLine($"| {activity.Id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
             Console.ForegroundColor = ConsoleColor.White;
         }
 

@@ -35,7 +35,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string category = "TestCategory";
             string desc = "TestDescription";
             string activityName = "TestItemName";
-            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()
@@ -44,7 +43,6 @@ namespace ToDoList.DataAccess.Tests.Unit
                 Category = category,
                 Description = desc,
                 Title = activityName,
-                StartDate = startDate,
                 EndDate = deadlineDate
             };
 
@@ -56,7 +54,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             itemToAssert.Category.Should().Be(category);
             itemToAssert.Description.Should().Be(desc);
             itemToAssert.Title.Should().Be(activityName);
-            itemToAssert.StartDate.Should().Be(startDate);
             itemToAssert.EndDate.Should().Be(deadlineDate);
         }
 
@@ -68,7 +65,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string category = "TestCategory";
             string desc = "TestDescription";
             string activityName = "TestItemName";
-            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()
@@ -77,7 +73,6 @@ namespace ToDoList.DataAccess.Tests.Unit
                 Category = category,
                 Description = desc,
                 Title = activityName,
-                StartDate = startDate,
                 EndDate = deadlineDate
             };
 
@@ -173,25 +168,112 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void GetActiveActivities_ShouldReturn_ActiveActivities()
         {
+            var dataProvider = new DataProvider();
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
+            var newActivity = new Activity()
+            {
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
+                EndDate = deadlineDate
+            };
+
+            dataProvider.AddActivity(newActivity);
+
+            var activity = dataProvider.GetActivityByID(activityID);
+
+            activity.IsActive = true;
+            dataProvider.UpdateActivity(activity);
+
+            var activities = dataProvider.GetActiveActivities();
+            activity = activities.Where(act => act._id == activityID).First();
+            activity.IsActive.Should().BeTrue();
         }
 
         [Test]
         public void GetInactiveActivities_ShouldReturn_InactiveActivities()
         {
+            var dataProvider = new DataProvider();
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
+            var newActivity = new Activity()
+            {
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
+                EndDate = deadlineDate
+            };
+
+            dataProvider.AddActivity(newActivity);
+
+            var activities = dataProvider.GetInactiveActivities();
+            var activity = activities.First(act => act._id == activityID);
+            activity.IsActive.Should().BeFalse();
         }
 
         [Test]
         public void GetActivitiesByID_ShouldReturn_ActivitiesByID()
         {
+            var dataProvider = new DataProvider();
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
+            var newActivity = new Activity()
+            {
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
+                EndDate = deadlineDate
+            };
+
+            dataProvider.AddActivity(newActivity);
+
+            var activity = dataProvider.GetActivityByID(activityID);
+            activity.Should().NotBeNull();
         }
 
         [Test]
         public void GetActivitiesByCategory_ShouldReturn_ActivitiesByCategory()
         {
+            var dataProvider = new DataProvider();
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
+            var newActivity = new Activity()
+            {
+                _id = activityID,
+                Category = category,
+                Description = desc,
+                Title = activityName,
+                EndDate = deadlineDate
+            };
+
+            dataProvider.AddActivity(newActivity);
+
+            var activities = dataProvider.GetActivitiesByCategory(category);
+            activities.Should().Contain(act => act.Category == category);
         }
 
     }
