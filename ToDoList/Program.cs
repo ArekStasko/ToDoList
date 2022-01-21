@@ -8,7 +8,7 @@ namespace ToDoList
         {
             var _options = new OptionsPrinter(); ;
             var _view = new View();
-            var dataController = new FileDataController(_view);
+            var dataController = new DataController(_view);
 
 
             int userSelection;
@@ -16,25 +16,25 @@ namespace ToDoList
             do
             {
                 _options.PrintMainOptions();
-                userSelection = dataController.GetUserSelection(5);
+                userSelection = _view.GetNumericValue();
 
                 switch (userSelection)
                 {
                     case 1:
                         {
-                            var activities = dataController.GetActivityStructs();
-                            activities = activities.Where(activity => !activity._isDone);
+                            var activities = dataController.GetActiveActivities();
                             _view.PrintActivities(activities);
                             break;
                         }
                     case 2:
                         {
                             _options.PrintActivitySearchOptions();
-                            int selectedOption = dataController.GetUserSelection(4);
+                            int selectedOption = _view.GetNumericValue();
 
                             if (selectedOption == 1)
-                            {
-                                var activity = dataController.GetActivityStructByID();
+                            {                                
+                                int activityID = _view.GetID();
+                                var activity = dataController.GetActivityStructByID(activityID);
                                 _view.PrintActivity(activity);
                             }
                             else if (selectedOption == 2)
@@ -50,7 +50,8 @@ namespace ToDoList
                             else if (selectedOption == 4)
                             {
                                 Console.WriteLine("Provide activities category to find");
-                                var activities = dataController.GetActivitiesByCategory();
+                                string category = _view.GetStringValue();
+                                var activities = dataController.GetActivitiesByCategory(category);
                                 _view.PrintActivities(activities);
                             }
                             break;

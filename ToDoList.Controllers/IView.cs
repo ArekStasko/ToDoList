@@ -11,5 +11,8 @@ namespace ToDoList.Controllers
         public void ErrorMessage(string msg);
         public void ClearView();
         public string? GetData();
+        public int GetNumericValue();
+        public string GetStringValue();
+        public int GetID();
     }
 }

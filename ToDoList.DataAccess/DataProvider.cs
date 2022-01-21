@@ -2,7 +2,7 @@
 
 namespace ToDoList.DataAccess
 {
-    public class FileDataProvider : IDataProvider
+    public class DataProvider : IDataProvider
     {
         private const string categoriesFilePath = @".\categories.txt";
         private const string activitiesFilePath = @".\activities.txt";
@@ -52,17 +52,29 @@ namespace ToDoList.DataAccess
                 }
             }
         }
-
-        public IEnumerable<string> GetActivitiesToShow()
+        
+        public IEnumerable<Activity> GetActiveActivities()
         {
-            InitializeActivitiesFile();
-            foreach (string line in File.ReadLines(activitiesFilePath))
-            {
-                if (!String.IsNullOrWhiteSpace(line))
-                {
-                    yield return line;                  
-                }
-            }
+            var activities = GetActivities();
+            return activities.Where(activity => !activity.IsDone);
+        }
+
+        public IEnumerable<Activity> GetInactiveActivities()
+        {
+            var activities = GetActivities();
+            return activities.Where(activity => activity.IsDone);
+        }
+
+        public Activity GetActivityByID(int _id)
+        {
+            var activity = GetActivities().First(act => act._id == _id);
+            return activity;
+        }
+
+        public IEnumerable<Activity> GetActivitiesByCategory(string category)
+        {
+            var activities = GetActivities();
+            return activities.Where(activity => activity.Category == category);
         }
 
         public IEnumerable<string> GetCategories()
@@ -86,6 +98,10 @@ namespace ToDoList.DataAccess
             InitializeCategoriesFile();
             var categories = GetCategories().ToList();
             categories.Remove(categoryToRemove);
+
+            var activitiesToRemove = GetActivitiesByCategory(categoryToRemove).ToList();
+            RemoveActivity(activitiesToRemove);
+
             File.WriteAllText(categoriesFilePath, string.Empty);
             foreach (var category in categories)
             {

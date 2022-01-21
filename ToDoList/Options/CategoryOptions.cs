@@ -13,7 +13,7 @@ namespace ToDoList
             var categories = categoriesControllers.GetCategories();
 
             _options.PrintCategoriesOptions();
-            int selectedOption = categoriesControllers.GetUserSelection(5);
+            int selectedOption = _view.GetNumericValue();
 
             switch (selectedOption)
             {

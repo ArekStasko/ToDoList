@@ -3,32 +3,30 @@ using ToDoList.DataAccess.Models;
 
 namespace ToDoList.Controllers.Categories
 {
-    public class CategoriesControllers : FileDataController, ICategoriesControllers
+    public class CategoriesControllers : DataController
     {
-        private readonly IView view;
-
-        public CategoriesControllers(IView _view) : base(_view) => view = _view;
+        public CategoriesControllers(IView _view) : base(_view) { }
 
         public IEnumerable<string> GetCategories()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             return dataProvider.GetCategories();
         }
 
         public string GetCategory()
         {
-            view.DisplayMessage("- Please choose number of category -");
-            var dataProvider = new FileDataProvider();
+            _view.DisplayMessage("- Please choose number of category -");
+            var dataProvider = new DataProvider();
             var categories = dataProvider.GetCategories();
 
-            view.PrintCategories(categories);
-            string? category = view.GetData();
+            _view.PrintCategories(categories);
+            string? category = _view.GetData();
             int categoryNumber;
 
             while (!Int32.TryParse(category, out categoryNumber) || string.IsNullOrEmpty(category))
             {
-                view.DisplayMessage("- Please provide number of category -");
-                category = view.GetData();
+                _view.DisplayMessage("- Please provide number of category -");
+                category = _view.GetData();
             };
 
             return categories.ElementAt(categoryNumber - 1);
@@ -36,33 +34,20 @@ namespace ToDoList.Controllers.Categories
 
         public void AddNewCategory()
         {
-            string? categoryName = view.GetData();
-            while (String.IsNullOrEmpty(categoryName))
-            {
-                view.DisplayMessage("-Category can't be empty-");
-                categoryName = view.GetData();
-            }
+            string? categoryName = _view.GetStringValue();
 
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             dataProvider.AddCategory(categoryName);
 
-            view.DisplayMessage("Successfully added new category");
+            _view.DisplayMessage("Successfully added new category");
         }
 
         public void DeleteCategory()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             var categoryToDelete = GetCategory();
-            var activities = dataProvider.GetActivities();
-
-            if (activities.Any(activity => activity.Category == categoryToDelete))
-            {
-                activities = GetActivitiesByCategory(categoryToDelete);
-                dataProvider.RemoveActivity(activities.ToList());
-            }
-
             dataProvider.RemoveCategory(categoryToDelete);
-            view.DisplayMessage("Successfully deleted category");
+            _view.DisplayMessage("Successfully deleted category");
         }
     }
 }

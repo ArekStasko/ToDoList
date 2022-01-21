@@ -11,7 +11,6 @@ namespace ToDoList.Controllers.Activities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool _isActive { get => EndDate > DateTime.Now; }
-        public bool _isDone { get; set; }
 
         public ActivityStruct(Activity act)
         {
@@ -21,7 +20,6 @@ namespace ToDoList.Controllers.Activities
             Description = act.Description;
             StartDate = act.StartDate;
             EndDate = act.EndDate;
-            _isDone = act.IsDone;
         }
     }
 }

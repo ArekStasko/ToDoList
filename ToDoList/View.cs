@@ -51,5 +51,34 @@ namespace ToDoList
         public void ClearView() => Console.Clear();
         public string? GetData() => Console.ReadLine();
 
+        public string GetStringValue()
+        {
+            string? providedData = GetData();
+
+            while (String.IsNullOrEmpty(providedData))
+            {
+                DisplayMessage("-You can't add empty data-");
+                providedData = GetData();
+            }
+
+            return providedData;
+        }
+
+        public int GetNumericValue()
+        {
+            string? NumVal = GetData();
+            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
+            {
+                DisplayMessage("Input must be non 0 number");
+                NumVal = GetData();
+            }
+            return Int32.Parse(NumVal);
+        }
+
+        public int GetID()
+        {
+            DisplayMessage("Provide activity ID");
+            return GetNumericValue();
+        }
     }
 }

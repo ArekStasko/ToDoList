@@ -17,7 +17,7 @@ namespace ToDoList
             var activities = activitiesController.GetActivityStructs();
 
             _options.PrintActivitiesOptions();
-            int selectedOption = activitiesController.GetUserSelection(2);
+            int selectedOption = _view.GetNumericValue();
 
             switch (selectedOption)
             {
@@ -36,7 +36,8 @@ namespace ToDoList
                     }
                 case 2:
                     {
-                        var activityToEdit = activitiesController.GetActivityByID();
+                        int activityID = _view.GetID();
+                        var activityToEdit = activitiesController.GetActivityByID(activityID);
                         var currentDate = DateTime.Now;
 
                         if (activityToEdit.StartDate.CompareTo(currentDate) >= 0)
@@ -51,7 +52,7 @@ namespace ToDoList
                             activityToEdit = activitiesController.GetActivityByID(activityToEdit._id);
 
                             _options.PrintEditActivityOptions();
-                            editSelection = activitiesController.GetUserSelection(6);
+                            editSelection = _view.GetNumericValue();
                             activitiesController.EditActivity(editSelection, activityToEdit);
                         } while (editSelection != 6);
                         break;

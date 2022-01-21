@@ -4,20 +4,21 @@ using ToDoList.DataAccess.Models;
 
 namespace ToDoList.Controllers.Activities
 {
-    public class ActivitiesControllers : FileDataController, IActivitiesControllers
+    public class ActivitiesControllers : DataController
     {
-        private readonly IView view;
-        public ActivitiesControllers(IView _view) : base(_view) => view = _view;
+        public ActivitiesControllers(IView _view) : base(_view) { }
 
         public void SetActivityAsDone()
         {
-            var dataProvider = new FileDataProvider();
-            var activity = GetActivityByID();
+            var dataProvider = new DataProvider();
+
+            int activityID = _view.GetID();
+            var activity = GetActivityByID(activityID);
 
             var currentDate = DateTime.Now;
             if (activity.StartDate.CompareTo(currentDate) >= 0)
             {
-                view.ErrorMessage("You don't even start this activity");
+                _view.ErrorMessage("You don't even start this activity");
                 return;
             }
 
@@ -29,23 +30,23 @@ namespace ToDoList.Controllers.Activities
         {
             var newActivity = new Activity();
 
-            int activityID = GetNumericValue();
+            int activityID = _view.GetNumericValue();
 
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             var activities = dataProvider.GetActivities();
 
             if (activities.Any(activity => activity._id == activityID))
             {
-                view.ErrorMessage("You already have activity with this ID");
-                activityID = GetNumericValue();
+                _view.ErrorMessage("You already have activity with this ID");
+                activityID = _view.GetNumericValue();
             }
             
             newActivity._id = activityID;
 
-            newActivity.Title = GetStringValue();
-            newActivity.Description = GetStringValue();
+            newActivity.Title = _view.GetStringValue();
+            newActivity.Description = _view.GetStringValue();
 
-            var categoriesControllers = new CategoriesControllers(view);
+            var categoriesControllers = new CategoriesControllers(_view);
             string category = categoriesControllers.GetCategory();
 
             newActivity.Category = category;
@@ -55,7 +56,7 @@ namespace ToDoList.Controllers.Activities
 
             while (endDate <= startDate)
             {
-                view.ErrorMessage("Deadline can't be earlier than start date");
+                _view.ErrorMessage("Deadline can't be earlier than start date");
                 endDate = GetDate();
             }
 
@@ -63,7 +64,7 @@ namespace ToDoList.Controllers.Activities
             newActivity.EndDate = endDate;
 
             dataProvider.AddActivity(newActivity);
-            view.DisplayMessage("Successfully added new Activity");
+            _view.DisplayMessage("Successfully added new Activity");
         }
 
         public void EditActivity(int editOption, Activity activityToEdit)
@@ -73,48 +74,49 @@ namespace ToDoList.Controllers.Activities
                 case 1:
                     {
                         _view.DisplayMessage("Provide new activity name");
-                        activityToEdit.Title = GetStringValue();
+                        activityToEdit.Title = _view.GetStringValue();
                         break;
                     }
                 case 2:
                     {
-                        var categoriesControllers = new CategoriesControllers(view);
+                        var categoriesControllers = new CategoriesControllers(_view);
                         activityToEdit.Category = categoriesControllers.GetCategory();
                         break;
                     }
                 case 3:
                     {
                         _view.DisplayMessage("Provide new activity description");
-                        activityToEdit.Description = GetStringValue();
+                        activityToEdit.Description = _view.GetStringValue();
                         break;
                     }
                 case 4:
                     {
-                        view.DisplayMessage("Provide new activity start date");
+                        _view.DisplayMessage("Provide new activity start date");
                         activityToEdit.StartDate = GetDate();
                         break;
                     }
                 case 5:
                     {
-                        view.DisplayMessage("Provide new activity deadline date");
+                        _view.DisplayMessage("Provide new activity deadline date");
                         activityToEdit.EndDate = GetDate();
                         break;
                     }
             }
 
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             dataProvider.UpdateActivity(activityToEdit);
 
         }
 
         public void DeleteActivity()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
 
-            var activityToDelete = GetActivityByID();
+            int activityID = _view.GetID();
+            var activityToDelete = GetActivityByID(activityID);
             dataProvider.RemoveActivity(activityToDelete);
 
-            view.DisplayMessage("Successfully deleted activity");
+            _view.DisplayMessage("Successfully deleted activity");
         }
 
         private DateTime GetDate()
@@ -128,8 +130,8 @@ namespace ToDoList.Controllers.Activities
 
                 foreach (var data in dateQuery)
                 {
-                    view.DisplayMessage($"Provide {data}");
-                    int numericValue = GetNumericValue();
+                    _view.DisplayMessage($"Provide {data}");
+                    int numericValue = _view.GetNumericValue();
                     dataDate.Add(numericValue);
                 }
 

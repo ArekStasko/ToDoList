@@ -12,7 +12,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [SetUp]
         public void BeforeEveryTest()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
 
             var allActivities = dataProvider.GetActivities().ToList();
             foreach (var activity in allActivities)
@@ -30,7 +30,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void AddActivity_Should_Work()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             int activityID = 1;
             string category = "TestCategory";
             string desc = "TestDescription";
@@ -63,7 +63,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void UpdateActivity_Should_Work()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             int activityID = 1;
             string category = "TestCategory";
             string desc = "TestDescription";
@@ -96,7 +96,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void RemoveActivity_Should_Work()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             var activityID = 2;
             var category = "TestCategory";
             var desc = "TestDescription";
@@ -120,7 +120,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void AddCategory_Should_Work()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             var categoryName = "TestCategoryName";
 
             dataProvider.AddCategory(categoryName);
@@ -132,7 +132,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void RemoveCategory_Should_Work()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             var categoryName = "TestCategoryName";
 
             dataProvider.AddCategory(categoryName);
@@ -145,7 +145,7 @@ namespace ToDoList.DataAccess.Tests.Unit
         [Test]
         public void RemoveActivities_ShouldRemove_manyActivities()
         {
-            var dataProvider = new FileDataProvider();
+            var dataProvider = new DataProvider();
             string[] activitiesNames = new string[] { "testName1", "testName2", "testName3", "testName4" };
             string[] activitiesDesc = new string[] { "testDesc1", "testDesc2", "testDesc3", "testDesc4" };
             string[] activitiesCategories = new string[] { "testCategory", "testCategory", "testCategory", "testCategory" };
@@ -168,6 +168,30 @@ namespace ToDoList.DataAccess.Tests.Unit
             dataProvider.RemoveActivity(activitiesToFind.ToList());
             var activitiesFromFile = dataProvider.GetActivities().ToList();
             activitiesFromFile.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetActiveActivities_ShouldReturn_ActiveActivities()
+        {
+
+        }
+
+        [Test]
+        public void GetInactiveActivities_ShouldReturn_InactiveActivities()
+        {
+
+        }
+
+        [Test]
+        public void GetActivitiesByID_ShouldReturn_ActivitiesByID()
+        {
+
+        }
+
+        [Test]
+        public void GetActivitiesByCategory_ShouldReturn_ActivitiesByCategory()
+        {
+
         }
 
     }
