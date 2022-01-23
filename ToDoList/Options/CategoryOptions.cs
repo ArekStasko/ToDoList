@@ -2,17 +2,16 @@
 
 namespace ToDoList
 {
-    internal class CategoryOptions 
+    internal class CategoryOptions : OptionsPrinter
     {
-        internal void RunCategoryController()
+        internal void RunCategoryController() 
         {
-            var _options = new OptionsPrinter(); ;
             var _view = new View();
 
             var categoriesControllers = new CategoriesControllers(_view);
             var categories = categoriesControllers.GetCategories();
 
-            _options.PrintCategoriesOptions();
+            PrintCategoriesOptions();
             int selectedOption = _view.GetNumericValue();
 
             switch (selectedOption)

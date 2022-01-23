@@ -4,8 +4,8 @@ namespace ToDoList.Controllers
 {
     public interface IView
     {
-        public void PrintActivity(ActivityStruct activity);
-        public void PrintActivities(IEnumerable<ActivityStruct> activities);
+        public void PrintActivity(ViewBag activity);
+        public void PrintActivities(IEnumerable<ViewBag> activities);
         public void PrintCategories(IEnumerable<string> categories);
         public void DisplayMessage(string msg);
         public void ErrorMessage(string msg);

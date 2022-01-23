@@ -3,20 +3,19 @@ using ToDoList.Controllers.Categories;
 
 namespace ToDoList
 {
-    internal class ActivityOptions 
+    internal class ActivityOptions : OptionsPrinter 
     {
         internal void RunActivityController()
         {
-            var _options = new OptionsPrinter(); ;
             var _view = new View();
 
             var activitiesController = new ActivitiesControllers(_view);
             var categoriesController = new CategoriesControllers(_view);
 
             var categories = categoriesController.GetCategories();
-            var activities = activitiesController.GetActivityStructs();
+            var activities = activitiesController.GetActivityData();
 
-            _options.PrintActivitiesOptions();
+            PrintActivitiesOptions();
             int selectedOption = _view.GetNumericValue();
 
             switch (selectedOption)
@@ -30,7 +29,7 @@ namespace ToDoList
                             break;
                         }
 
-                        _options.PrintAddActivityOptions();
+                        PrintAddActivityOptions();
                         activitiesController.AddNewActivity();
                         break;
                     }
@@ -44,7 +43,7 @@ namespace ToDoList
                         {
                             activityToEdit = activitiesController.GetActivityByID(activityToEdit._id);
 
-                            _options.PrintEditActivityOptions();
+                            PrintEditActivityOptions();
                             editSelection = _view.GetNumericValue();
                             activitiesController.EditActivity(editSelection, activityToEdit);
                         } while (editSelection != 6);

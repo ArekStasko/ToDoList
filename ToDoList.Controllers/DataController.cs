@@ -9,19 +9,19 @@ namespace ToDoList.Controllers
         protected readonly IView _view;
         public DataController(IView view) => _view = view;
 
-        public IEnumerable<ActivityStruct> GetInactiveActivities()
+        public IEnumerable<ViewBag> GetInactiveActivities()
         {
             var dataProvider = new DataProvider();
             return ConvertActivities(dataProvider.GetInactiveActivities());
         }
 
-        public IEnumerable<ActivityStruct> GetActiveActivities()
+        public IEnumerable<ViewBag> GetActiveActivities()
         {
             var dataProvider = new DataProvider();
             return ConvertActivities(dataProvider.GetActiveActivities());
         }
 
-        public IEnumerable<ActivityStruct> GetActivityStructs() => ConvertActivities(GetActivities());
+        public IEnumerable<ViewBag> GetActivityData() => ConvertActivities(GetActivities());
 
         public Activity GetActivityByID(int ID)
         {
@@ -31,13 +31,13 @@ namespace ToDoList.Controllers
             return dataProvider.GetActivityByID(ID);
         }
 
-        public ActivityStruct GetActivityStructByID(int ID)
+        public ViewBag GetActivityDataByID(int ID)
         {
             var activity = GetActivityByID(ID);
-            return new ActivityStruct(activity);
+            return new ViewBag(activity);
         }
 
-        public IEnumerable<ActivityStruct> GetActivitiesByCategory(string category)
+        public IEnumerable<ViewBag> GetActivitiesByCategory(string category)
         {
             var dataProvider = new DataProvider();
             var activities = dataProvider.GetActivitiesByCategory(category);
@@ -50,11 +50,11 @@ namespace ToDoList.Controllers
             return dataProvider.GetActivities();
         }
 
-        private IEnumerable<ActivityStruct> ConvertActivities(IEnumerable<Activity> activities)
+        private IEnumerable<ViewBag> ConvertActivities(IEnumerable<Activity> activities)
         {
             foreach(var activity in activities)
             {
-                yield return new ActivityStruct(activity);
+                yield return new ViewBag(activity);
             }
         }
     }

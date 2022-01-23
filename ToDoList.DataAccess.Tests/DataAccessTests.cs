@@ -173,7 +173,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string category = "TestCategory";
             string desc = "TestDescription";
             string activityName = "TestItemName";
-            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()
@@ -232,7 +231,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string category = "TestCategory";
             string desc = "TestDescription";
             string activityName = "TestItemName";
-            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()
@@ -258,7 +256,6 @@ namespace ToDoList.DataAccess.Tests.Unit
             string category = "TestCategory";
             string desc = "TestDescription";
             string activityName = "TestItemName";
-            var startDate = new DateTime(2015, 05, 20, 05, 50, 0);
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
             var newActivity = new Activity()

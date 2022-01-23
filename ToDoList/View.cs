@@ -6,7 +6,7 @@ namespace ToDoList
 {
     public class View : IView
     {
-        public void PrintActivity(ActivityStruct activity)
+        public void PrintActivity(ViewBag activity)
         {
             Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
 
@@ -20,7 +20,7 @@ namespace ToDoList
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void PrintActivities(IEnumerable<ActivityStruct> activities)
+        public void PrintActivities(IEnumerable<ViewBag> activities)
         {
             foreach (var activity in activities)
                 PrintActivity(activity);

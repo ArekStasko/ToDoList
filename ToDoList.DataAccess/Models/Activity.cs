@@ -47,12 +47,6 @@ namespace ToDoList.DataAccess.Models
                 _isDone ? "1" : "0"
             };
         }
-        
-        public string ConvertToString()
-        {
-            string[] activity = ConvertToDataRow();
-            return string.Join("|", activity);
-        }
 
         protected bool Equals(Activity other)
         {

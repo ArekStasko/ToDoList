@@ -6,7 +6,7 @@ namespace ToDoList
     {
         static void Main(string[] args)
         {
-            var _options = new OptionsPrinter(); ;
+            var _options = new OptionsPrinter(); 
             var _view = new View();
             var dataController = new DataController(_view);
 
@@ -34,7 +34,7 @@ namespace ToDoList
                             if (selectedOption == 1)
                             {                                
                                 int activityID = _view.GetID();
-                                var activity = dataController.GetActivityStructByID(activityID);
+                                var activity = dataController.GetActivityDataByID(activityID);
                                 _view.PrintActivity(activity);
                             }
                             else if (selectedOption == 2)
