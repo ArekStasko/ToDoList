@@ -10,6 +10,8 @@ namespace ToDoList.Controllers.Activities
 
         public void StartActivity()
         {
+            if (checkIfActivitiesExist()) return;
+
             var dataProvider = new DataProvider();
 
             int activityID = _view.GetID();
@@ -27,14 +29,16 @@ namespace ToDoList.Controllers.Activities
 
         public void SetActivityAsDone()
         {
+            if (checkIfActivitiesExist()) return;
+
             var dataProvider = new DataProvider();
 
             int activityID = _view.GetID();
             var activity = GetActivityByID(activityID);
-            
+
             if (!activity.IsActive)
             {
-                _view.ErrorMessage("You don't start this activity");
+                _view.ErrorMessage("You didn't start this activity");
                 return;
             }
 
@@ -42,73 +46,58 @@ namespace ToDoList.Controllers.Activities
             dataProvider.UpdateActivity(activity);
         }
 
-        public void AddNewActivity()
+        public void AddNewActivity(ViewBag viewBag)
         {
-            var newActivity = new Activity();
-
-            int activityID = _view.GetNumericValue();
-
             var dataProvider = new DataProvider();
             var activities = dataProvider.GetActivities();
 
-            if (activities.Any(activity => activity._id == activityID))
+            if (activities.Any(activity => activity._id == viewBag.Id))
             {
                 _view.ErrorMessage("You already have activity with this ID");
-                activityID = _view.GetNumericValue();
+                return;
             }
-            
-            newActivity._id = activityID;
 
-            newActivity.Title = _view.GetStringValue();
-            newActivity.Description = _view.GetStringValue();
+            try
+            {
+                var activity = new Activity()
+                {
+                    _id = viewBag.Id,
+                    Title = viewBag.Title,
+                    Description = viewBag.Description,
+                    Category = viewBag.Category,
+                    EndDate = viewBag.EndDate
+                };
 
-            var categoriesControllers = new CategoriesControllers(_view);
-            string category = categoriesControllers.GetCategory();
+                dataProvider.AddActivity(activity);
+            }
+            catch (Exception)
+            {
+                _view.ErrorMessage("You provided wrong data");
+                return;
+            }
 
-            newActivity.Category = category;
-
-            var startDate = GetDate();
-            var endDate = GetDate();
-
-            newActivity.EndDate =GetDate();
-
-            dataProvider.AddActivity(newActivity);
-            _view.DisplayMessage("Successfully added new Activity");
         }
 
-        public void EditActivity(int editOption, Activity activityToEdit)
+        public void EditActivity(ViewBag viewBag)
         {
-            switch (editOption)
-            {
-                case 1:
-                    {
-                        _view.DisplayMessage("Provide new activity name");
-                        activityToEdit.Title = _view.GetStringValue();
-                        break;
-                    }
-                case 2:
-                    {
-                        var categoriesControllers = new CategoriesControllers(_view);
-                        activityToEdit.Category = categoriesControllers.GetCategory();
-                        break;
-                    }
-                case 3:
-                    {
-                        _view.DisplayMessage("Provide new activity description");
-                        activityToEdit.Description = _view.GetStringValue();
-                        break;
-                    }
-                case 4:
-                    {
-                        _view.DisplayMessage("Provide new activity deadline date");
-                        activityToEdit.EndDate = GetDate();
-                        break;
-                    }
-            }
-
             var dataProvider = new DataProvider();
-            dataProvider.UpdateActivity(activityToEdit);
-
+            try
+            {
+                var activity = new Activity()
+                {
+                    _id = viewBag.Id,
+                    Title = viewBag.Title,
+                    Description = viewBag.Description,
+                    Category = viewBag.Category,
+                    EndDate = viewBag.EndDate
+                };
+                dataProvider.UpdateActivity(activity);
+            }
+            catch (Exception)
+            {
+                _view.ErrorMessage("You provided wrong data");
+                return;
+            }
         }
 
         public void DeleteActivity()
@@ -122,7 +111,7 @@ namespace ToDoList.Controllers.Activities
             _view.DisplayMessage("Successfully deleted activity");
         }
 
-        private DateTime GetDate()
+        public DateTime GetDate()
         {
             string[] dateQuery = new string[] { "Year", "Month", "Day", "Hour", "Minute" };
 
@@ -150,6 +139,12 @@ namespace ToDoList.Controllers.Activities
             } while (date.CompareTo(DateTime.Now) <= 0);
 
             return date;
+        }
+
+        private bool checkIfActivitiesExist()
+        {
+            var dataProvider = new DataProvider();
+            return dataProvider.GetActivities().Any();  
         }
     }
 }

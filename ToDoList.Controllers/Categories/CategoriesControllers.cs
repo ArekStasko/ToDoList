@@ -20,16 +20,14 @@ namespace ToDoList.Controllers.Categories
             var categories = dataProvider.GetCategories();
 
             _view.PrintCategories(categories);
-            string? category = _view.GetData();
             int categoryNumber;
-
-            while (!Int32.TryParse(category, out categoryNumber) || string.IsNullOrEmpty(category))
+            do
             {
-                _view.DisplayMessage("- Please provide number of category -");
-                category = _view.GetData();
-            };
+                categoryNumber = _view.GetNumericValue();
+            } while (categories.ElementAt(categoryNumber - 1) != null);
 
-            return categories.ElementAt(categoryNumber - 1);
+
+            return categories.ElementAt(categoryNumber - 1);     
         }
 
         public void AddNewCategory()

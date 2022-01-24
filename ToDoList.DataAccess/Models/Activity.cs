@@ -9,10 +9,8 @@ namespace ToDoList.DataAccess.Models
         public string Description { get; set; } = "none Description";
         public DateTime EndDate { get; set; }
         private TimeSpan ExceededTime { get; set; }
-
         private bool _isActive = false;
         public bool IsActive { get => _isActive; set => _isActive = value; }
-
         private bool _isDone = false;
         public bool IsDone { get => _isDone; 
             set
@@ -31,13 +29,8 @@ namespace ToDoList.DataAccess.Models
             return $"Time To Deadline: {dateDifference.Days} Days  {dateDifference.Hours} Hours  {dateDifference.Minutes} Minutes";
         }
         
-        public string[] ConvertToDataRow()
-        {
-            /*
-            Warning - the order of creating this data row is important
-                      because of txt file 'database'
-            */
-            return new[] {
+        public string[] ConvertToDataRow() => new[] 
+               {
                 _id.ToString(),
                 Category,
                 Title,
@@ -45,13 +38,10 @@ namespace ToDoList.DataAccess.Models
                 EndDate.ToString("MM/dd/yyyy HH:mm"),
                 _isActive ? "1" : "0",
                 _isDone ? "1" : "0"
-            };
-        }
+               };
 
-        protected bool Equals(Activity other)
-        {
-            return _id == other._id;
-        }
+
+        protected bool Equals(Activity other) => _id == other._id;
 
         public override bool Equals(object? obj)
         {
@@ -67,9 +57,6 @@ namespace ToDoList.DataAccess.Models
             return Equals((Activity)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return _id;
-        }
+        public override int GetHashCode() => _id;
     }
 }
