@@ -7,7 +7,10 @@ namespace ToDoList.Controllers
     public class DataController
     {
         protected readonly IView _view;
-        public DataController(IView view) => _view = view;
+        public DataController(IView view)
+        {
+            _view = view;
+        }
 
         public IEnumerable<ViewBag> GetInactiveActivities()
         {
