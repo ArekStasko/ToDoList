@@ -37,7 +37,7 @@ namespace ToDoList.DataAccess.Tests.Unit
             string activityName = "TestItemName";
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
-            var newActivity = new Activity()
+            IActivity newActivity = new Activity()
             {
                 _id = activityID,
                 Category = category,
@@ -67,7 +67,7 @@ namespace ToDoList.DataAccess.Tests.Unit
             string activityName = "TestItemName";
             var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
 
-            var newActivity = new Activity()
+            IActivity newActivity = new Activity()
             {
                 _id = activityID,
                 Category = category,

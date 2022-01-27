@@ -1,11 +1,11 @@
 ﻿using ToDoList.DataAccess;
-using ToDoList.DataAccess.Models;
 
 namespace ToDoList.Controllers.Categories
 {
-    public class CategoriesControllers : DataController
+    public class CategoriesControllers  : ICategoriesControllers
     {
-        public CategoriesControllers(IView _view) : base(_view) { }
+        private readonly IView _view;
+        public CategoriesControllers(IView view) => _view = view;
 
         public IEnumerable<string> GetCategories()
         {

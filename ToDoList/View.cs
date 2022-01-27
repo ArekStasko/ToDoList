@@ -1,16 +1,18 @@
 ﻿using ToDoList.Controllers.Activities;
 using ToDoList.Controllers;
+using ToDoList.DataAccess.Models;
 
 namespace ToDoList
 {
     public class View : IView
     {
-        protected OptionsPrinter _options = new OptionsPrinter();
-        protected DataController dataController;
+        protected OptionsPrinter _options;
+        protected IActivitiesControllers activitiesControllers;
 
         protected View()
         {
-            dataController = new DataController(this);
+            activitiesControllers = new ActivitiesControllers(this);
+            _options = new OptionsPrinter();
         }
 
         static void Main(string[] args)
@@ -31,7 +33,7 @@ namespace ToDoList
                 {
                     case 1:
                         {
-                            var activities = dataController.GetInactiveActivities();
+                            var activities = activitiesControllers.GetInactiveActivities();
                             PrintActivities(activities);
                             break;
                         }
@@ -43,24 +45,24 @@ namespace ToDoList
                             if (selectedOption == 1)
                             {
                                 int activityID = GetID();
-                                var activity = dataController.GetActivityDataByID(activityID);
+                                var activity = activitiesControllers.GetActivityByID(activityID);
                                 PrintActivity(activity);
                             }
                             else if (selectedOption == 2)
                             {
-                                var activities = dataController.GetActiveActivities();
+                                var activities = activitiesControllers.GetActiveActivities();
                                 PrintActivities(activities);
                             }
                             else if (selectedOption == 3)
                             {
-                                var activities = dataController.GetInactiveActivities();
+                                var activities = activitiesControllers.GetInactiveActivities();
                                 PrintActivities(activities);
                             }
                             else if (selectedOption == 4)
                             {
                                 Console.WriteLine("Provide activities category to find");
                                 string category = GetStringValue();
-                                var activities = dataController.GetActivitiesByCategory(category);
+                                var activities = activitiesControllers.GetActivitiesByCategory(category);
                                 PrintActivities(activities);
                             }
                             break;
@@ -82,21 +84,21 @@ namespace ToDoList
         }
 
 
-        public void PrintActivity(ViewBag activity)
+        public void PrintActivity(IActivity activity)
         {
             Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
 
-            if (activity._isActive)
+            if (activity.IsActive)
                 Console.ForegroundColor = ConsoleColor.Green;
             else
                 Console.ForegroundColor = ConsoleColor.Red;
 
 
-            Console.WriteLine($"| {activity.Id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+            Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void PrintActivities(IEnumerable<ViewBag> activities)
+        public void PrintActivities(IEnumerable<IActivity> activities)
         {
             foreach (var activity in activities)
                 PrintActivity(activity);

@@ -30,7 +30,7 @@ namespace ToDoList.DataAccess
             }
         }
 
-        public IEnumerable<Activity> GetActivities()
+        public IEnumerable<IActivity> GetActivities()
         {
             InitializeActivitiesFile();
             foreach (string line in File.ReadLines(activitiesFilePath))
@@ -38,7 +38,7 @@ namespace ToDoList.DataAccess
                 if (!String.IsNullOrWhiteSpace(line))
                 {
                     string[] data = line.Split(separator.ToCharArray());
-                    var newActivity = new Activity()
+                    IActivity newActivity = new Activity()
                     {
                         _id = Int32.Parse(data[0]),
                         Category = data[1],
@@ -53,25 +53,25 @@ namespace ToDoList.DataAccess
             }
         }
         
-        public IEnumerable<Activity> GetActiveActivities()
+        public IEnumerable<IActivity> GetActiveActivities()
         {
             var activities = GetActivities();
             return activities.Where(activity => activity.IsActive);
         }
 
-        public IEnumerable<Activity> GetInactiveActivities()
+        public IEnumerable<IActivity> GetInactiveActivities()
         {
             var activities = GetActivities();
             return activities.Where(activity => !activity.IsActive);
         }
 
-        public Activity GetActivityByID(int _id)
+        public IActivity GetActivityByID(int _id)
         {
             var activity = GetActivities().First(act => act._id == _id);
             return activity;
         }
 
-        public IEnumerable<Activity> GetActivitiesByCategory(string category)
+        public IEnumerable<IActivity> GetActivitiesByCategory(string category)
         {
             var activities = GetActivities();
             return activities.Where(activity => activity.Category == category);
@@ -109,20 +109,20 @@ namespace ToDoList.DataAccess
             }
         }
 
-        public void AddActivity(Activity newActivity)
+        public void AddActivity(IActivity newActivity)
         {
             InitializeActivitiesFile();
             string line = string.Join(separator, newActivity.ConvertToDataRow());
             File.AppendAllText(activitiesFilePath, line + Environment.NewLine);
         }
 
-        public void AddActivities(List<Activity> newActivities)
+        public void AddActivities(List<IActivity> newActivities)
         {
             foreach (var activity in newActivities)
                 AddActivity(activity);
         }
 
-        public void RemoveActivity(Activity activityToRemove)
+        public void RemoveActivity(IActivity activityToRemove)
         {
             InitializeActivitiesFile();
             var activities = GetActivities().ToList();
@@ -131,13 +131,13 @@ namespace ToDoList.DataAccess
             AddActivities(activities);
         }
 
-        public void RemoveActivity(List<Activity> newActivities)
+        public void RemoveActivity(List<IActivity> newActivities)
         {
             foreach (var activity in newActivities)
                 RemoveActivity(activity);
         }
 
-        public void UpdateActivity(Activity activityToUpdate)
+        public void UpdateActivity(IActivity activityToUpdate)
         {
             RemoveActivity(activityToUpdate);
             AddActivity(activityToUpdate);

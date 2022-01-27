@@ -1,22 +1,20 @@
-﻿using ToDoList.Controllers.Activities;
-using ToDoList.Controllers.Categories;
+﻿using ToDoList.Controllers.Categories;
+using ToDoList.DataAccess.Models;
 
 namespace ToDoList
 {
     internal class ActivityOptions : View
     {
-        private ActivitiesControllers activitiesControllers;
-        private CategoriesControllers categoriesControllers;
+        private ICategoriesControllers categoriesControllers;
 
         public ActivityOptions()
         {
-            activitiesControllers = new ActivitiesControllers(this);
             categoriesControllers = new CategoriesControllers(this);
         }
         internal void RunActivityController()
         {
             var categories = categoriesControllers.GetCategories();
-            var activities = activitiesControllers.GetActivityData();
+            var activities = activitiesControllers.GetActivities();
 
             _options.PrintActivitiesOptions();
             int selectedOption = GetNumericValue();
@@ -31,24 +29,26 @@ namespace ToDoList
                             categoriesControllers.AddNewCategory();
                         }
 
-                        var viewBag = new ViewBag()
+                        IActivity activity = new Activity()
                         {
-                            Id = GetNumericValue(),
+                            _id = GetNumericValue(),
                             Title = GetStringValue(),
                             Description = GetStringValue(),
                             Category = categoriesControllers.GetCategory(),
                             EndDate = activitiesControllers.GetDate(),
                         };
 
-                        activitiesControllers.AddNewActivity(viewBag);
+                        activitiesControllers.AddNewActivity(activity);
                         DisplayMessage("Successfully added new Activity");
                         _options.PrintAddActivityOptions();
                         break;
                     }
                 case 2:
+                    {
                         var activity = GetEditedData();
                         activitiesControllers.EditActivity(activity);
                         break;
+                    }
                 case 3:
                         activitiesControllers.StartActivity();
                         break;
@@ -77,9 +77,9 @@ namespace ToDoList
             }
         }
 
-        private ViewBag GetEditedData()
+        private IActivity GetEditedData()
         {
-            var activity = activitiesControllers.GetActivityDataByID(GetID());
+            var activity = activitiesControllers.GetActivityByID(GetID());
             int option = GetNumericValue();
 
             do

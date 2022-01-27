@@ -1,7 +1,7 @@
 ﻿
 namespace ToDoList.DataAccess.Models
 {
-    public class Activity
+    public class Activity : IActivity
     {
         public int _id { get; set; }
         public string Title { get; set; } = "none Title";

@@ -4,16 +4,19 @@ namespace ToDoList.DataAccess
 {
     public interface IDataProvider
     {
-        IEnumerable<Activity> GetActivities();
-        IEnumerable<string> GetCategories();
-        void AddCategory(string newCategory);
-        void AddActivity(Activity newActivity);
-        void AddActivities(List<Activity> newActivities);
-        void RemoveActivity(Activity activityToRemove);
-        public IEnumerable<Activity> GetInactiveActivities();
-        public IEnumerable<Activity> GetActiveActivities();
-        public Activity GetActivityByID(int _id);
-        public IEnumerable<Activity> GetActivitiesByCategory(string category);
-        public void UpdateActivity(Activity activityToUpdate);
+        public IEnumerable<IActivity> GetActivities();
+        public IEnumerable<IActivity> GetActiveActivities();
+        public IEnumerable<IActivity> GetInactiveActivities();
+        public IActivity GetActivityByID(int _id);
+        public IEnumerable<IActivity> GetActivitiesByCategory(string category);
+        public IEnumerable<string> GetCategories();
+        public void AddCategory(string newCategory);
+        public void RemoveCategory(string categoryToRemove);
+        public void AddActivity(IActivity newActivity);
+        public void AddActivities(List<IActivity> newActivities);
+        public void RemoveActivity(IActivity activityToRemove);
+        public void RemoveActivity(List<IActivity> newActivities);
+        public void UpdateActivity(IActivity activityToUpdate);
+ 
     }
 }
