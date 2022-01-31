@@ -1,23 +1,27 @@
 ﻿using ToDoList.DataAccess;
+using ToDoList.Controllers.Factories;
 
 namespace ToDoList.Controllers.Categories
 {
     public class CategoriesControllers  : ICategoriesControllers
     {
+        private readonly IDataProvider _provider;
         private readonly IView _view;
-        public CategoriesControllers(IView view) => _view = view;
+        public CategoriesControllers(IView view)
+        {
+            _provider = Factory.NewDataProviderInstance();
+            _view = view;
+        } 
 
         public IEnumerable<string> GetCategories()
         {
-            var dataProvider = new DataProvider();
-            return dataProvider.GetCategories();
+            return _provider.GetCategories();
         }
 
         public string GetCategory()
         {
             _view.DisplayMessage("- Please choose number of category -");
-            var dataProvider = new DataProvider();
-            var categories = dataProvider.GetCategories();
+            var categories = _provider.GetCategories();
 
             _view.PrintCategories(categories);
             int categoryNumber;
@@ -33,18 +37,15 @@ namespace ToDoList.Controllers.Categories
         public void AddNewCategory()
         {
             string? categoryName = _view.GetStringValue();
-
-            var dataProvider = new DataProvider();
-            dataProvider.AddCategory(categoryName);
+            _provider.AddCategory(categoryName);
 
             _view.DisplayMessage("Successfully added new category");
         }
 
         public void DeleteCategory()
         {
-            var dataProvider = new DataProvider();
             var categoryToDelete = GetCategory();
-            dataProvider.RemoveCategory(categoryToDelete);
+            _provider.RemoveCategory(categoryToDelete);
             _view.DisplayMessage("Successfully deleted category");
         }
     }

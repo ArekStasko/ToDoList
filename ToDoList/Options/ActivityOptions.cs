@@ -1,4 +1,5 @@
 ﻿using ToDoList.Controllers.Categories;
+using ToDoList.Controllers.Factories;
 using ToDoList.DataAccess.Models;
 
 namespace ToDoList
@@ -29,14 +30,12 @@ namespace ToDoList
                             categoriesControllers.AddNewCategory();
                         }
 
-                        IActivity activity = new Activity()
-                        {
-                            _id = GetNumericValue(),
-                            Title = GetStringValue(),
-                            Description = GetStringValue(),
-                            Category = categoriesControllers.GetCategory(),
-                            EndDate = activitiesControllers.GetDate(),
-                        };
+                        IActivity activity = Factory.NewActivityInstance();
+                        activity._id = GetNumericValue();
+                        activity.Title = GetStringValue();
+                        activity.Description = GetStringValue();
+                        activity.Category = categoriesControllers.GetCategory();
+                        activity.EndDate = activitiesControllers.GetDate();
 
                         activitiesControllers.AddNewActivity(activity);
                         DisplayMessage("Successfully added new Activity");

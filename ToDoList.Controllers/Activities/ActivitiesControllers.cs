@@ -1,4 +1,4 @@
-﻿using ToDoList.Controllers.Categories;
+﻿using ToDoList.Controllers.Factories;
 using ToDoList.DataAccess;
 using ToDoList.DataAccess.Models;
 
@@ -7,11 +7,11 @@ namespace ToDoList.Controllers.Activities
     public class ActivitiesControllers : IActivitiesControllers
     {
         protected readonly IView _view;
-        private readonly IDataProvider _dataProvider;
+        private readonly IDataProvider _provider;
         public ActivitiesControllers(IView view)
         {
             _view = view;
-            _dataProvider = new DataProvider();
+            _provider = Factory.NewDataProviderInstance();
         }
 
         public void StartActivity()
@@ -28,7 +28,7 @@ namespace ToDoList.Controllers.Activities
             }
 
             activity.IsActive = true;
-            _dataProvider.UpdateActivity(activity);
+            _provider.UpdateActivity(activity);
         }
 
         public void SetActivityAsDone()
@@ -45,12 +45,12 @@ namespace ToDoList.Controllers.Activities
             }
 
             activity.IsDone = true;
-            _dataProvider.UpdateActivity(activity);
+            _provider.UpdateActivity(activity);
         }
 
         public void AddNewActivity(IActivity activity)
         {
-            var activities = _dataProvider.GetActivities();
+            var activities = _provider.GetActivities();
 
             if (activities.Any(act => act._id == activity._id))
             {
@@ -60,7 +60,7 @@ namespace ToDoList.Controllers.Activities
 
             try
             {
-                _dataProvider.AddActivity(activity);
+                _provider.AddActivity(activity);
             }
             catch (Exception)
             {
@@ -74,7 +74,7 @@ namespace ToDoList.Controllers.Activities
         {
             try
             {
-                _dataProvider.UpdateActivity(activity);
+                _provider.UpdateActivity(activity);
             }
             catch (Exception)
             {
@@ -87,7 +87,7 @@ namespace ToDoList.Controllers.Activities
         {
             int activityID = _view.GetID();
             IActivity activityToDelete = GetActivityByID(activityID);
-            _dataProvider.RemoveActivity(activityToDelete);
+            _provider.RemoveActivity(activityToDelete);
 
             _view.DisplayMessage("Successfully deleted activity");
         }
@@ -124,32 +124,32 @@ namespace ToDoList.Controllers.Activities
 
         public IEnumerable<IActivity> GetInactiveActivities()
         {
-            return _dataProvider.GetInactiveActivities();
+            return _provider.GetInactiveActivities();
         }
 
         public IEnumerable<IActivity> GetActiveActivities()
         {
-            return _dataProvider.GetActiveActivities();
+            return _provider.GetActiveActivities();
         }
 
         public IActivity GetActivityByID(int ID)
         {
-            return _dataProvider.GetActivityByID(ID);
+            return _provider.GetActivityByID(ID);
         }
 
         public IEnumerable<IActivity> GetActivitiesByCategory(string category)
         {
-            return _dataProvider.GetActivitiesByCategory(category);
+            return _provider.GetActivitiesByCategory(category);
         }
 
         public IEnumerable<IActivity> GetActivities()
         {
-            return _dataProvider.GetActivities();
+            return _provider.GetActivities();
         }
 
         private bool checkIfActivitiesExist()
         {
-            return _dataProvider.GetActivities().Any();  
+            return _provider.GetActivities().Any();  
         }
     }
 }
