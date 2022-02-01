@@ -1,6 +1,8 @@
 ﻿using ToDoList.Controllers.Activities;
+using ToDoList.Controllers.Categories;
 using ToDoList.Controllers;
 using ToDoList.DataAccess.Models;
+using ToDoList.Controllers.Factories;
 
 namespace ToDoList
 {
@@ -8,10 +10,11 @@ namespace ToDoList
     {
         protected OptionsPrinter _options;
         protected IActivitiesControllers activitiesControllers;
-
+        protected ICategoriesControllers categoriesControllers;
         protected View()
         {
-            activitiesControllers = new ActivitiesControllers(this);
+            activitiesControllers = Factory.NewActControllersInstance(this);
+            categoriesControllers = Factory.NewCatControllersInstance(this);
             _options = new OptionsPrinter();
         }
 

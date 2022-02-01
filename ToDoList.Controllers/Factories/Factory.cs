@@ -16,5 +16,15 @@ namespace ToDoList.Controllers.Factories
         {
             return new DataProvider();
         }
+        
+        public static CategoriesControllers NewCatControllersInstance(this IView view)
+        {
+            return new CategoriesControllers(view);
+        }
+
+        public static ActivitiesControllers NewActControllersInstance(this IView view)
+        {
+            return new ActivitiesControllers(view);
+        }
     }
 }

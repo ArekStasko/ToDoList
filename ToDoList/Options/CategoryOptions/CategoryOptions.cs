@@ -1,12 +1,9 @@
-﻿using ToDoList.Controllers.Categories;
-
-namespace ToDoList
+﻿namespace ToDoList
 {
     internal class CategoryOptions : View
     {
         internal void RunCategoryController()
         {
-            ICategoriesControllers categoriesControllers = new CategoriesControllers(this);
             var categories = categoriesControllers.GetCategories();
 
             _options.PrintCategoriesOptions();

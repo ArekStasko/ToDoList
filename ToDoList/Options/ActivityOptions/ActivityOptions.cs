@@ -1,17 +1,10 @@
-﻿using ToDoList.Controllers.Categories;
-using ToDoList.Controllers.Factories;
+﻿using ToDoList.Controllers.Factories;
 using ToDoList.DataAccess.Models;
 
 namespace ToDoList
 {
     internal class ActivityOptions : View
     {
-        private ICategoriesControllers categoriesControllers;
-
-        public ActivityOptions()
-        {
-            categoriesControllers = new CategoriesControllers(this);
-        }
         internal void RunActivityController()
         {
             var categories = categoriesControllers.GetCategories();

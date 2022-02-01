@@ -1,5 +1,4 @@
-﻿
-namespace ToDoList
+﻿namespace ToDoList
 {
     public class OptionsPrinter
     {
