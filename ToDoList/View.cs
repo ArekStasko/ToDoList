@@ -1,7 +1,6 @@
 ﻿using ToDoList.Controllers.Activities;
 using ToDoList.Controllers.Categories;
 using ToDoList.Controllers;
-using ToDoList.DataAccess.Models;
 using ToDoList.Controllers.Factories;
 
 namespace ToDoList
@@ -37,36 +36,42 @@ namespace ToDoList
                     case 1:
                         {
                             var activities = activitiesControllers.GetInactiveActivities();
-                            PrintActivities(activities);
+                            PrintActivityDesc();
+                            foreach (var activity in activities)
+                                Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
                             break;
                         }
                     case 2:
                         {
                             _options.PrintActivitySearchOptions();
                             int selectedOption = GetNumericValue();
+                            PrintActivityDesc();
 
                             if (selectedOption == 1)
                             {
                                 int activityID = GetID();
                                 var activity = activitiesControllers.GetActivityByID(activityID);
-                                PrintActivity(activity);
+                                Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
                             }
                             else if (selectedOption == 2)
                             {
                                 var activities = activitiesControllers.GetActiveActivities();
-                                PrintActivities(activities);
+                                foreach (var activity in activities)
+                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
                             }
                             else if (selectedOption == 3)
                             {
                                 var activities = activitiesControllers.GetInactiveActivities();
-                                PrintActivities(activities);
+                                foreach (var activity in activities)
+                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
                             }
                             else if (selectedOption == 4)
                             {
                                 Console.WriteLine("Provide activities category to find");
                                 string category = GetStringValue();
                                 var activities = activitiesControllers.GetActivitiesByCategory(category);
-                                PrintActivities(activities);
+                                foreach (var activity in activities)
+                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
                             }
                             break;
                         }
@@ -87,24 +92,9 @@ namespace ToDoList
         }
 
 
-        private void PrintActivity(IActivity activity)
+        protected void PrintActivityDesc()
         {
             Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
-
-            if (activity.IsActive)
-                Console.ForegroundColor = ConsoleColor.Green;
-            else
-                Console.ForegroundColor = ConsoleColor.Red;
-
-
-            Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-        
-        protected void PrintActivities(IEnumerable<IActivity> activities)
-        {
-            foreach (var activity in activities)
-                PrintActivity(activity);
         }
 
         public void PrintCategories(IEnumerable<string> categories)

@@ -1,5 +1,4 @@
 ﻿using ToDoList.Controllers.Factories;
-using ToDoList.DataAccess.Models;
 
 namespace ToDoList
 {
@@ -23,7 +22,7 @@ namespace ToDoList
                             categoriesControllers.AddNewCategory();
                         }
 
-                        IActivity activity = Factory.NewActivityInstance();
+                        var activity = Factory.NewActivityInstance();
                         activity._id = GetNumericValue();
                         activity.Title = GetStringValue();
                         activity.Description = GetStringValue();
@@ -37,8 +36,7 @@ namespace ToDoList
                     }
                 case 2:
                     {
-                        var activity = GetEditedData();
-                        activitiesControllers.EditActivity(activity);
+                        GetEditedData();
                         break;
                     }
                 case 3:
@@ -48,8 +46,10 @@ namespace ToDoList
                         activitiesControllers.SetActivityAsDone();
                         break;
                 case 5:
-                        PrintActivities(activities);
-                        break;
+                    PrintActivityDesc();
+                    foreach (var activity in activities)
+                        Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                    break;
                 case 6:
                     {
                         if (!activities.Any())
@@ -69,7 +69,7 @@ namespace ToDoList
             }
         }
 
-        private IActivity GetEditedData()
+        public void GetEditedData()
         {
             var activity = activitiesControllers.GetActivityByID(GetID());
             int option = GetNumericValue();
@@ -98,9 +98,7 @@ namespace ToDoList
                 option = GetNumericValue();
             } while (option != 6);
 
-
-
-            return activity;
+            activitiesControllers.EditActivity(activity);
         }
     }
 }
