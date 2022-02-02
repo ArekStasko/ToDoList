@@ -8,14 +8,14 @@ namespace ToDoList
 {
     public class View : IView
     {
-        protected OptionsPrinter _options;
+        protected IOptionsPrinter _options;
         protected IActivitiesControllers activitiesControllers;
         protected ICategoriesControllers categoriesControllers;
         protected View()
         {
             activitiesControllers = Factory.NewActControllersInstance(this);
             categoriesControllers = Factory.NewCatControllersInstance(this);
-            _options = new OptionsPrinter();
+            _options = OptionsFactory.GetOptionsPrinterInstance();
         }
 
         static void Main(string[] args)
@@ -71,11 +71,11 @@ namespace ToDoList
                             break;
                         }
                     case 3:
-                        var activityOptions = new ActivityOptions();
+                        IActivityOptions activityOptions = OptionsFactory.GetActOptionsInstance();
                         activityOptions.RunActivityController();
                         break;
                     case 4:
-                        var categoryOptions = new CategoryOptions();
+                        ICategoryOptions categoryOptions = OptionsFactory.GetCatOptionsInstance();
                         categoryOptions.RunCategoryController();
                         break;
                     default:
@@ -87,7 +87,7 @@ namespace ToDoList
         }
 
 
-        public void PrintActivity(IActivity activity)
+        private void PrintActivity(IActivity activity)
         {
             Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
 
@@ -100,8 +100,8 @@ namespace ToDoList
             Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
             Console.ForegroundColor = ConsoleColor.White;
         }
-
-        public void PrintActivities(IEnumerable<IActivity> activities)
+        
+        protected void PrintActivities(IEnumerable<IActivity> activities)
         {
             foreach (var activity in activities)
                 PrintActivity(activity);

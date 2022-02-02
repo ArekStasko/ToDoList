@@ -3,9 +3,9 @@ using ToDoList.DataAccess.Models;
 
 namespace ToDoList
 {
-    internal class ActivityOptions : View
+    public class ActivityOptions : View, IActivityOptions
     {
-        internal void RunActivityController()
+        public void RunActivityController()
         {
             var categories = categoriesControllers.GetCategories();
             var activities = activitiesControllers.GetActivities();

@@ -1,8 +1,8 @@
 ﻿namespace ToDoList
 {
-    internal class CategoryOptions : View
+    public class CategoryOptions : View, ICategoryOptions
     {
-        internal void RunCategoryController()
+        public void RunCategoryController()
         {
             var categories = categoriesControllers.GetCategories();
 

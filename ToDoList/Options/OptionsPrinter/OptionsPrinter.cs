@@ -1,6 +1,6 @@
 ﻿namespace ToDoList
 {
-    public class OptionsPrinter
+    public class OptionsPrinter : IOptionsPrinter
     {
         private void printOptions(string[] options)
         {
