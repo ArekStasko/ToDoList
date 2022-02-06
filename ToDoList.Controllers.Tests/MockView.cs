@@ -1,62 +1,72 @@
-﻿using NUnit.Framework;
-using FluentAssertions;
-using System.Linq;
-using System;
-using ToDoList.DataAccess.Models;
+﻿using System;
 using System.Collections.Generic;
 
 namespace ToDoList.Controllers.Tests
 {
     public class MockView : IView
     {
-        private void PrintActivity(IActivity activity)
+        public void RunApp()
         {
-            Console.WriteLine($"| Activity ID | Activity Category | Activity Title | Activity Description | End Date |");
-
-            if (activity.IsActive)
-                Console.ForegroundColor = ConsoleColor.Green;
-            else
-                Console.ForegroundColor = ConsoleColor.Red;
-
-
-            Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
-            Console.ForegroundColor = ConsoleColor.White;
+            
         }
 
-        protected void PrintActivities(IEnumerable<IActivity> activities)
+        protected void PrintActivity(string[] activityData)
         {
-            foreach (var activity in activities)
-                PrintActivity(activity);
+            return;
+        }
+
+        protected void PrintActivityDesc()
+        {
+            return;
+        }
+
+        public void PrintCategories(IEnumerable<string> categories)
+        {
+           return;
         }
 
         public void DisplayMessage(string msg)
         {
-            Console.WriteLine($"{msg}");
+           return;
         }
 
         public void ErrorMessage(string msg)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"{msg}");
-            Console.ForegroundColor = ConsoleColor.White;
+           return;
         }
 
         public void ClearView() => Console.Clear();
-        public string? GetData() => throw new NotImplementedException();
+        public string? GetData() => Console.ReadLine();
 
         public string GetStringValue()
         {
-            throw new NotImplementedException();
+            string? providedData = GetData();
+
+            while (String.IsNullOrEmpty(providedData))
+            {
+                DisplayMessage("-You can't add empty data-");
+                providedData = GetData();
+            }
+
+            return providedData;
         }
 
         public int GetNumericValue()
         {
-            throw new NotImplementedException();
+            string? NumVal = GetData();
+            while (!Int32.TryParse(NumVal, out int n) || string.IsNullOrEmpty(NumVal) || NumVal == "0")
+            {
+                DisplayMessage("Input must be non 0 number");
+                NumVal = GetData();
+            }
+            return Int32.Parse(NumVal);
         }
 
         public int GetID()
         {
-            throw new NotImplementedException();
+            DisplayMessage("Provide activity ID");
+            return GetNumericValue();
         }
+
     }
 }

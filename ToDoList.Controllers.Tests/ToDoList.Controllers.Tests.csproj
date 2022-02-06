@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.Controllers\ToDoList.Controllers.csproj" />
-    <ProjectReference Include="..\ToDoList.DataAccess\ToDoList.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

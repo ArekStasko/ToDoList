@@ -51,19 +51,19 @@ namespace ToDoList
                             {
                                 int activityID = GetID();
                                 var activity = activitiesControllers.GetActivityByID(activityID);
-                                Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                                PrintActivity(activity.ConvertToDataRow());
                             }
                             else if (selectedOption == 2)
                             {
                                 var activities = activitiesControllers.GetActiveActivities();
                                 foreach (var activity in activities)
-                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                                    PrintActivity(activity.ConvertToDataRow());
                             }
                             else if (selectedOption == 3)
                             {
                                 var activities = activitiesControllers.GetInactiveActivities();
                                 foreach (var activity in activities)
-                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                                    PrintActivity(activity.ConvertToDataRow());
                             }
                             else if (selectedOption == 4)
                             {
@@ -71,7 +71,7 @@ namespace ToDoList
                                 string category = GetStringValue();
                                 var activities = activitiesControllers.GetActivitiesByCategory(category);
                                 foreach (var activity in activities)
-                                    Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                                    PrintActivity(activity.ConvertToDataRow());
                             }
                             break;
                         }
@@ -91,6 +91,10 @@ namespace ToDoList
             } while (userSelection != 5);
         }
 
+        protected void PrintActivity(string[] activityData)
+        {
+            Console.WriteLine($"| {activityData[0]} | {activityData[1]} | {activityData[2]} | {activityData[3]} | {activityData[4]} |");
+        }
 
         protected void PrintActivityDesc()
         {

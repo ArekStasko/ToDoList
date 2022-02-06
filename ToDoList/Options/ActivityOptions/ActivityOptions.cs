@@ -23,10 +23,14 @@ namespace ToDoList
                         }
 
                         var activity = Factory.NewActivityInstance();
-                        activity._id = GetNumericValue();
+                        activity._id = GetID();
+                        Console.WriteLine("Provide activity Title");
                         activity.Title = GetStringValue();
+                        Console.WriteLine("Provide activity Description");
                         activity.Description = GetStringValue();
+                        Console.WriteLine("Provide activity Category");
                         activity.Category = categoriesControllers.GetCategory();
+                        Console.WriteLine("Provide activity end date");
                         activity.EndDate = activitiesControllers.GetDate();
 
                         activitiesControllers.AddNewActivity(activity);
@@ -40,15 +44,15 @@ namespace ToDoList
                         break;
                     }
                 case 3:
-                        activitiesControllers.StartActivity();
+                        activitiesControllers.StartActivity(GetID());
                         break;
                 case 4:
-                        activitiesControllers.SetActivityAsDone();
+                        activitiesControllers.SetActivityAsDone(GetID());
                         break;
                 case 5:
                     PrintActivityDesc();
                     foreach (var activity in activities)
-                        Console.WriteLine($"| {activity._id} | {activity.Category} | {activity.Title} | {activity.Description} | {activity.EndDate} |");
+                        PrintActivity(activity.ConvertToDataRow());
                     break;
                 case 6:
                     {
@@ -58,7 +62,7 @@ namespace ToDoList
                             break;
                         }
 
-                        activitiesControllers.DeleteActivity();
+                        activitiesControllers.DeleteActivity(GetID());
                         break;
                     }
                 default:
@@ -99,6 +103,12 @@ namespace ToDoList
             } while (option != 6);
 
             activitiesControllers.EditActivity(activity);
+        }
+
+
+        private void GetNewActivityData()
+        {
+
         }
     }
 }

@@ -14,11 +14,9 @@ namespace ToDoList.Controllers.Activities
             _provider = Factory.NewDataProviderInstance();
         }
 
-        public void StartActivity()
+        public void StartActivity(int activityID)
         {
             if (checkIfActivitiesExist()) return;
-
-            int activityID = _view.GetID();
             IActivity activity = GetActivityByID(activityID);
 
             if (activity.IsDone)
@@ -31,11 +29,9 @@ namespace ToDoList.Controllers.Activities
             _provider.UpdateActivity(activity);
         }
 
-        public void SetActivityAsDone()
+        public void SetActivityAsDone(int activityID)
         {
             if (checkIfActivitiesExist()) return;
-
-            int activityID = _view.GetID();
             IActivity activity = GetActivityByID(activityID);
 
             if (!activity.IsActive)
@@ -83,9 +79,8 @@ namespace ToDoList.Controllers.Activities
             }
         }
 
-        public void DeleteActivity()
+        public void DeleteActivity(int activityID)
         {
-            int activityID = _view.GetID();
             IActivity activityToDelete = GetActivityByID(activityID);
             _provider.RemoveActivity(activityToDelete);
 
@@ -122,34 +117,16 @@ namespace ToDoList.Controllers.Activities
             return date;
         }
 
-        public IEnumerable<IActivity> GetInactiveActivities()
-        {
-            return _provider.GetInactiveActivities();
-        }
+        public IEnumerable<IActivity> GetInactiveActivities() => _provider.GetInactiveActivities();
 
-        public IEnumerable<IActivity> GetActiveActivities()
-        {
-            return _provider.GetActiveActivities();
-        }
+        public IEnumerable<IActivity> GetActiveActivities() => _provider.GetActiveActivities();
 
-        public IActivity GetActivityByID(int ID)
-        {
-            return _provider.GetActivityByID(ID);
-        }
+        public IActivity GetActivityByID(int ID) => _provider.GetActivityByID(ID);
 
-        public IEnumerable<IActivity> GetActivitiesByCategory(string category)
-        {
-            return _provider.GetActivitiesByCategory(category);
-        }
+        public IEnumerable<IActivity> GetActivitiesByCategory(string category) => _provider.GetActivitiesByCategory(category);
 
-        public IEnumerable<IActivity> GetActivities()
-        {
-            return _provider.GetActivities();
-        }
+        public IEnumerable<IActivity> GetActivities() => _provider.GetActivities();
 
-        private bool checkIfActivitiesExist()
-        {
-            return _provider.GetActivities().Any();  
-        }
+        private bool checkIfActivitiesExist() => _provider.GetActivities().Any();  
     }
 }
