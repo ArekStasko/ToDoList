@@ -14,7 +14,7 @@ namespace ToDoList.Controllers.Activities
             _provider = Factory.NewDataProviderInstance();
         }
 
-        public void StartActivity(int activityID)
+        public void SetActivityAsActive(int activityID)
         {
             if (CheckIfActivitiesAreEmpty()) return;
             IActivity activity = GetActivityByID(activityID);

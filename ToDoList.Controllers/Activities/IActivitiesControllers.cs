@@ -4,7 +4,7 @@ namespace ToDoList.Controllers.Activities
 {
     public interface IActivitiesControllers
     {
-        public void StartActivity(int activityID);
+        public void SetActivityAsActive(int activityID);
         public void SetActivityAsDone(int activityID);
         public void AddNewActivity(IActivity activity);
         public void EditActivity(IActivity activity);

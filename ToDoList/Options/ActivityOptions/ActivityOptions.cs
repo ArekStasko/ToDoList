@@ -43,7 +43,7 @@ namespace ToDoList
                         break;
                     }
                 case 3:
-                        activitiesControllers.StartActivity(GetID());
+                        activitiesControllers.SetActivityAsActive(GetID());
                         break;
                 case 4:
                         activitiesControllers.SetActivityAsDone(GetID());

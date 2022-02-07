@@ -66,7 +66,7 @@ namespace ToDoList.Controllers.Tests
 
             activity.IsActive.Should().BeFalse();
             actControllers.AddNewActivity(activity);
-            actControllers.StartActivity(activity._id);
+            actControllers.SetActivityAsActive(activity._id);
 
             var testActivity = actControllers.GetActivityByID(activity._id);
             testActivity.IsActive.Should().BeTrue();
@@ -94,7 +94,7 @@ namespace ToDoList.Controllers.Tests
             activity.IsDone.Should().BeFalse();
             actControllers.AddNewActivity(activity);
 
-            actControllers.StartActivity(activity._id);
+            actControllers.SetActivityAsActive(activity._id);
             actControllers.SetActivityAsDone(activity._id);
 
             var testActivity = actControllers.GetActivityByID(activity._id);
@@ -204,7 +204,7 @@ namespace ToDoList.Controllers.Tests
                 actControllers.AddNewActivity(activity);
             }
 
-            actControllers.StartActivity(0);
+            actControllers.SetActivityAsActive(0);
             var testActivities = actControllers.GetInactiveActivities();
             testActivities.Should().NotContain(x => x._id == 0);
         }
@@ -232,7 +232,7 @@ namespace ToDoList.Controllers.Tests
                 actControllers.AddNewActivity(activity);
             }
 
-            actControllers.StartActivity(1);
+            actControllers.SetActivityAsActive(1);
             var testActivities = actControllers.GetActiveActivities();
             testActivities.Should().Contain(x => x.IsActive == true);
         }
