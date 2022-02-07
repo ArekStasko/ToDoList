@@ -73,7 +73,7 @@ namespace ToDoList.Controllers.Tests
         }
 
         [Test]
-        public void SetActivityAsDone_Should_SetActivityAsDone()
+        public void SetActivityAsDone_Should_SetActivityAsDoneWhenItIsActive()
         {
             int activityID = 1;
             string category = "TestCategory";
@@ -93,9 +93,40 @@ namespace ToDoList.Controllers.Tests
 
             activity.IsDone.Should().BeFalse();
             actControllers.AddNewActivity(activity);
+
+            actControllers.StartActivity(activity._id);
             actControllers.SetActivityAsDone(activity._id);
+
             var testActivity = actControllers.GetActivityByID(activity._id);
             testActivity.IsDone.Should().BeTrue();
+        }
+
+        [Test]
+        public void SetActivityAsDone_ShouldNot_SetActivityAsDoneWhenItIsInactive()
+        {
+            int activityID = 1;
+            string category = "TestCategory";
+            string desc = "TestDescription";
+            string activityName = "TestItemName";
+            var deadlineDate = new DateTime(2016, 05, 20, 05, 50, 0);
+
+            var activity = Factory.NewActivityInstance();
+            activity._id = activityID;
+            activity.Category = category;
+            activity.Description = desc;
+            activity.Title = activityName;
+            activity.EndDate = deadlineDate;
+
+            var view = new MockView();
+            var actControllers = Factory.NewActControllersInstance(view);
+
+            activity.IsDone.Should().BeFalse();
+            actControllers.AddNewActivity(activity);
+
+            actControllers.SetActivityAsDone(activity._id);
+
+            var testActivity = actControllers.GetActivityByID(activity._id);
+            testActivity.IsDone.Should().BeFalse();
         }
 
         [Test]

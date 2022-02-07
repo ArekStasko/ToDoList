@@ -28,7 +28,7 @@ namespace ToDoList.Controllers.Categories
             do
             {
                 categoryNumber = _view.GetNumericValue();
-            } while (categories.ElementAt(categoryNumber - 1) != null);
+            } while (categoryNumber >= categories.Count());
 
 
             return categories.ElementAt(categoryNumber - 1);     

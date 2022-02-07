@@ -35,7 +35,6 @@ namespace ToDoList
 
                         activitiesControllers.AddNewActivity(activity);
                         DisplayMessage("Successfully added new Activity");
-                        _options.PrintAddActivityOptions();
                         break;
                     }
                 case 2:
@@ -76,10 +75,12 @@ namespace ToDoList
         public void GetEditedData()
         {
             var activity = activitiesControllers.GetActivityByID(GetID());
-            int option = GetNumericValue();
+            int option;
 
             do
             {
+                _options.PrintEditActivityOptions();
+                option = GetNumericValue();
                 switch (option)
                 {
                     case 1:
@@ -98,17 +99,10 @@ namespace ToDoList
                         activity.EndDate = activitiesControllers.GetDate();
                         break;
                 }
-                _options.PrintEditActivityOptions();
                 option = GetNumericValue();
-            } while (option != 6);
+            } while (option != 5);
 
             activitiesControllers.EditActivity(activity);
-        }
-
-
-        private void GetNewActivityData()
-        {
-
         }
     }
 }

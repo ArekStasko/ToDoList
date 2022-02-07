@@ -16,7 +16,7 @@ namespace ToDoList.Controllers.Activities
 
         public void StartActivity(int activityID)
         {
-            if (checkIfActivitiesExist()) return;
+            if (CheckIfActivitiesAreEmpty()) return;
             IActivity activity = GetActivityByID(activityID);
 
             if (activity.IsDone)
@@ -31,7 +31,7 @@ namespace ToDoList.Controllers.Activities
 
         public void SetActivityAsDone(int activityID)
         {
-            if (checkIfActivitiesExist()) return;
+            if (CheckIfActivitiesAreEmpty()) return;
             IActivity activity = GetActivityByID(activityID);
 
             if (!activity.IsActive)
@@ -127,6 +127,6 @@ namespace ToDoList.Controllers.Activities
 
         public IEnumerable<IActivity> GetActivities() => _provider.GetActivities();
 
-        private bool checkIfActivitiesExist() => _provider.GetActivities().Any();  
+        private bool CheckIfActivitiesAreEmpty() => !_provider.GetActivities().Any();  
     }
 }
