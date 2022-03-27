@@ -8,6 +8,7 @@ namespace ToDoList.Controllers.Activities
     {
         protected readonly IView _view;
         private readonly IDataProvider _provider;
+
         public ActivitiesControllers(IView view)
         {
             _view = view;

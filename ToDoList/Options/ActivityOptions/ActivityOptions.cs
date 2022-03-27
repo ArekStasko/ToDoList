@@ -24,12 +24,16 @@ namespace ToDoList
 
                         var activity = Factory.NewActivityInstance();
                         activity._id = GetID();
+
                         Console.WriteLine("Provide activity Title");
                         activity.Title = GetStringValue();
+
                         Console.WriteLine("Provide activity Description");
                         activity.Description = GetStringValue();
+
                         Console.WriteLine("Provide activity Category");
                         activity.Category = categoriesControllers.GetCategory();
+
                         Console.WriteLine("Provide activity end date");
                         activity.EndDate = activitiesControllers.GetDate();
 
